@@ -10,4 +10,8 @@
       <ProjectReference Include="..\HITS_API_1.Application\HITS_API_1.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-rc.2" />
+    </ItemGroup>
+
 </Project>
