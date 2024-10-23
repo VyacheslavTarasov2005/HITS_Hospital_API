@@ -10,32 +10,44 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3257228d-829e-4971-9eda-bd9dc95699c1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Doctor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Inspection.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Person.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Speciality.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/DoctorConfiguration.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/PatientConfiguration.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/SpecialityConfiguration.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/ApplicationDbContext.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/DbInitializer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.HITS_API_1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.HITS_API_1/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Doctor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Doctor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Patient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Patient.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Person.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Person.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Speciality.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Speciality.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/HITS_API_1.Domain.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/HITS_API_1.Domain.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/HITS_API_1.Domain.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/HITS_API_1.Domain.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/obj/rider.project.restore.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/HITS_API_1.Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/HITS_API_1.Infrastructure.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/HITS_API_1.Infrastructure.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/HITS_API_1.Infrastructure.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/HITS_API_1.Infrastructure.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/HITS_API_1.Infrastructure.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/HITS_API_1.Infrastructure.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/HITS_API_1.Infrastructure.csproj.nuget.g.targets" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.csproj.AssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/rider.project.model.nuget.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/HITS_API_1.Presentation.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/HITS_API_1.Presentation.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Presentation.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Presentation.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Presentation.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Presentation.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/appsettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/staticwebassets.build.json" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/staticwebassets.build.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/HITS_API_1.Presentation.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/HITS_API_1.Presentation.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/HITS_API_1.Presentation.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/HITS_API_1.Presentation.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/HITS_API_1.Presentation.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/HITS_API_1.Presentation.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/rider.project.model.nuget.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,11 +62,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ead6614bb1135d7d61e33ab3a33f17abb3e4f07240e1ae2f5641235738ab7/ServiceProviderEngineScope.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/HITS_API_1.Presentation/Program.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2nlGeOu9fW2BptZO97C705vFADa" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -128,7 +141,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1729540344681</updated>
-      <workItem from="1729540346377" duration="16724000" />
+      <workItem from="1729540346377" duration="18838000" />
+      <workItem from="1729676930727" duration="23598000" />
     </task>
     <servers />
   </component>

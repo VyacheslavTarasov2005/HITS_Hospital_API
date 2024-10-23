@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "HITS_API_1.Domain/1.0.0": {
+        "runtime": {
+          "HITS_API_1.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "HITS_API_1.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace HITS_API_1.Domain.Entities;
 
 public abstract class Person
@@ -5,13 +8,13 @@ public abstract class Person
     private Guid _id;
     private DateTime _createTime;
     private string _name;
-    private DateTime _birthday;
+    private DateTime _birthDate;
     private Gender _gender;
-
-    public Guid Id => _id;
     
-    public DateTime CreateTime => _createTime;
+    public Guid Id => _id;
 
+    public DateTime CreateTime => _createTime;
+    
     public string Name
     {
         get => _name;
@@ -24,32 +27,32 @@ public abstract class Person
             _name = value;
         }
     }
-
-    public DateTime Birthday
+    
+    public DateTime BirthDate
     {
-        get => _birthday;
+        get => _birthDate;
         set
         {
-            if (Birthday > DateTime.Now)
+            if (BirthDate > DateTime.Now)
             {
                 throw new ArgumentException("Дата рождения не может быть позже текущей даты");
             }
-            _birthday = value;
+            _birthDate = value;
         }
     }
-
+    
     public Gender Sex
     {
         get => _gender;
         set => _gender = value;
     }
 
-    public Person(string name, DateTime birthday, Gender gender)
+    public Person(string name, DateTime birthDate, Gender gender)
     {
         _id = Guid.NewGuid();
         _createTime = DateTime.Now;
         _name = name;
-        _birthday = birthday;
+        _birthDate = birthDate;
         _gender = gender;
     }
 }

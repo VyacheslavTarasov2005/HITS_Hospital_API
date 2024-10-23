@@ -14,6 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\HITS_API_1.Application\HITS_API_1.Application.csproj" />
+      <ProjectReference Include="..\HITS_API_1.Infrastructure\HITS_API_1.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,14 @@
+using HITS_API_1.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Подключение БД
+builder.Services.AddDbContext<ApplicationDbContext>(
+    options =>
+    {
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    });
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -15,6 +25,30 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    try
+    {
+        DbInitializer.Initialize(dbContext);
+
+        // Проверка, получилось ли подклюиться к БД
+        if (dbContext.Database.CanConnect())
+        {
+            Console.WriteLine("Подключение к БД установлено");
+        }
+        else
+        {
+            Console.WriteLine("Не удалось подключиться к БД");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Ошибка подключения к базе данных: {ex.Message}");
+    }
+}
 
 var summaries = new[]
 {

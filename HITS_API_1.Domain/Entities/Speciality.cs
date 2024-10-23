@@ -1,15 +1,17 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace HITS_API_1.Domain.Entities;
 
 public class Speciality
 {
-    private Guid _id;
     private DateTime _createTime;
     private string _name;
     
-    public Guid Id => _id;
+    public Guid Id { get; set; }
     
     public DateTime CreateTime => _createTime;
-
+    
     public string Name
     {
         get => _name;
@@ -21,5 +23,12 @@ public class Speciality
             }
             _name = value;
         }
+    }
+
+    public Speciality(string name)
+    {
+        Id = Guid.NewGuid();
+        _createTime = DateTime.Now;
+        _name = name;
     }
 }

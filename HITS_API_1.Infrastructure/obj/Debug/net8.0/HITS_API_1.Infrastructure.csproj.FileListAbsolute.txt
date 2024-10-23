@@ -1,0 +1,17 @@
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\bin\Debug\net8.0\HITS_API_1.Infrastructure.deps.json
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\bin\Debug\net8.0\HITS_API_1.Infrastructure.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\bin\Debug\net8.0\HITS_API_1.Infrastructure.pdb
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\bin\Debug\net8.0\HITS_API_1.Application.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\bin\Debug\net8.0\HITS_API_1.Domain.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\bin\Debug\net8.0\HITS_API_1.Application.pdb
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\bin\Debug\net8.0\HITS_API_1.Domain.pdb
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\obj\Debug\net8.0\HITS_API_1.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\obj\Debug\net8.0\HITS_API_1.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\obj\Debug\net8.0\HITS_API_1.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\obj\Debug\net8.0\HITS_API_1.Infrastructure.AssemblyInfo.cs
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\obj\Debug\net8.0\HITS_API_1.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\obj\Debug\net8.0\HITS_API.81F3F6E7.Up2Date
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\obj\Debug\net8.0\HITS_API_1.Infrastructure.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\obj\Debug\net8.0\refint\HITS_API_1.Infrastructure.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\obj\Debug\net8.0\HITS_API_1.Infrastructure.pdb
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\obj\Debug\net8.0\ref\HITS_API_1.Infrastructure.dll
