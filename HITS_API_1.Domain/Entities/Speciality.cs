@@ -28,7 +28,7 @@ public class Speciality
     public Speciality(string name)
     {
         Id = Guid.NewGuid();
-        _createTime = DateTime.Now;
+        _createTime = DateTime.UtcNow;
         _name = name;
     }
 }

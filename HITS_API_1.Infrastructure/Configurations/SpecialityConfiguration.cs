@@ -12,9 +12,12 @@ public class SpecialityConfiguration : IEntityTypeConfiguration<Speciality>
 
         builder.HasMany<Doctor>()
             .WithOne()
-            .HasForeignKey(d => d.SpecialityId);
+            .HasForeignKey(d => d.Speciality);
         
-        builder.Property(s => s.CreateTime).IsRequired();
-        builder.Property(s => s.Name).IsRequired();
+        builder.Property(s => s.CreateTime)
+            .IsRequired();
+        
+        builder.Property(s => s.Name)
+            .IsRequired();
     }
 }

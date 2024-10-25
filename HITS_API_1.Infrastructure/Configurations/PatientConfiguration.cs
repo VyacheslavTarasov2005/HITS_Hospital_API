@@ -10,12 +10,15 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
     {
         builder.HasKey(d => d.Id);
         
-        builder.Property(d => d.CreateTime).IsRequired();
+        builder.Property(d => d.CreateTime)
+            .IsRequired();
         
-        builder.Property(d => d.Name).IsRequired();
+        builder.Property(d => d.Name)
+            .IsRequired();
         
-        builder.Property(d => d.BirthDate).IsRequired();
+        builder.Property(d => d.BirthDate);
         
-        builder.Property(d => d.Sex).IsRequired();
+        builder.Property(d => d.Sex)
+            .IsRequired();
     }
 }

@@ -46,7 +46,7 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Ошибка подключения к базе данных: {ex.Message}");
+        Console.WriteLine($"Ошибка подключения к БД: {ex.Message}");
     }
 }
 

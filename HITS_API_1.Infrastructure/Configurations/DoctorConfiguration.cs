@@ -12,18 +12,25 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         
         builder.HasOne<Speciality>()
             .WithMany()
-            .HasForeignKey(d => d.SpecialityId);
+            .HasForeignKey(d => d.Speciality);
         
-        builder.Property(d => d.CreateTime).IsRequired();
+        builder.Property(d => d.CreateTime)
+            .IsRequired();
         
-        builder.Property(d => d.Name).IsRequired();
+        builder.Property(d => d.Name)
+            .IsRequired();
         
-        builder.Property(d => d.BirthDate).IsRequired();
+        builder.Property(d => d.BirthDate);
         
-        builder.Property(d => d.Sex).IsRequired();
+        builder.Property(d => d.Sex)
+            .IsRequired();
         
-        builder.Property(d => d.PhoneNumber).IsRequired();
+        builder.Property(d => d.PhoneNumber);
         
-        builder.Property(d => d.Email).IsRequired();
+        builder.Property(d => d.Email)
+            .IsRequired();
+
+        builder.Property(d => d.Password)
+            .IsRequired();
     }
 }

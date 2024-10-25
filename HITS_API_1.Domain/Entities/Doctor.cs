@@ -5,9 +5,10 @@ namespace HITS_API_1.Domain.Entities;
 
 public class Doctor : Person
 {
-    private String _phoneNumber;
+    private String? _phoneNumber;
     private String _email;
-    private Guid _specialityId;
+    private String _password;
+    private Guid _speciality;
     
     public String PhoneNumber
     {
@@ -21,16 +22,23 @@ public class Doctor : Person
         set => _email = value;
     }
 
-    public Guid SpecialityId
+    public String Password
     {
-        get => _specialityId;
-        set => _specialityId = value;
+        get => _password;
+        set => _password = value;
     }
 
-    public Doctor(String name, DateTime birthDate, Gender gender, String phoneNumber, String email, Guid specialityId) : base(name, birthDate, gender)
+    public Guid Speciality
+    {
+        get => _speciality;
+        set => _speciality = value;
+    }
+
+    public Doctor(String name, DateTime? birthDate, Gender gender, String? phoneNumber, String email, String password, Guid speciality) : base(name, birthDate, gender)
     {
         _phoneNumber = phoneNumber;
         _email = email;
-        _specialityId = specialityId;
+        _password = password;
+        _speciality = speciality;
     }
 }
