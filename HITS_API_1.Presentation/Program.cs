@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
+using HITS_API_1.Application.Interfaces;
 using HITS_API_1.Application.Services;
 using HITS_API_1.Domain;
 using HITS_API_1.Domain.Repositories;
+using HITS_API_1.Infrastructure.Authentication;
 using HITS_API_1.Infrastructure.Data;
 using HITS_API_1.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -20,11 +22,11 @@ builder.Services.AddControllers()
     .AddJsonOptions(options =>
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
-// Подключение репозиториев и сервисов
 builder.Services.AddScoped<IDoctorsRepository, DoctorsRepository>();
 builder.Services.AddScoped<IDoctorsService, DoctorsService>();
 builder.Services.AddScoped<ITokensRepository, TokensRepository>();
 builder.Services.AddScoped<ITokensService, TokensService>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

@@ -24,7 +24,7 @@ public class DoctorsController : ControllerBase
         Doctor doctor = new Doctor(request.name, request.birthday, request.gender, request.phone, request.email,
             request.password, request.speciality);
 
-        String accesToken = await _doctorsService.CreateDoctor(doctor);
+        String accesToken = await _doctorsService.RegisterDoctor(doctor);
         
         AuthenticationResponse response = new AuthenticationResponse(accesToken);
         
