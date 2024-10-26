@@ -9,6 +9,7 @@ public class ApplicationDbContext : DbContext
     
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Doctor> Doctors { get; set; }
+    public DbSet<Token> Tokens { get; set; }
     public DbSet<Speciality> Specialities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)

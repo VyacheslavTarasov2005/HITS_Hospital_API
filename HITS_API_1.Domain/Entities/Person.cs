@@ -8,7 +8,7 @@ public abstract class Person
     private Guid _id;
     private DateTime _createTime;
     private string _name;
-    private DateTime? _birthDate;
+    private DateTime? _birthday;
     private Gender _gender;
     
     public Guid Id => _id;
@@ -28,16 +28,16 @@ public abstract class Person
         }
     }
     
-    public DateTime? BirthDate
+    public DateTime? Birthday
     {
-        get => _birthDate;
+        get => _birthday;
         set
         {
-            if (BirthDate > DateTime.UtcNow)
+            if (Birthday > DateTime.UtcNow)
             {
                 throw new ArgumentException("Дата рождения не может быть позже текущей даты");
             }
-            _birthDate = value;
+            _birthday = value;
         }
     }
     
@@ -47,12 +47,12 @@ public abstract class Person
         set => _gender = value;
     }
 
-    public Person(string name, DateTime? birthDate, Gender gender)
+    public Person(string name, DateTime? birthday, Gender gender)
     {
         _id = Guid.NewGuid();
         _createTime = DateTime.UtcNow;
         _name = name;
-        _birthDate = birthDate;
+        _birthday = birthday;
         _gender = gender;
     }
 }

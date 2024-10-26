@@ -1,0 +1,10 @@
+using HITS_API_1.Domain.Entities;
+
+namespace HITS_API_1.Domain.Repositories;
+
+public interface ITokensRepository
+{
+    Task<String> Create(Guid doctorId);
+    Task<Token?> Get(String token);
+    Task<String> Delete(String token);
+}

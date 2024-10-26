@@ -16,7 +16,7 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
         builder.Property(d => d.Name)
             .IsRequired();
         
-        builder.Property(d => d.BirthDate);
+        builder.Property(d => d.Birthday);
         
         builder.Property(d => d.Sex)
             .IsRequired();

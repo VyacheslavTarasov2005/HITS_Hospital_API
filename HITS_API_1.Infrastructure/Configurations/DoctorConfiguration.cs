@@ -13,6 +13,10 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.HasOne<Speciality>()
             .WithMany()
             .HasForeignKey(d => d.Speciality);
+
+        builder.HasMany<Token>()
+            .WithOne()
+            .HasForeignKey(t => t.Doctor);
         
         builder.Property(d => d.CreateTime)
             .IsRequired();
@@ -20,12 +24,12 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.Property(d => d.Name)
             .IsRequired();
         
-        builder.Property(d => d.BirthDate);
+        builder.Property(d => d.Birthday);
         
         builder.Property(d => d.Sex)
             .IsRequired();
         
-        builder.Property(d => d.PhoneNumber);
+        builder.Property(d => d.Phone);
         
         builder.Property(d => d.Email)
             .IsRequired();
