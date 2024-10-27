@@ -11,7 +11,7 @@ public class DoctorsService : IDoctorsService
     private readonly ITokensService _tokensService;
     private readonly IPasswordHasher _passwordHasher;
 
-    public DoctorsService(IDoctorsRepository doctorsRepository, ITokensService tokensService,
+    public DoctorsService(IDoctorsRepository doctorsRepository, Domain.ITokensService tokensService,
         IPasswordHasher passwordHasher)
     {
         _doctorsRepository = doctorsRepository;
@@ -27,9 +27,25 @@ public class DoctorsService : IDoctorsService
         return await _tokensService.CreateToken(doctorId);
     }
 
+    public async Task<String?> LoginDoctor(String email, String password)
+    {
+        var doctor = await _doctorsRepository.GetByEmail(email);
+        if (doctor == null)
+        {
+            return null;
+        }
+
+        if (_passwordHasher.VerifyPassword(password, doctor.Password))
+        {
+            return await _tokensService.CreateToken(doctor.Id);
+        }
+        
+        return null;
+    }
+
     public async Task<Doctor?> GetDoctor(Guid id)
     {
-        return await _doctorsRepository.Get(id);
+        return await _doctorsRepository.GetById(id);
     }
 
     public async Task<Guid> UpdateDoctor(Guid id, String email, String name, DateTime birthday, Gender gender,

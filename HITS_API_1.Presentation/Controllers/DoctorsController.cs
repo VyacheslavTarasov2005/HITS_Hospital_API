@@ -30,4 +30,18 @@ public class DoctorsController : ControllerBase
         
         return Ok(response);
     }
+
+    [HttpPost("login")]
+    [AllowAnonymous]
+    public async Task<ActionResult<String>> LoginDoctor([FromBody] LoginRequest request)
+    {
+        var accesToken = await _doctorsService.LoginDoctor(request.email, request.password);
+
+        if (accesToken == null)
+        {
+            return Unauthorized();
+        }
+        
+        return Ok(new AuthenticationResponse(accesToken));
+    }
 }

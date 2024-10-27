@@ -1,16 +1,16 @@
-using HITS_API_1.Application.Services;
+using HITS_API_1.Domain;
 using Microsoft.AspNetCore.Authorization;
 namespace HITS_API_1.Middlewares;
 
 public class TokenMiddleWare
 {
     private readonly RequestDelegate _next;
-    private readonly TokensService _iTokensService;
+    private readonly ITokensService _tokensService;
 
-    public TokenMiddleWare(RequestDelegate next, TokensService iTokensService)
+    public TokenMiddleWare(RequestDelegate next, ITokensService tokensService)
     {
         _next = next;
-        _iTokensService = iTokensService;
+        _tokensService = tokensService;
     }
 
     public async Task InvokeAsync(HttpContext httpContext)
@@ -30,10 +30,17 @@ public class TokenMiddleWare
             return;
         }
         
-        var dbToken = await _iTokensService.GetToken(token);
+        var dbToken = await _tokensService.GetToken(token);
 
-        if (dbToken == null || dbToken.ExpiryDate < DateTime.UtcNow)
+        if (dbToken == null)
         {
+            httpContext.Response.StatusCode = 401;
+            return;
+        }
+
+        if (dbToken.ExpiryDate < DateTime.UtcNow)
+        {
+            _tokensService.DeleteToken(token);
             httpContext.Response.StatusCode = 401;
             return;
         }

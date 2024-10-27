@@ -22,11 +22,20 @@ public class DoctorsRepository : IDoctorsRepository
         return doctor.Id;
     }
 
-    public async Task<Doctor?> Get(Guid id)
+    public async Task<Doctor?> GetById(Guid id)
     {
         var doctor = await _dbContext.Doctors
             .AsNoTracking()
             .FirstOrDefaultAsync(d => d.Id == id);
+        
+        return doctor;
+    }
+
+    public async Task<Doctor?> GetByEmail(String email)
+    {
+        var doctor = await _dbContext.Doctors
+            .AsNoTracking()
+            .FirstOrDefaultAsync(d => d.Email == email);
         
         return doctor;
     }
