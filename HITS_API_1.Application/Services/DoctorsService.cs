@@ -50,9 +50,16 @@ public class DoctorsService : IDoctorsService
         return await _doctorsRepository.GetById(id);
     }
 
-    public async Task<Guid> UpdateDoctor(Guid id, String email, String name, DateTime birthday, Gender gender,
-        String phoneNumber)
+    public async Task UpdateDoctor(Guid id, String email, String name, DateTime? birthday, Gender gender,
+        String? phoneNumber)
     {
-        return await _doctorsRepository.Update(id, email, name, birthday, gender, phoneNumber);
+        var doctor = await _doctorsRepository.GetById(id);
+
+        if (doctor == null)
+        {
+            return;
+        }
+
+        await _doctorsRepository.Update(id, email, name, birthday, gender, phoneNumber);
     }
 }

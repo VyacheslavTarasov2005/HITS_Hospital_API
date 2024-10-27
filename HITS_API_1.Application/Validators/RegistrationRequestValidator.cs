@@ -21,7 +21,7 @@ public class RegistrationRequestValidator : AbstractValidator<RegistrationReques
             .NotEmpty()
             .WithMessage("Необходимо ФИО")
             .Length(1, 1000)
-            .WithMessage("Допустимая длина ФИО от 1 до 1000");
+            .WithMessage("Допустимая длина ФИО - от 1 до 1000");
 
         RuleFor(r => r.password)
             .NotEmpty()

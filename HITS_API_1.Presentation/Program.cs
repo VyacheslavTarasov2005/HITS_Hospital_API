@@ -10,7 +10,6 @@ using HITS_API_1.Infrastructure.Authentication;
 using HITS_API_1.Infrastructure.Data;
 using HITS_API_1.Infrastructure.Repositories;
 using HITS_API_1.Middlewares;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +34,7 @@ builder.Services.AddScoped<ISpecialitiesRepository, SpecialitiesRepository>();
 builder.Services.AddScoped<IHasher, Hasher>();
 builder.Services.AddScoped<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
 builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
+builder.Services.AddScoped<IValidator<UpdateDoctorRequest>, UpdateDoctorRequestValidator>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

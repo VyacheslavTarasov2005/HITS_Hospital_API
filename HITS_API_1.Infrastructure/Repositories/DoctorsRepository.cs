@@ -38,16 +38,28 @@ public class DoctorsRepository : IDoctorsRepository
         return doctor;
     }
 
-    public async Task<Guid> Update(Guid id, String email, String name, DateTime birthday, Gender gender, String phoneNumber)
+    public async Task<List<Doctor>> GetAllByEmail(String email)
+    {
+        var doctors = await _dbContext.Doctors
+            .AsNoTracking()
+            .Where(d => d.Email == email)
+            .ToListAsync();
+        
+        return doctors;
+    }
+
+    public async Task<Guid> Update(Guid id, String email, String name, DateTime? birthday, Gender gender, String? phoneNumber)
     {
         await _dbContext.Doctors
             .Where(d => d.Id == id)
             .ExecuteUpdateAsync(s => s
                 .SetProperty(d => d.Email, d => email)
                 .SetProperty(d => d.Name, d => name)
-                .SetProperty(d => d.Birthday, d => birthday)
+                .SetProperty(d => d.Birthday, d => birthday ?? d.Birthday)
                 .SetProperty(d => d.Sex, d => gender)
-                .SetProperty(d => d.Phone, d => phoneNumber));
+                .SetProperty(d => d.Phone, d => phoneNumber ?? d.Phone));
+        
+        await _dbContext.SaveChangesAsync();
         
         return id;
     }

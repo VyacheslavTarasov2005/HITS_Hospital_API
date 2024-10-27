@@ -15,15 +15,18 @@ public class DoctorsController : ControllerBase
     private readonly IDoctorsService _doctorsService;
     private readonly IValidator<RegistrationRequest> _registrationRequestValidator;
     private readonly IValidator<LoginRequest> _loginRequestValidator;
+    private readonly IValidator<UpdateDoctorRequest> _updateDoctorRequestValidator;
 
     public DoctorsController(
         IDoctorsService doctorsService, 
         IValidator<RegistrationRequest> registrationRequestValidator,
-        IValidator<LoginRequest> loginRequestValidator)
+        IValidator<LoginRequest> loginRequestValidator,
+        IValidator<UpdateDoctorRequest> updateDoctorRequestValidator)
     {
         _doctorsService = doctorsService;
         _registrationRequestValidator = registrationRequestValidator;
         _loginRequestValidator = loginRequestValidator;
+        _updateDoctorRequestValidator = updateDoctorRequestValidator;
     }
 
     [HttpPost("register")]
@@ -88,5 +91,27 @@ public class DoctorsController : ControllerBase
             doctor.Sex, doctor.Email, doctor.Phone);
         
         return Ok(response);
+    }
+
+    [HttpPut("profile")]
+    [Authorize]
+    public async Task<ActionResult> UpdateDoctor([FromBody] UpdateDoctorRequest request)
+    {
+        var validationResult = await _updateDoctorRequestValidator.ValidateAsync(request);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+        
+        var doctorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (doctorId == null)
+        {
+            return NotFound();
+        }
+
+        await _doctorsService.UpdateDoctor(Guid.Parse(doctorId), request.email, request.name, request.birthday,
+            request.gender, request.phone);
+        
+        return Ok();
     }
 }

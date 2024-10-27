@@ -7,5 +7,6 @@ public interface IDoctorsRepository
     Task<Guid> Create(Doctor doctor);
     Task<Doctor?> GetById(Guid id);
     Task<Doctor?> GetByEmail(String email);
-    Task<Guid> Update(Guid id, String email, String name, DateTime birthday, Gender gender, String phoneNumber);
+    Task<List<Doctor>> GetAllByEmail(String email);
+    Task<Guid> Update(Guid id, String email, String name, DateTime? birthday, Gender gender, String? phoneNumber);
 }

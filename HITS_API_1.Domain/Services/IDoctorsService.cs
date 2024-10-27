@@ -8,6 +8,6 @@ public interface IDoctorsService
     Task<String?> LoginDoctor(String email, String password);
     Task<Doctor?> GetDoctor(Guid id);
 
-    Task<Guid> UpdateDoctor(Guid id, String email, String name, DateTime birthday, Gender gender,
-        String phoneNumber);
+    Task UpdateDoctor(Guid id, String email, String name, DateTime? birthday, Gender gender,
+        String? phoneNumber);
 }
