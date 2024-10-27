@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using HITS_API_1.Application.Interfaces;
 using HITS_API_1.Domain;
 using Microsoft.AspNetCore.Authorization;
 namespace HITS_API_1.Middlewares;
@@ -11,7 +12,7 @@ public class TokenMiddleware
         _next = next;
     }
 
-    public async Task InvokeAsync(HttpContext httpContext, ITokensService tokensService)
+    public async Task InvokeAsync(HttpContext httpContext, ITokensService tokensService, IHasher hasher)
     {
         var endpoint = httpContext.GetEndpoint();
         if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
@@ -21,11 +22,9 @@ public class TokenMiddleware
         }
         
         var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        Console.WriteLine($"Token: {token}");
         
         if (token == null)
         {
-            Console.WriteLine("Middleware: Invalid token");
             httpContext.Response.StatusCode = 401;
             return;
         }
@@ -34,14 +33,12 @@ public class TokenMiddleware
 
         if (dbToken == null)
         {
-            Console.WriteLine("Middleware: Invalid token Db");
             httpContext.Response.StatusCode = 401;
             return;
         }
 
         if (dbToken.ExpiryDate < DateTime.UtcNow)
         {
-            Console.WriteLine("Middleware: Invalid token Expiry");
             tokensService.DeleteToken(token);
             httpContext.Response.StatusCode = 401;
             return;

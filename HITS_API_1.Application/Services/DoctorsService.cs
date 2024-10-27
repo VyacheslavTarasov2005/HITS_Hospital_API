@@ -9,19 +9,19 @@ public class DoctorsService : IDoctorsService
 {
     private readonly IDoctorsRepository _doctorsRepository;
     private readonly ITokensService _tokensService;
-    private readonly IPasswordHasher _passwordHasher;
+    private readonly IHasher _hasher;
 
     public DoctorsService(IDoctorsRepository doctorsRepository, Domain.ITokensService tokensService,
-        IPasswordHasher passwordHasher)
+        IHasher hasher)
     {
         _doctorsRepository = doctorsRepository;
         _tokensService = tokensService;
-        _passwordHasher = passwordHasher;
+        _hasher = hasher;
     }
 
     public async Task<String> RegisterDoctor(Doctor doctor)
     {
-        doctor.Password = _passwordHasher.HashPassword(doctor.Password);
+        doctor.Password = _hasher.Hash(doctor.Password);
         var doctorId = await _doctorsRepository.Create(doctor);
         
         return await _tokensService.CreateToken(doctorId);
@@ -35,7 +35,7 @@ public class DoctorsService : IDoctorsService
             return null;
         }
 
-        if (_passwordHasher.VerifyPassword(password, doctor.Password))
+        if (_hasher.Verify(password, doctor.Password))
         {
             return await _tokensService.CreateToken(doctor.Id);
         }

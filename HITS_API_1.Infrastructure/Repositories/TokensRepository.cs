@@ -14,9 +14,9 @@ public class TokensRepository : ITokensRepository
         _dbContext = dbContext;
     }
 
-    public async Task<String> Create(Guid doctorId)
+    public async Task<String> Create(String token, Guid doctorId)
     {
-        var newToken = new Token(doctorId);
+        var newToken = new Token(token, doctorId);
         
         await _dbContext.AddAsync(newToken);
         await _dbContext.SaveChangesAsync();
@@ -26,11 +26,19 @@ public class TokensRepository : ITokensRepository
 
     public async Task<Token?> Get(string accessToken)
     {
-        var token = await _dbContext.Tokens
+        var tokens = await _dbContext.Tokens
             .AsNoTracking()
-            .FirstOrDefaultAsync(t => t.AccesToken == accessToken);
+            .ToListAsync();
 
-        return token;
+        foreach (var token in tokens)
+        {
+            if (BCrypt.Net.BCrypt.EnhancedVerify(accessToken, token.AccesToken))
+            {
+                return token;
+            }
+        }
+
+        return null;
     }
 
     public async Task<String> Delete(String token)

@@ -4,7 +4,7 @@ namespace HITS_API_1.Domain.Repositories;
 
 public interface ITokensRepository
 {
-    Task<String> Create(Guid doctorId);
+    Task<String> Create(String token, Guid doctorId);
     Task<Token?> Get(String token);
     Task<String> Delete(String token);
 }

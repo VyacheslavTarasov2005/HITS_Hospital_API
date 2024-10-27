@@ -12,9 +12,9 @@ public class Token
 
     public Guid Doctor => _doctor;
 
-    public Token(Guid doctor)
+    public Token(String accesToken, Guid doctor)
     {
-        _accesToken = Guid.NewGuid().ToString();
+        _accesToken = accesToken;
         _expiryDate = DateTime.UtcNow.AddHours(1);
         _doctor = doctor;
     }
