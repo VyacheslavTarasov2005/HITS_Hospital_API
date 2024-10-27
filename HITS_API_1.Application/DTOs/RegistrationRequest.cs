@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using HITS_API_1.Domain.Entities;
 
 namespace HITS_API_1.Application.DTOs;

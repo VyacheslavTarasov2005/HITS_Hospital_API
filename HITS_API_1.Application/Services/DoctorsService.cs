@@ -11,7 +11,9 @@ public class DoctorsService : IDoctorsService
     private readonly ITokensService _tokensService;
     private readonly IHasher _hasher;
 
-    public DoctorsService(IDoctorsRepository doctorsRepository, Domain.ITokensService tokensService,
+    public DoctorsService(
+        IDoctorsRepository doctorsRepository,
+        ITokensService tokensService, 
         IHasher hasher)
     {
         _doctorsRepository = doctorsRepository;

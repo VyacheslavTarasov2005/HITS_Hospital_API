@@ -36,9 +36,9 @@ public class Doctor : Person
 
     public Doctor(String name, DateTime? birthday, Gender sex, String? phone, String email, String password, Guid speciality) : base(name, birthday, sex)
     {
-        _phone = phone;
-        _email = email;
-        _password = password;
-        _speciality = speciality;
+        Phone = phone;
+        Email = email;
+        Password = password;
+        Speciality = speciality;
     }
 }

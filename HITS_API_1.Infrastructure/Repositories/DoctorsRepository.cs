@@ -24,9 +24,7 @@ public class DoctorsRepository : IDoctorsRepository
 
     public async Task<Doctor?> GetById(Guid id)
     {
-        var doctor = await _dbContext.Doctors
-            .AsNoTracking()
-            .FirstOrDefaultAsync(d => d.Id == id);
+        var doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == id);
         
         return doctor;
     }

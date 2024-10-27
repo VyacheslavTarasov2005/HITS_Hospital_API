@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using FluentValidation;
 using HITS_API_1.Application.DTOs;
 using HITS_API_1.Domain;
 using HITS_API_1.Domain.Entities;
@@ -12,16 +13,26 @@ namespace HITS_API_1.Controllers;
 public class DoctorsController : ControllerBase
 {
     private readonly IDoctorsService _doctorsService;
+    private readonly IValidator<RegistrationRequest> _registrationRequestValidator;
 
-    public DoctorsController(IDoctorsService doctorsService)
+    public DoctorsController(
+        IDoctorsService doctorsService, 
+        IValidator<RegistrationRequest> registrationRequestValidator)
     {
         _doctorsService = doctorsService;
+        _registrationRequestValidator = registrationRequestValidator;
     }
 
     [HttpPost("register")]
     [AllowAnonymous]
     public async Task<ActionResult<AuthenticationResponse>> RegisterDoctor([FromBody] RegistrationRequest request)
     {
+        var validationResult = await _registrationRequestValidator.ValidateAsync(request);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+        
         Doctor doctor = new Doctor(request.name, request.birthday, request.gender, request.phone, request.email,
             request.password, request.speciality);
 
@@ -43,7 +54,9 @@ public class DoctorsController : ControllerBase
             return BadRequest();
         }
         
-        return Ok(new AuthenticationResponse(accesToken));
+        AuthenticationResponse response = new AuthenticationResponse(accesToken);
+        
+        return Ok(response);
     }
 
     [HttpGet("profile")]
@@ -61,8 +74,10 @@ public class DoctorsController : ControllerBase
         {
             return NotFound();
         }
+
+        GetDoctorResponse response = new GetDoctorResponse(doctor.Id, doctor.CreateTime, doctor.Name, doctor.Birthday,
+            doctor.Sex, doctor.Email, doctor.Phone);
         
-        return Ok(new GetDoctorResponse(doctor.Id, doctor.CreateTime, doctor.Name, doctor.Birthday, doctor.Sex, 
-            doctor.Email, doctor.Phone));
+        return Ok(response);
     }
 }

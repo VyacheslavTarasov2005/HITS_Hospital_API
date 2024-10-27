@@ -1,6 +1,9 @@
 using System.Text.Json.Serialization;
+using FluentValidation;
+using HITS_API_1.Application.DTOs;
 using HITS_API_1.Application.Interfaces;
 using HITS_API_1.Application.Services;
+using HITS_API_1.Application.Validators;
 using HITS_API_1.Domain;
 using HITS_API_1.Domain.Repositories;
 using HITS_API_1.Infrastructure.Authentication;
@@ -28,7 +31,9 @@ builder.Services.AddScoped<IDoctorsRepository, DoctorsRepository>();
 builder.Services.AddScoped<IDoctorsService, DoctorsService>();
 builder.Services.AddScoped<ITokensRepository, TokensRepository>();
 builder.Services.AddScoped<ITokensService, TokensService>();
+builder.Services.AddScoped<ISpecialitiesRepository, SpecialitiesRepository>();
 builder.Services.AddScoped<IHasher, Hasher>();
+builder.Services.AddScoped<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

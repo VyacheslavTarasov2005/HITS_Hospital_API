@@ -10,4 +10,8 @@
       <ProjectReference Include="..\HITS_API_1.Domain\HITS_API_1.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    </ItemGroup>
+
 </Project>

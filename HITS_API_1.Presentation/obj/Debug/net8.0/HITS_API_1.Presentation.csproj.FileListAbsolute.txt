@@ -53,3 +53,6 @@ C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\obj\Debug\net8.0\
 C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\obj\Debug\net8.0\HITS_API_1.Presentation.genruntimeconfig.cache
 C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\obj\Debug\net8.0\ref\HITS_API_1.Presentation.dll
 C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\FluentValidation.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll

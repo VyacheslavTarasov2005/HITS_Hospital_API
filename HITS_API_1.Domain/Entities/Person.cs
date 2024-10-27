@@ -18,27 +18,13 @@ public abstract class Person
     public string Name
     {
         get => _name;
-        set
-        {
-            if (value.Split(' ').Length < 2)
-            {
-                throw new ArgumentException("ФИО должно состоять хотя бы из 3-х слов");
-            }
-            _name = value;
-        }
+        set => _name = value;
     }
     
     public DateTime? Birthday
     {
         get => _birthday;
-        set
-        {
-            if (Birthday > DateTime.UtcNow)
-            {
-                throw new ArgumentException("Дата рождения не может быть позже текущей даты");
-            }
-            _birthday = value;
-        }
+        set => _birthday = value;
     }
     
     public Gender Sex
@@ -51,8 +37,8 @@ public abstract class Person
     {
         _id = Guid.NewGuid();
         _createTime = DateTime.UtcNow;
-        _name = name;
-        _birthday = birthday;
-        _gender = gender;
+        Name = name;
+        Birthday = birthday;
+        Sex = gender;
     }
 }
