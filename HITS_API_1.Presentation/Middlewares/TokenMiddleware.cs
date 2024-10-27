@@ -1,19 +1,17 @@
+using System.Security.Claims;
 using HITS_API_1.Domain;
 using Microsoft.AspNetCore.Authorization;
 namespace HITS_API_1.Middlewares;
 
-public class TokenMiddleWare
+public class TokenMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly ITokensService _tokensService;
-
-    public TokenMiddleWare(RequestDelegate next, ITokensService tokensService)
+    public TokenMiddleware(RequestDelegate next)
     {
         _next = next;
-        _tokensService = tokensService;
     }
 
-    public async Task InvokeAsync(HttpContext httpContext)
+    public async Task InvokeAsync(HttpContext httpContext, ITokensService tokensService)
     {
         var endpoint = httpContext.GetEndpoint();
         if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
@@ -23,28 +21,39 @@ public class TokenMiddleWare
         }
         
         var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        Console.WriteLine($"Token: {token}");
         
         if (token == null)
         {
+            Console.WriteLine("Middleware: Invalid token");
             httpContext.Response.StatusCode = 401;
             return;
         }
         
-        var dbToken = await _tokensService.GetToken(token);
+        var dbToken = await tokensService.GetToken(token);
 
         if (dbToken == null)
         {
+            Console.WriteLine("Middleware: Invalid token Db");
             httpContext.Response.StatusCode = 401;
             return;
         }
 
         if (dbToken.ExpiryDate < DateTime.UtcNow)
         {
-            _tokensService.DeleteToken(token);
+            Console.WriteLine("Middleware: Invalid token Expiry");
+            tokensService.DeleteToken(token);
             httpContext.Response.StatusCode = 401;
             return;
         }
         
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, dbToken.Doctor.ToString())
+        };
+
+        var identity = new ClaimsIdentity(claims, "Token");
+        httpContext.User = new ClaimsPrincipal(identity);
         await _next(httpContext);
     }
 }

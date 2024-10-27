@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using HITS_API_1.Application.DTOs;
 using HITS_API_1.Domain;
 using HITS_API_1.Domain.Entities;
@@ -19,7 +20,7 @@ public class DoctorsController : ControllerBase
 
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<ActionResult<String>> RegisterDoctor([FromBody] RegistrationRequest request)
+    public async Task<ActionResult<AuthenticationResponse>> RegisterDoctor([FromBody] RegistrationRequest request)
     {
         Doctor doctor = new Doctor(request.name, request.birthday, request.gender, request.phone, request.email,
             request.password, request.speciality);
@@ -33,15 +34,35 @@ public class DoctorsController : ControllerBase
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<ActionResult<String>> LoginDoctor([FromBody] LoginRequest request)
+    public async Task<ActionResult<AuthenticationResponse>> LoginDoctor([FromBody] LoginRequest request)
     {
         var accesToken = await _doctorsService.LoginDoctor(request.email, request.password);
 
         if (accesToken == null)
         {
-            return Unauthorized();
+            return BadRequest();
         }
         
         return Ok(new AuthenticationResponse(accesToken));
+    }
+
+    [HttpGet("profile")]
+    [Authorize]
+    public async Task<ActionResult<GetDoctorResponse>> GetDoctor()
+    {
+        var doctorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (doctorId == null)
+        {
+            return NotFound();
+        }
+        
+        var doctor = await _doctorsService.GetDoctor(Guid.Parse(doctorId));
+        if (doctor == null)
+        {
+            return NotFound();
+        }
+        
+        return Ok(new GetDoctorResponse(doctor.Id, doctor.CreateTime, doctor.Name, doctor.Birthday, doctor.Sex, 
+            doctor.Email, doctor.Phone));
     }
 }

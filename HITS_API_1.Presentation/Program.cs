@@ -6,6 +6,8 @@ using HITS_API_1.Domain.Repositories;
 using HITS_API_1.Infrastructure.Authentication;
 using HITS_API_1.Infrastructure.Data;
 using HITS_API_1.Infrastructure.Repositories;
+using HITS_API_1.Middlewares;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +34,9 @@ builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAuthentication()
+    .AddBearerToken();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -43,6 +48,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseMiddleware<TokenMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
