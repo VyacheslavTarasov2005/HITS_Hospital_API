@@ -31,9 +31,8 @@ public class TokensService : ITokensService
         return await _tokensRepository.Get(token);
     }
 
-    public async Task<String> DeleteToken(String token)
+    public async Task DeleteToken(String token)
     {
-        String hashedToken = _hasher.Hash(token);
-        return await _tokensRepository.Delete(hashedToken);
+        await _tokensRepository.Delete(token);
     }
 }

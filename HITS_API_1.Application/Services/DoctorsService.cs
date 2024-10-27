@@ -45,6 +45,11 @@ public class DoctorsService : IDoctorsService
         return null;
     }
 
+    public async Task LogoutDoctor(String token)
+    {
+        await _tokensService.DeleteToken(token);
+    }
+
     public async Task<Doctor?> GetDoctor(Guid id)
     {
         return await _doctorsRepository.GetById(id);

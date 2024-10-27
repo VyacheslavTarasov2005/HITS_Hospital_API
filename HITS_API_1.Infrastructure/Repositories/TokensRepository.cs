@@ -24,7 +24,7 @@ public class TokensRepository : ITokensRepository
         return newToken.AccesToken;
     }
 
-    public async Task<Token?> Get(string accessToken)
+    public async Task<Token?> Get(String accessToken)
     {
         var tokens = await _dbContext.Tokens
             .AsNoTracking()
@@ -41,12 +41,20 @@ public class TokensRepository : ITokensRepository
         return null;
     }
 
-    public async Task<String> Delete(String token)
+    public async Task Delete(String accesToken)
     {
-        await _dbContext.Tokens
-            .Where(t => t.AccesToken == token)
-            .ExecuteDeleteAsync();
+        var tokens = await _dbContext.Tokens
+            .AsNoTracking()
+            .ToListAsync();
         
-        return token;
+        foreach (var token in tokens)
+        {
+            if (BCrypt.Net.BCrypt.EnhancedVerify(accesToken, token.AccesToken))
+            {
+                _dbContext.Tokens.Remove(token);
+            }
+        }
+        
+        await _dbContext.SaveChangesAsync();
     }
 }

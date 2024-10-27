@@ -6,5 +6,5 @@ public interface ITokensService
 {
     Task<String> CreateToken(Guid doctorId);
     Task<Token?> GetToken(String token);
-    Task<String> DeleteToken(String token);
+    Task DeleteToken(String token);
 }

@@ -71,6 +71,17 @@ public class DoctorsController : ControllerBase
         return Ok(response);
     }
 
+    [HttpPost("logout")]
+    [Authorize]
+    public async Task<ActionResult> LogoutDoctor()
+    {
+        var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        
+        await _doctorsService.LogoutDoctor(token);
+        
+        return Ok();
+    }
+
     [HttpGet("profile")]
     [Authorize]
     public async Task<ActionResult<GetDoctorResponse>> GetDoctor()
