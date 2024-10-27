@@ -34,6 +34,7 @@ builder.Services.AddScoped<ITokensService, TokensService>();
 builder.Services.AddScoped<ISpecialitiesRepository, SpecialitiesRepository>();
 builder.Services.AddScoped<IHasher, Hasher>();
 builder.Services.AddScoped<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
+builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

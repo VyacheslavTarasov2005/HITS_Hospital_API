@@ -14,13 +14,16 @@ public class DoctorsController : ControllerBase
 {
     private readonly IDoctorsService _doctorsService;
     private readonly IValidator<RegistrationRequest> _registrationRequestValidator;
+    private readonly IValidator<LoginRequest> _loginRequestValidator;
 
     public DoctorsController(
         IDoctorsService doctorsService, 
-        IValidator<RegistrationRequest> registrationRequestValidator)
+        IValidator<RegistrationRequest> registrationRequestValidator,
+        IValidator<LoginRequest> loginRequestValidator)
     {
         _doctorsService = doctorsService;
         _registrationRequestValidator = registrationRequestValidator;
+        _loginRequestValidator = loginRequestValidator;
     }
 
     [HttpPost("register")]
@@ -47,11 +50,17 @@ public class DoctorsController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<AuthenticationResponse>> LoginDoctor([FromBody] LoginRequest request)
     {
+        var validationResult = await _loginRequestValidator.ValidateAsync(request);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+        
         var accesToken = await _doctorsService.LoginDoctor(request.email, request.password);
 
         if (accesToken == null)
         {
-            return BadRequest();
+            return BadRequest("Пользователь с такими данными не найдем");
         }
         
         AuthenticationResponse response = new AuthenticationResponse(accesToken);
