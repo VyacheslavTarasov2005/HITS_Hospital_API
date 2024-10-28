@@ -121,9 +121,21 @@ public class DoctorsController : ControllerBase
             return NotFound();
         }
 
-        await _doctorsService.UpdateDoctor(Guid.Parse(doctorId), request.email, request.name, request.birthday,
-            request.gender, request.phone);
-        
-        return Ok();
+        try
+        {
+            await _doctorsService.UpdateDoctor(Guid.Parse(doctorId), request.email, request.name, request.birthday,
+                request.gender, request.phone);
+            
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            if (e.Message == "Пользователь не найден")
+            {
+                return NotFound();
+            }
+            
+            return BadRequest("email уже использован");
+        }
     }
 }

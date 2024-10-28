@@ -62,9 +62,17 @@ public class DoctorsService : IDoctorsService
 
         if (doctor == null)
         {
-            return;
+            throw new Exception("Пользователь не найден");
         }
 
-        await _doctorsRepository.Update(id, email, name, birthday, gender, phoneNumber);
+        var sameEmailDoctor = await _doctorsRepository.GetByEmail(email);
+
+        if (sameEmailDoctor == null || sameEmailDoctor.Id == id)
+        {
+            await _doctorsRepository.Update(id, email, name, birthday, gender, phoneNumber);
+            return;
+        }
+        
+        throw new Exception("email уже использован");
     }
 }
