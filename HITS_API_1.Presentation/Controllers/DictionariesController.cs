@@ -14,13 +14,18 @@ public class DictionariesController : ControllerBase
     private readonly ISpecialitiesService _specialitiesService;
     private readonly IIcd10Service _icd10Service;
     private readonly IValidator<GetSpecialitiesRequest> _getSpecialitiesRequestValidator;
+    private readonly IValidator<GetIcd10Request> _getIcd10RequestValidator;
 
-    public DictionariesController(ISpecialitiesService specialitiesService, IIcd10Service icd10Service,
-        IValidator<GetSpecialitiesRequest> getSpecialitiesRequestValidator)
+    public DictionariesController(
+        ISpecialitiesService specialitiesService, 
+        IIcd10Service icd10Service,
+        IValidator<GetSpecialitiesRequest> getSpecialitiesRequestValidator, 
+        IValidator<GetIcd10Request> getIcd10RequestValidator)
     {
         _specialitiesService = specialitiesService;
         _icd10Service = icd10Service;
         _getSpecialitiesRequestValidator = getSpecialitiesRequestValidator;
+        _getIcd10RequestValidator = getIcd10RequestValidator;
     }
 
     [HttpGet("speciality")]
@@ -51,6 +56,13 @@ public class DictionariesController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<GetIcd10Response>> GetIcd10([FromQuery] GetIcd10Request queryRequest)
     {
+        var validationResult = await _getIcd10RequestValidator.ValidateAsync(queryRequest);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+        
         var (icd10Entities, pagination) = await _icd10Service.GetIcd10(queryRequest.request, 
             queryRequest.page, queryRequest.size);
 
