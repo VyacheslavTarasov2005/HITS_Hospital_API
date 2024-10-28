@@ -1,3 +1,4 @@
+using FluentValidation;
 using HITS_API_1.Application.DTOs;
 using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Domain;
@@ -12,17 +13,27 @@ public class DictionariesController : ControllerBase
 {
     private readonly ISpecialitiesService _specialitiesService;
     private readonly IIcd10Service _icd10Service;
+    private readonly IValidator<GetSpecialitiesRequest> _getSpecialitiesRequestValidator;
 
-    public DictionariesController(ISpecialitiesService specialitiesService, IIcd10Service icd10Service)
+    public DictionariesController(ISpecialitiesService specialitiesService, IIcd10Service icd10Service,
+        IValidator<GetSpecialitiesRequest> getSpecialitiesRequestValidator)
     {
         _specialitiesService = specialitiesService;
         _icd10Service = icd10Service;
+        _getSpecialitiesRequestValidator = getSpecialitiesRequestValidator;
     }
 
     [HttpGet("speciality")]
     [AllowAnonymous]
     public async Task<ActionResult<GetSpecialitiesResponse>> GetSpecialities([FromQuery] GetSpecialitiesRequest request)
     {
+        var validationResult = await _getSpecialitiesRequestValidator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+        
         var (specialities, pagination) = await _specialitiesService.GetSpecialities(request.name, 
             request.page, request.size);
 

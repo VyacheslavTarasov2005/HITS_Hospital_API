@@ -44,6 +44,7 @@ builder.Services.AddScoped<IIcd10Service, Icd10Service>();
 builder.Services.AddScoped<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
 builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateDoctorRequest>, UpdateDoctorRequestValidator>();
+builder.Services.AddScoped<IValidator<GetSpecialitiesRequest>, GetSpecialitiesRequestValidator>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
