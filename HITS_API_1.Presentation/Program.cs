@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using FluentValidation;
 using HITS_API_1.Application.DTOs;
 using HITS_API_1.Application.Interfaces;
+using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Application.Services;
 using HITS_API_1.Application.Validators;
 using HITS_API_1.Domain;

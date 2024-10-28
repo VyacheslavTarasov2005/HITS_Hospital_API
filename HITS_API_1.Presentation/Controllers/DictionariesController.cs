@@ -1,4 +1,5 @@
 using HITS_API_1.Application.DTOs;
+using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,9 @@ public class DictionariesController : ControllerBase
 
     [HttpGet("speciality")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetSpecialities([FromQuery] GetSpecialitiesRequest request)
+    public async Task<ActionResult<GetSpecialitiesResponse>> GetSpecialities([FromQuery] GetSpecialitiesRequest request)
     {
-        var specialities = await _specialitiesService.GetSpecialities(request.name, request.page, 
+        var (specialities, pagination) = await _specialitiesService.GetSpecialities(request.name, request.page, 
             request.size);
 
         if (specialities == null)
@@ -28,6 +29,8 @@ public class DictionariesController : ControllerBase
             return BadRequest("Недопустимое значение page");
         }
         
-        return Ok(specialities);
+        GetSpecialitiesResponse response = new GetSpecialitiesResponse(specialities, pagination);
+        
+        return Ok(response);
     }
 }

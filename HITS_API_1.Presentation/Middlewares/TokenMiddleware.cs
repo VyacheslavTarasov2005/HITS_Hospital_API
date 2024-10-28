@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using HITS_API_1.Application.Interfaces;
+using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Domain;
 using Microsoft.AspNetCore.Authorization;
 namespace HITS_API_1.Middlewares;

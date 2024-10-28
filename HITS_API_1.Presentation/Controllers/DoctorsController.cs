@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using FluentValidation;
 using HITS_API_1.Application.DTOs;
+using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Domain;
 using HITS_API_1.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;

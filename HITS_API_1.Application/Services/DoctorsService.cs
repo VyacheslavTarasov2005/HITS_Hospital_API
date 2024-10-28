@@ -1,5 +1,5 @@
 using HITS_API_1.Application.Interfaces;
-using HITS_API_1.Domain;
+using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Domain.Entities;
 using HITS_API_1.Domain.Repositories;
 

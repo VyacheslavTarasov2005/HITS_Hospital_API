@@ -1,4 +1,5 @@
-using HITS_API_1.Domain;
+using HITS_API_1.Application.Entities;
+using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Domain.Entities;
 using HITS_API_1.Domain.Repositories;
 
@@ -13,18 +14,20 @@ public class SpecialitiesService : ISpecialitiesService
         _specialitiesRepository = specialitiesRepository;
     }
 
-    public async Task<List<Speciality>?> GetSpecialities(String? name, int page, int size)
+    public async Task<(List<Speciality>?, Pagination)> GetSpecialities(String? name, int page, int size)
     {
         var specialities = await _specialitiesRepository.GetAllByName(name ?? "");
+        
+        Pagination pagination = new Pagination(size, specialities.Count, page);
 
         if (specialities.Count == 0)
         {
-            return specialities;
+            return (specialities, pagination);
         }
 
         if (size * (page - 1) + 1 > specialities.Count)
         {
-            return null;
+            return (null, pagination);
         }
         
         List<Speciality> specialitiesPaginated = new List<Speciality>();
@@ -34,6 +37,6 @@ public class SpecialitiesService : ISpecialitiesService
             specialitiesPaginated.Add(specialities[i]);
         }
         
-        return specialitiesPaginated;
+        return (specialitiesPaginated, pagination);
     }
 }
