@@ -27,13 +27,20 @@ builder.Services.AddControllers()
     .AddJsonOptions(options =>
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
+// Репозитории
 builder.Services.AddScoped<IDoctorsRepository, DoctorsRepository>();
-builder.Services.AddScoped<IDoctorsService, DoctorsService>();
 builder.Services.AddScoped<ITokensRepository, TokensRepository>();
-builder.Services.AddScoped<ITokensService, TokensService>();
 builder.Services.AddScoped<ISpecialitiesRepository, SpecialitiesRepository>();
-builder.Services.AddScoped<ISpecialitiesService, SpecialitiesService>();
 builder.Services.AddScoped<IHasher, Hasher>();
+builder.Services.AddScoped<IIcd10Repository, Icd10Repository>();
+
+// Сервисы
+builder.Services.AddScoped<IDoctorsService, DoctorsService>();
+builder.Services.AddScoped<ITokensService, TokensService>();
+builder.Services.AddScoped<ISpecialitiesService, SpecialitiesService>();
+builder.Services.AddScoped<IIcd10Service, Icd10Service>();
+
+// Валидаторы
 builder.Services.AddScoped<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
 builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateDoctorRequest>, UpdateDoctorRequestValidator>();
@@ -65,10 +72,11 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var icd10Repository = scope.ServiceProvider.GetRequiredService<IIcd10Repository>();
 
     try
     {
-        DbInitializer.Initialize(dbContext);
+        await DbInitializer.Initialize(dbContext, icd10Repository);
 
         // Проверка, получилось ли подклюиться к БД
         if (dbContext.Database.CanConnect())

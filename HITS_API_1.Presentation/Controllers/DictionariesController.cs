@@ -11,10 +11,12 @@ namespace HITS_API_1.Controllers;
 public class DictionariesController : ControllerBase
 {
     private readonly ISpecialitiesService _specialitiesService;
+    private readonly IIcd10Service _icd10Service;
 
-    public DictionariesController(ISpecialitiesService specialitiesService)
+    public DictionariesController(ISpecialitiesService specialitiesService, IIcd10Service icd10Service)
     {
         _specialitiesService = specialitiesService;
+        _icd10Service = icd10Service;
     }
 
     [HttpGet("speciality")]
@@ -30,6 +32,22 @@ public class DictionariesController : ControllerBase
         }
         
         GetSpecialitiesResponse response = new GetSpecialitiesResponse(specialities, pagination);
+        
+        return Ok(response);
+    }
+
+    [HttpGet("icd10/roots")]
+    [AllowAnonymous]
+    public async Task<ActionResult<Icd10Response>> GetIcd10Roots()
+    {
+        var icd10RootsList = await _icd10Service.GetRootsIcd10();
+        
+        var response = icd10RootsList.Select(root => new Icd10Response(
+            root.Code,
+            root.Name,
+            root.Id,
+            root.CreateTime)
+        ).ToList();
         
         return Ok(response);
     }

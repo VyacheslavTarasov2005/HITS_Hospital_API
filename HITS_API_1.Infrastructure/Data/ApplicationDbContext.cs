@@ -11,6 +11,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Doctor> Doctors { get; set; }
     public DbSet<Token> Tokens { get; set; }
     public DbSet<Speciality> Specialities { get; set; }
+    public DbSet<Icd10Entity> Icd10Entities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
