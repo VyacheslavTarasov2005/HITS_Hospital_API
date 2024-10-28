@@ -31,6 +31,7 @@ builder.Services.AddScoped<IDoctorsService, DoctorsService>();
 builder.Services.AddScoped<ITokensRepository, TokensRepository>();
 builder.Services.AddScoped<ITokensService, TokensService>();
 builder.Services.AddScoped<ISpecialitiesRepository, SpecialitiesRepository>();
+builder.Services.AddScoped<ISpecialitiesService, SpecialitiesService>();
 builder.Services.AddScoped<IHasher, Hasher>();
 builder.Services.AddScoped<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
 builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();

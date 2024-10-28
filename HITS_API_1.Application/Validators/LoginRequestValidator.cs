@@ -6,12 +6,8 @@ namespace HITS_API_1.Application.Validators;
 
 public class LoginRequestValidator : AbstractValidator<LoginRequest>
 {
-    private readonly IDoctorsRepository _doctorsRepository;
-
-    public LoginRequestValidator(IDoctorsRepository doctorsRepository)
+    public LoginRequestValidator()
     {
-        _doctorsRepository = doctorsRepository;
-
         RuleFor(r => r.email)
             .NotEmpty()
             .WithMessage("Необходим email")
