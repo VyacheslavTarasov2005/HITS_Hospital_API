@@ -48,6 +48,26 @@ public class Icd10Repository : IIcd10Repository
         
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<List<Icd10Entity>> GetAllByName(String name)
+    {
+        var icd10Entities = await _dbContext.Icd10Entities
+            .AsNoTracking()
+            .Where(i => i.Name.ToLower().Contains(name))
+            .ToListAsync();
+        
+        return icd10Entities;
+    }
+    
+    public async Task<List<Icd10Entity>> GetAllByCode(String code)
+    {
+        var icd10Entities = await _dbContext.Icd10Entities
+            .AsNoTracking()
+            .Where(i => i.Code.ToLower().Contains(code))
+            .ToListAsync();
+        
+        return icd10Entities;
+    }
     
     public async Task<List<Icd10Entity>> GetRoots()
     {

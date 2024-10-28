@@ -23,8 +23,8 @@ public class DictionariesController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<GetSpecialitiesResponse>> GetSpecialities([FromQuery] GetSpecialitiesRequest request)
     {
-        var (specialities, pagination) = await _specialitiesService.GetSpecialities(request.name, request.page, 
-            request.size);
+        var (specialities, pagination) = await _specialitiesService.GetSpecialities(request.name, 
+            request.page, request.size);
 
         if (specialities == null)
         {
@@ -35,6 +35,30 @@ public class DictionariesController : ControllerBase
         
         return Ok(response);
     }
+
+    [HttpGet("icd10")]
+    [AllowAnonymous]
+    public async Task<ActionResult<GetIcd10Response>> GetIcd10([FromQuery] GetIcd10Request queryRequest)
+    {
+        var (icd10Entities, pagination) = await _icd10Service.GetIcd10(queryRequest.request, 
+            queryRequest.page, queryRequest.size);
+
+        if (icd10Entities == null)
+        {
+            return BadRequest("Недопустимое значение page");
+        }
+        
+        var responseList = icd10Entities.Select(root => new Icd10Response(
+            root.Code,
+            root.Name,
+            root.Id,
+            root.CreateTime)
+        ).ToList();
+        
+        GetIcd10Response response = new GetIcd10Response(responseList, pagination);
+        return Ok(response);
+    }
+    
 
     [HttpGet("icd10/roots")]
     [AllowAnonymous]
