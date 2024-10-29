@@ -18,4 +18,11 @@ public class PatientsService : IPatientsService
         Patient patient = new Patient(name, birthday, gender);
         return await _patientsRepository.Create(patient);
     }
+
+    public async Task<Patient?> GetPatientById(Guid id)
+    {
+        var patient = await _patientsRepository.GetById(id);
+        
+        return patient;
+    }
 }

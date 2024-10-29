@@ -1,6 +1,7 @@
 using HITS_API_1.Domain.Entities;
 using HITS_API_1.Domain.Repositories;
 using HITS_API_1.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace HITS_API_1.Infrastructure.Repositories;
 
@@ -19,5 +20,12 @@ public class PatientsRepository : IPatientsRepository
         await _dbContext.SaveChangesAsync();
         
         return patient.Id;
+    }
+
+    public async Task<Patient?> GetById(Guid patientId)
+    {
+        var patient = await _dbContext.Patients.FirstOrDefaultAsync(p => p.Id == patientId);
+        
+        return patient;
     }
 }

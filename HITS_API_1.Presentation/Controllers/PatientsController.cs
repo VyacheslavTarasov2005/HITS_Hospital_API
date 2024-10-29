@@ -34,4 +34,21 @@ public class PatientsController : ControllerBase
         
         return Ok(patientId.ToString());
     }
+
+    [HttpGet("{id}")]
+    [Authorize]
+    public async Task<ActionResult> GetPatientById([FromRoute] Guid id)
+    {
+        var patient = await _patientsService.GetPatientById(id);
+
+        if (patient == null)
+        {
+            return NotFound();
+        }
+        
+        GetPatientByIdResponse response = new GetPatientByIdResponse(patient.Id, patient.CreateTime,
+            patient.Name, patient.Birthday, patient.Sex);
+        
+        return Ok(response);
+    }
 }
