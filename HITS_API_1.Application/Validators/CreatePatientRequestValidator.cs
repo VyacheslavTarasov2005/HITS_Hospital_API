@@ -19,7 +19,7 @@ public class CreatePatientRequestValidator : AbstractValidator<CreatePatientRequ
             .WithMessage("Дата рождения не может быть позже теккущей даты");
         
         RuleFor(r => r.gender)
-            .NotEmpty()
+            .NotNull()
             .WithMessage("Необходим пол")
             .IsInEnum()
             .WithMessage("Пол может принимать только значения Male и Female");
