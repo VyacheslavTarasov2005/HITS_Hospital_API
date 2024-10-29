@@ -6,6 +6,7 @@ using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Application.Services;
 using HITS_API_1.Application.Validators;
 using HITS_API_1.Domain;
+using HITS_API_1.Domain.Entities;
 using HITS_API_1.Domain.Repositories;
 using HITS_API_1.Infrastructure.Authentication;
 using HITS_API_1.Infrastructure.Data;
@@ -33,12 +34,14 @@ builder.Services.AddScoped<ITokensRepository, TokensRepository>();
 builder.Services.AddScoped<ISpecialitiesRepository, SpecialitiesRepository>();
 builder.Services.AddScoped<IHasher, Hasher>();
 builder.Services.AddScoped<IIcd10Repository, Icd10Repository>();
+builder.Services.AddScoped<IPatientsRepository, PatientsRepository>();
 
 // Сервисы
 builder.Services.AddScoped<IDoctorsService, DoctorsService>();
 builder.Services.AddScoped<ITokensService, TokensService>();
 builder.Services.AddScoped<ISpecialitiesService, SpecialitiesService>();
 builder.Services.AddScoped<IIcd10Service, Icd10Service>();
+builder.Services.AddScoped<IPatientsService, PatientsService>();
 
 // Валидаторы
 builder.Services.AddScoped<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
@@ -46,6 +49,7 @@ builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateDoctorRequest>, UpdateDoctorRequestValidator>();
 builder.Services.AddScoped<IValidator<GetSpecialitiesRequest>, GetSpecialitiesRequestValidator>();
 builder.Services.AddScoped<IValidator<GetIcd10Request>, GetIcd10RequestValidator>();
+builder.Services.AddScoped<IValidator<CreatePatientRequest>, CreatePatientRequestValidator>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
