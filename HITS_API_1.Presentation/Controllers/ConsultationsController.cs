@@ -21,6 +21,8 @@ public class ConsultationsController : ControllerBase
     private readonly AddCommentRequestValidator _addCommentRequestValidator;
     private readonly IConsultationsRepository _consultationsRepository;
     private readonly ICommentsService _commentsService;
+    private readonly RedactCommentRequestValidator _redactCommentRequestValidator;
+    private readonly ICommentsRepository _commentsRepository;
 
     public ConsultationsController(
         IConsultationsService consultationsService, 
@@ -28,7 +30,9 @@ public class ConsultationsController : ControllerBase
         IDoctorsRepository doctorsRepository,
         AddCommentRequestValidator addCommentRequestValidator,
         IConsultationsRepository consultationsRepository,
-        ICommentsService commentsService)
+        ICommentsService commentsService,
+        RedactCommentRequestValidator redactCommentRequestValidator,
+        ICommentsRepository commentsRepository)
     {
         _consultationsService = consultationsService;
         _specialitiesRepository = specialitiesRepository;
@@ -36,6 +40,8 @@ public class ConsultationsController : ControllerBase
         _addCommentRequestValidator = addCommentRequestValidator;
         _consultationsRepository = consultationsRepository;
         _commentsService = commentsService;
+        _redactCommentRequestValidator = redactCommentRequestValidator;
+        _commentsRepository = commentsRepository;
     }
 
     [HttpGet("{id}")]
@@ -111,7 +117,7 @@ public class ConsultationsController : ControllerBase
 
         if (consultation.SpecialityId != doctor.Speciality)
         {
-            return StatusCode(403, "Доктор не может добавлять комментарии к этой консультации");
+            return StatusCode(403, "Пользователь не может добавлять комментарии к этой консультации");
         }
         
         try
@@ -130,5 +136,45 @@ public class ConsultationsController : ControllerBase
             
             return BadRequest(e.Message);
         }
+    }
+
+    [HttpPut("comment/{id}")]
+    [Authorize]
+    public async Task<ActionResult> RedactComment([FromRoute] Guid id, [FromBody] RedactCommentRequest request)
+    {
+        var validationResult = _redactCommentRequestValidator.Validate(request);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+        
+        var comment = await _commentsRepository.GetById(id);
+
+        if (comment == null)
+        {
+            return NotFound("Комментарий не найден");
+        }
+
+        if (comment.Content == request.content)
+        {
+            return BadRequest("Нельзя изменять содержимое комментария на такое же");
+        }
+        
+        var doctorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (doctorId == null)
+        {
+            return Unauthorized();
+        }
+
+        if (comment.AuthorId != Guid.Parse(doctorId))
+        {
+            return StatusCode(403, "Пользователь может изменять только свои комментарии"); 
+        }
+        
+        await _commentsService.RedactComment(id, request.content);
+
+        return Ok();
     }
 }

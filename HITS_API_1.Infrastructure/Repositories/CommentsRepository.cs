@@ -37,4 +37,15 @@ public class CommentsRepository : ICommentsRepository
 
         return comment;
     }
+
+    public async Task Update(Guid id, String content)
+    {
+        await _dbContext.Comments
+            .Where(c => c.Id == id)
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(c => c.Content, c => content)
+                .SetProperty(c => c.ModifiedDate, c => DateTime.UtcNow));
+        
+        await _dbContext.SaveChangesAsync();
+    }
 }

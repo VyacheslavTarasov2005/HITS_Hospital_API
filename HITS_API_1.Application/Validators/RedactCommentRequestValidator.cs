@@ -1,12 +1,11 @@
 using FluentValidation;
 using HITS_API_1.Application.DTOs;
-using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Validators;
 
-public class AddCommentRequestValidator : AbstractValidator<AddCommentRequest>
+public class RedactCommentRequestValidator : AbstractValidator<RedactCommentRequest>
 {
-    public AddCommentRequestValidator()
+    public RedactCommentRequestValidator()
     {
         RuleFor(r => r.content)
             .NotEmpty()

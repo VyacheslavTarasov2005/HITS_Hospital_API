@@ -36,4 +36,9 @@ public class CommentsService : ICommentsService
         
         return comment.Id;
     }
+
+    public async Task RedactComment(Guid commentId, String content)
+    {
+        await _commentsRepository.Update(commentId, content);
+    }
 }
