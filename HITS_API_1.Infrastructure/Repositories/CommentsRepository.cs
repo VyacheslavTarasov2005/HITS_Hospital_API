@@ -1,6 +1,7 @@
 using HITS_API_1.Domain.Entities;
 using HITS_API_1.Domain.Repositories;
 using HITS_API_1.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace HITS_API_1.Infrastructure.Repositories;
 
@@ -19,5 +20,14 @@ public class CommentsRepository : ICommentsRepository
         await _dbContext.SaveChangesAsync();
         
         return comment;
+    }
+
+    public async Task<List<Comment>> GetByConsultationId(Guid id)
+    {
+        var comments = await _dbContext.Comments
+            .Where(c => c.ConsultationId == id)
+            .ToListAsync();
+        
+        return comments;
     }
 }

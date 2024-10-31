@@ -29,4 +29,18 @@ public class ConsultationsService : IConsultationsService
         
         return consultation.Id;
     }
+
+    public async Task<(Consultation?, List<Comment>)> GetConsultationById(Guid consultationId)
+    {
+        var consultation = await _consultationsRepository.GetById(consultationId);
+
+        if (consultation == null)
+        {
+            return (null, []);
+        }
+        
+        var comments = await _commentsRepository.GetByConsultationId(consultationId);
+
+        return (consultation, comments);
+    }
 }

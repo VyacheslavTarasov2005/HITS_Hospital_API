@@ -1,6 +1,7 @@
 using HITS_API_1.Domain.Entities;
 using HITS_API_1.Domain.Repositories;
 using HITS_API_1.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace HITS_API_1.Infrastructure.Repositories;
 
@@ -19,5 +20,14 @@ public class ConsultationsRepository : IConsultationsRepository
         await _dbContext.SaveChangesAsync();
 
         return consultation.Id;
+    }
+
+    public async Task<Consultation?> GetById(Guid id)
+    {
+        var consultation = await _dbContext.Consultations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
+        
+        return consultation;
     }
 }
