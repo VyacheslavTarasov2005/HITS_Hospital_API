@@ -4,6 +4,7 @@ namespace HITS_API_1.Domain.Repositories;
 
 public interface ICommentsRepository
 {
-    Task<Comment> Create(Comment comment);
+    Task Create(Comment comment);
     Task<List<Comment>> GetByConsultationId(Guid id);
+    Task<Comment?> GetById(Guid id);
 }

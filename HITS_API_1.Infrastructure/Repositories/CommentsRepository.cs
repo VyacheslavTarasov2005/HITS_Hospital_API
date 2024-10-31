@@ -14,12 +14,10 @@ public class CommentsRepository : ICommentsRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Comment> Create(Comment comment)
+    public async Task Create(Comment comment)
     {
         await _dbContext.Comments.AddAsync(comment);
         await _dbContext.SaveChangesAsync();
-        
-        return comment;
     }
 
     public async Task<List<Comment>> GetByConsultationId(Guid id)
@@ -29,5 +27,14 @@ public class CommentsRepository : ICommentsRepository
             .ToListAsync();
         
         return comments;
+    }
+
+    public async Task<Comment?> GetById(Guid id)
+    {
+        var comment = await _dbContext.Comments
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        return comment;
     }
 }

@@ -48,6 +48,7 @@ builder.Services.AddScoped<IIcd10Service, Icd10Service>();
 builder.Services.AddScoped<IPatientsService, PatientsService>();
 builder.Services.AddScoped<IInspectionsService, InspectionsService>();
 builder.Services.AddScoped<IConsultationsService, ConsultationsService>();
+builder.Services.AddScoped<ICommentsService, CommentsService>();
 
 // Валидаторы
 builder.Services.AddValidatorsFromAssemblyContaining<RegistrationRequestValidator>();
