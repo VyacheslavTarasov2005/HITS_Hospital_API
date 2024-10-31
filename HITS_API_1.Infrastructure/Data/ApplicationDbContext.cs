@@ -12,7 +12,11 @@ public class ApplicationDbContext : DbContext
     public DbSet<Token> Tokens { get; set; }
     public DbSet<Speciality> Specialities { get; set; }
     public DbSet<Icd10Entity> Icd10Entities { get; set; }
-
+    public DbSet<Inspection> Inspections { get; set; }
+    public DbSet<Diagnosis> Diagnoses { get; set; }
+    public DbSet<Consultation> Consultations { get; set; }
+    public DbSet<Comment> Comments { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);

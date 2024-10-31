@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using FluentValidation;
 using HITS_API_1.Application.DTOs;
 using HITS_API_1.Application.Interfaces.Services;
+using HITS_API_1.Application.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +14,19 @@ public class PatientsController : ControllerBase
 {
     private readonly IPatientsService _patientsService;
     private readonly IValidator<CreatePatientRequest> _patientValidator;
+    private readonly IInspectionsService _inspectionsService;
+    private readonly CreateInspectionRequestValidator _createInspectionRequestValidator;
 
-    public PatientsController(IPatientsService patientsService, IValidator<CreatePatientRequest> patientValidator)
+    public PatientsController(
+        IPatientsService patientsService, 
+        IValidator<CreatePatientRequest> patientValidator,
+        IInspectionsService inspectionsService,
+        CreateInspectionRequestValidator createInspectionRequestValidator)
     {
         _patientsService = patientsService;
         _patientValidator = patientValidator;
+        _inspectionsService = inspectionsService;
+        _createInspectionRequestValidator = createInspectionRequestValidator;
     }
 
     [HttpPost]
@@ -50,5 +60,34 @@ public class PatientsController : ControllerBase
             patient.Name, patient.Birthday, patient.Sex);
         
         return Ok(response);
+    }
+
+    [HttpPost("{id}/inspections")]
+    [Authorize]
+    public async Task<ActionResult> GetPatientInspections([FromRoute] Guid id,
+        [FromBody] CreateInspectionRequest request)
+    {
+        var validationResult = await _createInspectionRequestValidator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+        
+        var doctorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (doctorId == null)
+        {
+            return Unauthorized();
+        }
+        
+        var inspectionId = await _inspectionsService.CreateInspection(request, id, Guid.Parse(doctorId));
+
+        if (inspectionId == null)
+        {
+            return BadRequest("Пользователя с таким ID не существует");
+        }
+        
+        return Ok(inspectionId.ToString());
     }
 }

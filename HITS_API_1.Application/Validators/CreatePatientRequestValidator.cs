@@ -27,6 +27,6 @@ public class CreatePatientRequestValidator : AbstractValidator<CreatePatientRequ
     
     private bool ValidateBirthday(DateTime? birthday)
     {
-        return birthday.Value < DateTime.UtcNow;
+        return birthday.Value <= DateTime.UtcNow;
     }
 }

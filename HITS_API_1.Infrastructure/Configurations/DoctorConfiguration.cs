@@ -17,6 +17,14 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.HasMany<Token>()
             .WithOne()
             .HasForeignKey(t => t.Doctor);
+
+        builder.HasMany<Inspection>()
+            .WithOne()
+            .HasForeignKey(i => i.DoctorId);
+
+        builder.HasMany<Comment>()
+            .WithOne()
+            .HasForeignKey(c => c.AuthorId);
         
         builder.Property(d => d.CreateTime)
             .IsRequired();

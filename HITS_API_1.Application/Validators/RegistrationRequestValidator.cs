@@ -74,7 +74,7 @@ public class RegistrationRequestValidator : AbstractValidator<RegistrationReques
 
     private bool ValidateBirthday(DateTime? birthday)
     {
-        return birthday.Value < DateTime.UtcNow;
+        return birthday.Value <= DateTime.UtcNow;
     }
 
     private async Task<bool> ValidateSpeciality(Guid specialityId)

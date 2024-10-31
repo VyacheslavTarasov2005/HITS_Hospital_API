@@ -9,6 +9,10 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
     public void Configure(EntityTypeBuilder<Patient> builder)
     {
         builder.HasKey(d => d.Id);
+
+        builder.HasMany<Inspection>()
+            .WithOne()
+            .HasForeignKey(i => i.PatientId);
         
         builder.Property(d => d.CreateTime)
             .IsRequired();

@@ -35,6 +35,10 @@ builder.Services.AddScoped<ISpecialitiesRepository, SpecialitiesRepository>();
 builder.Services.AddScoped<IHasher, Hasher>();
 builder.Services.AddScoped<IIcd10Repository, Icd10Repository>();
 builder.Services.AddScoped<IPatientsRepository, PatientsRepository>();
+builder.Services.AddScoped<IInspectionsRepository, InspectionsRepository>();
+builder.Services.AddScoped<IDiagnosesRepository, DiagnosesRepository>();
+builder.Services.AddScoped<IConsultationsRepository, ConsultationsRepository>();
+builder.Services.AddScoped<ICommentsRepository, CommentsRepository>();
 
 // Сервисы
 builder.Services.AddScoped<IDoctorsService, DoctorsService>();
@@ -42,14 +46,11 @@ builder.Services.AddScoped<ITokensService, TokensService>();
 builder.Services.AddScoped<ISpecialitiesService, SpecialitiesService>();
 builder.Services.AddScoped<IIcd10Service, Icd10Service>();
 builder.Services.AddScoped<IPatientsService, PatientsService>();
+builder.Services.AddScoped<IInspectionsService, InspectionsService>();
+builder.Services.AddScoped<IConsultationsService, ConsultationsService>();
 
 // Валидаторы
-builder.Services.AddScoped<IValidator<RegistrationRequest>, RegistrationRequestValidator>();
-builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
-builder.Services.AddScoped<IValidator<UpdateDoctorRequest>, UpdateDoctorRequestValidator>();
-builder.Services.AddScoped<IValidator<GetSpecialitiesRequest>, GetSpecialitiesRequestValidator>();
-builder.Services.AddScoped<IValidator<GetIcd10Request>, GetIcd10RequestValidator>();
-builder.Services.AddScoped<IValidator<CreatePatientRequest>, CreatePatientRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RegistrationRequestValidator>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

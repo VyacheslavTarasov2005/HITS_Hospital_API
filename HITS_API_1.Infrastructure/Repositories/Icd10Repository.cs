@@ -78,4 +78,13 @@ public class Icd10Repository : IIcd10Repository
         
         return icd10Entities;
     }
+
+    public async Task<Icd10Entity?> GetById(Guid id)
+    {
+        var icd10Entity = await _dbContext.Icd10Entities
+            .AsNoTracking()
+            .FirstOrDefaultAsync(i => i.Id == id);
+        
+        return icd10Entity;
+    }
 }
