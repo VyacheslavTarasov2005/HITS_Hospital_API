@@ -24,17 +24,35 @@ public class InspectionsService : IInspectionsService
         _patientsRepository = patientsRepository;
     }
 
-    public async Task<Guid?> CreateInspection(CreateInspectionRequest request, Guid patientId, Guid doctorId)
+    public async Task<Guid> CreateInspection(CreateInspectionRequest request, Guid patientId, Guid doctorId)
     {
         var patient = await _patientsRepository.GetById(patientId);
 
         if (patient == null)
         {
-            return null;
+            throw new ArgumentException("Пациента не существует");
         }
         
         Inspection inspection = new Inspection(request.date, request.anamnesis, request.complaints, request.conclusion, 
             request.nextVisitDate, request.deathDate, request.previousInspectionId, patientId, doctorId);
+        
+        var patientInspections = await _inspectionsRepository.GetAllByPatientId(patientId);
+
+        foreach (var patientInspection in patientInspections)
+        {
+            if (patientInspection.Conclusion == Conclusion.Death)
+            {
+                if (patientInspection.Date < inspection.Date)
+                {
+                    throw new ArgumentException("Нельзя посавить дату осмотра позже даты смерти пациента");
+                }
+
+                if (inspection.Conclusion == Conclusion.Death)
+                {
+                    throw new ArgumentException("Пациент уже умер");
+                }
+            }
+        }
         
         await _inspectionsRepository.Create(inspection);
 

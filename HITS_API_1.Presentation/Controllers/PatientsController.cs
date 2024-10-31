@@ -64,7 +64,7 @@ public class PatientsController : ControllerBase
 
     [HttpPost("{id}/inspections")]
     [Authorize]
-    public async Task<ActionResult> GetPatientInspections([FromRoute] Guid id,
+    public async Task<ActionResult> CreateInspection([FromRoute] Guid id,
         [FromBody] CreateInspectionRequest request)
     {
         var validationResult = await _createInspectionRequestValidator.ValidateAsync(request);
@@ -80,14 +80,15 @@ public class PatientsController : ControllerBase
         {
             return Unauthorized();
         }
-        
-        var inspectionId = await _inspectionsService.CreateInspection(request, id, Guid.Parse(doctorId));
 
-        if (inspectionId == null)
+        try
         {
-            return BadRequest("Пользователя с таким ID не существует");
+            var inspectionId = await _inspectionsService.CreateInspection(request, id, Guid.Parse(doctorId));
+            return Ok(inspectionId.ToString());
         }
-        
-        return Ok(inspectionId.ToString());
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 }

@@ -30,4 +30,14 @@ public class InspectionsRepository : IInspectionsRepository
         
         return inspection;
     }
+
+    public async Task<List<Inspection>> GetAllByPatientId(Guid patientId)
+    {
+        var inspections = await _dbContext.Inspections
+            .AsNoTracking()
+            .Where(d => d.PatientId == patientId)
+            .ToListAsync();
+        
+        return inspections;
+    }
 }
