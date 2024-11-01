@@ -32,10 +32,10 @@ public class RegistrationRequestValidator : AbstractValidator<RegistrationReques
         RuleFor(r => r.email)
             .NotEmpty()
             .WithMessage("Необходим email")
-            .MustAsync(async (email, CancellationToken) => await ValidateEmail(email))
-            .WithMessage("email уже использован")
             .EmailAddress()
-            .WithMessage("email не соответствует требованиям email");
+            .WithMessage("email не соответствует требованиям email")
+            .MustAsync(async (email, CancellationToken) => await ValidateEmail(email))
+            .WithMessage("email уже использован");
 
         RuleFor(r => r.birthday)
             .Must(ValidateBirthday)
