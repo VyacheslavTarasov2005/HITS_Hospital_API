@@ -5,8 +5,9 @@ public class Inspection
     private Guid _id;
     private DateTime _createTime;
     private DateTime _date;
-    private String? _anamnesis;
-    private String? _complaints;
+    private String _anamnesis;
+    private String _complaints;
+    private String _treatment;
     private Conclusion _conclusion;
     private DateTime? _nextVisitDate;
     private DateTime? _deathDate;
@@ -24,16 +25,22 @@ public class Inspection
         set => _date = value;
     }
 
-    public String? Anamnesis
+    public String Anamnesis
     {
         get => _anamnesis;
         set => _anamnesis = value;
     }
 
-    public String? Complaints
+    public String Complaints
     {
         get => _complaints;
         set => _complaints = value;
+    }
+
+    public String Treatment
+    {
+        get => _treatment;
+        set => _treatment = value;
     }
 
     public Conclusion Conclusion
@@ -64,7 +71,7 @@ public class Inspection
 
     public Guid DoctorId => _doctorId;
 
-    public Inspection(DateTime date, String? anamnesis, String? complaints, Conclusion conclusion,
+    public Inspection(DateTime date, String anamnesis, String complaints, String treatment, Conclusion conclusion,
         DateTime? nextVisitDate, DateTime? deathDate, Guid? previousInspectionId, Guid patientId, Guid doctorId)
     {
         _id = Guid.NewGuid();
@@ -72,6 +79,7 @@ public class Inspection
         _date = date;
         _anamnesis = anamnesis;
         _complaints = complaints;
+        _treatment = treatment;
         _conclusion = conclusion;
         _nextVisitDate = nextVisitDate;
         _deathDate = deathDate;

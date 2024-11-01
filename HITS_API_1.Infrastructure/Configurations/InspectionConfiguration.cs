@@ -36,9 +36,14 @@ public class InspectionConfiguration : IEntityTypeConfiguration<Inspection>
         builder.Property(i => i.Date)
             .IsRequired();
 
-        builder.Property(i => i.Anamnesis);
+        builder.Property(i => i.Anamnesis)
+            .IsRequired();
 
-        builder.Property(i => i.Complaints);
+        builder.Property(i => i.Complaints)
+            .IsRequired();
+        
+        builder.Property(i => i.Treatment)
+            .IsRequired();
 
         builder.Property(i => i.Conclusion)
             .IsRequired();

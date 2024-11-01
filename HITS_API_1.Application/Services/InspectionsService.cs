@@ -33,8 +33,9 @@ public class InspectionsService : IInspectionsService
             throw new ArgumentException("Пациента не существует");
         }
         
-        Inspection inspection = new Inspection(request.date, request.anamnesis, request.complaints, request.conclusion, 
-            request.nextVisitDate, request.deathDate, request.previousInspectionId, patientId, doctorId);
+        Inspection inspection = new Inspection(request.date, request.anamnesis, request.complaints, request.treatment, 
+            request.conclusion, request.nextVisitDate, request.deathDate, request.previousInspectionId, 
+            patientId, doctorId);
         
         var patientInspections = await _inspectionsRepository.GetAllByPatientId(patientId);
 
