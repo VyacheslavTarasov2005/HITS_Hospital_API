@@ -6,4 +6,5 @@ public interface IDiagnosesRepository
 {
     Task<Guid> Create(Diagnosis diagnosis);
     Task<List<Diagnosis>> GetAllByInspection(Guid inspectionId);
+    Task DeleteByInspectionId(Guid inspectionId);
 }

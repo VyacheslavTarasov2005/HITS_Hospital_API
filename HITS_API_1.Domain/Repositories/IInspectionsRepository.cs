@@ -7,4 +7,7 @@ public interface IInspectionsRepository
     Task<Guid> Create(Inspection inspection);
     Task<Inspection?> GetById(Guid id);
     Task<List<Inspection>> GetAllByPatientId(Guid patientId);
+
+    Task Update(Guid id, String anamnesis, String complaints, String treatment, Conclusion conclusion,
+        DateTime? nextVisitDate, DateTime? deathDate);
 }

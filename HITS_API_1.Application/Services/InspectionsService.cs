@@ -77,18 +77,18 @@ public class InspectionsService : IInspectionsService
         return inspection.Id;
     }
 
-    public async Task<(Inspection?, Inspection?)> GetInspectionByIdWithBaseInspection(Guid inspectionId)
+    public async Task<Inspection?> GetInspectionById(Guid inspectionId)
     {
         var inspection = await _inspectionsRepository.GetById(inspectionId);
 
-        if (inspection == null)
-        {
-            return (null, null);
-        }
+        return inspection;
+    }
 
+    public async Task<Inspection?> GetBaseInspection(Inspection inspection)
+    {
         if (inspection.PreviousInspectionId == null)
         {
-            return (inspection, null);
+            return null;
         }
         
         var parentInspection = await _inspectionsRepository.GetById(inspection.PreviousInspectionId.Value);
@@ -97,7 +97,23 @@ public class InspectionsService : IInspectionsService
         {
             parentInspection = await _inspectionsRepository.GetById(parentInspection.PreviousInspectionId.Value);
         }
+
+        return parentInspection;
+    }
+
+    public async Task UpdateInspection(RedactInspectionRequest request, Guid id)
+    {
+        await _inspectionsRepository.Update(id, request.anamnesis, request.complaints, request.treatment,
+            request.conclusion, request.nextVisitDate, request.deathDate);
         
-        return (inspection, parentInspection);
+        await _diagnosesRepository.DeleteByInspectionId(id);
+
+        foreach (var diagnosisRequest in request.diagnoses)
+        {
+            Diagnosis diagnosis = new Diagnosis(diagnosisRequest.description, diagnosisRequest.type, id,
+                diagnosisRequest.icdDiagnosisId);
+
+            await _diagnosesRepository.Create(diagnosis);
+        }
     }
 }

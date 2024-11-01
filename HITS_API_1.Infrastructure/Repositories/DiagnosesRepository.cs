@@ -31,4 +31,13 @@ public class DiagnosesRepository : IDiagnosesRepository
         
         return diagnoses;
     }
+
+    public async Task DeleteByInspectionId(Guid inspectionId)
+    {
+        await _dbContext.Diagnoses
+            .Where(d => d.InspectionId == inspectionId)
+            .ExecuteDeleteAsync();
+        
+        await _dbContext.SaveChangesAsync();
+    }
 }

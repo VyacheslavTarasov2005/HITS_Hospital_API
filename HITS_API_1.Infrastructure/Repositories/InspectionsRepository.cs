@@ -40,4 +40,20 @@ public class InspectionsRepository : IInspectionsRepository
         
         return inspections;
     }
+
+    public async Task Update(Guid id, String anamnesis, String complaints, String treatment, Conclusion conclusion,
+        DateTime? nextVisitDate, DateTime? deathDate)
+    {
+        await _dbContext.Inspections
+            .Where(i => i.Id == id)
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(i => i.Anamnesis, i => anamnesis)
+                .SetProperty(i => i.Complaints, i => complaints)
+                .SetProperty(i => i.Treatment, i => treatment)
+                .SetProperty(i => i.Conclusion, i => conclusion)
+                .SetProperty(i => i.NextVisitDate, i => nextVisitDate)
+                .SetProperty(i => i.DeathDate, i => deathDate));
+        
+        await _dbContext.SaveChangesAsync();
+    }
 }
