@@ -2,11 +2,10 @@ using HITS_API_1.Domain.Entities;
 
 namespace HITS_API_1.Application.DTOs;
 
-public record GetDoctorResponse(
+public record GetDiagnosisResponse(
     Guid id,
     DateTime createTime,
+    String code,
     String name,
-    DateTime? birthday,
-    Gender gender,
-    String email,
-    String? phone);
+    String? description,
+    DiagnosisType diagnosisType);

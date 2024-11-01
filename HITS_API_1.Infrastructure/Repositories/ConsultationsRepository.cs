@@ -30,4 +30,14 @@ public class ConsultationsRepository : IConsultationsRepository
         
         return consultation;
     }
+
+    public async Task<List<Consultation>> GetAllByInspectionId(Guid inspectionId)
+    {
+        var consultations = await _dbContext.Consultations
+            .AsNoTracking()
+            .Where(c => c.InspectionId == inspectionId)
+            .ToListAsync();
+        
+        return consultations;
+    }
 }

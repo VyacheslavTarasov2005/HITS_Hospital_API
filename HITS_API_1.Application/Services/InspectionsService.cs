@@ -76,4 +76,28 @@ public class InspectionsService : IInspectionsService
         
         return inspection.Id;
     }
+
+    public async Task<(Inspection?, Inspection?)> GetInspectionByIdWithBaseInspection(Guid inspectionId)
+    {
+        var inspection = await _inspectionsRepository.GetById(inspectionId);
+
+        if (inspection == null)
+        {
+            return (null, null);
+        }
+
+        if (inspection.PreviousInspectionId == null)
+        {
+            return (inspection, null);
+        }
+        
+        var parentInspection = await _inspectionsRepository.GetById(inspection.PreviousInspectionId.Value);
+
+        while (parentInspection?.PreviousInspectionId != null)
+        {
+            parentInspection = await _inspectionsRepository.GetById(parentInspection.PreviousInspectionId.Value);
+        }
+        
+        return (inspection, parentInspection);
+    }
 }

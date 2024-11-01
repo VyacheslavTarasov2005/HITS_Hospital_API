@@ -49,6 +49,7 @@ builder.Services.AddScoped<IPatientsService, PatientsService>();
 builder.Services.AddScoped<IInspectionsService, InspectionsService>();
 builder.Services.AddScoped<IConsultationsService, ConsultationsService>();
 builder.Services.AddScoped<ICommentsService, CommentsService>();
+builder.Services.AddScoped<IDiagnosesService, DiagnosesService>();
 
 // Валидаторы
 builder.Services.AddValidatorsFromAssemblyContaining<RegistrationRequestValidator>();

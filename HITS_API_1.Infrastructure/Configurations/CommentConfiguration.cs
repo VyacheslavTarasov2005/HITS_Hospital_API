@@ -18,9 +18,9 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .WithOne()
             .HasForeignKey<Comment>(c => c.AuthorId);
         
-        builder.HasOne<Comment>()
+        builder.HasMany<Comment>()
             .WithOne()
-            .HasForeignKey<Comment>(c => c.ParentId);
+            .HasForeignKey(c => c.ParentId);
 
         builder.Property(c => c.CreateTime)
             .IsRequired();

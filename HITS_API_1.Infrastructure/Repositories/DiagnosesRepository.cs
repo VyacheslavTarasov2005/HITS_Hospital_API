@@ -1,6 +1,7 @@
 using HITS_API_1.Domain.Entities;
 using HITS_API_1.Domain.Repositories;
 using HITS_API_1.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace HITS_API_1.Infrastructure.Repositories;
 
@@ -19,5 +20,15 @@ public class DiagnosesRepository : IDiagnosesRepository
         await _dbContext.SaveChangesAsync();
         
         return diagnosis.Id;
+    }
+
+    public async Task<List<Diagnosis>> GetAllByInspection(Guid inspectionId)
+    {
+        var diagnoses = await _dbContext.Diagnoses
+            .AsNoTracking()
+            .Where(d => d.InspectionId == inspectionId)
+            .ToListAsync();
+        
+        return diagnoses;
     }
 }
