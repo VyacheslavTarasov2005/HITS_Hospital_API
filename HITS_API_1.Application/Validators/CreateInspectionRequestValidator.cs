@@ -37,7 +37,9 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
 
         RuleFor(r => r.anamnesis)
             .NotEmpty()
-            .WithMessage("Необходим анамнез");
+            .WithMessage("Необходим анамнез")
+            .Length(1, 5000)
+            .WithMessage("Допустимая длина анамнеза - от 1 до 5000");
 
         RuleFor(r => r.complaints)
             .NotEmpty()
@@ -45,7 +47,9 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
 
         RuleFor(r => r.treatment)
             .NotEmpty()
-            .WithMessage("Необходимы рекомендации по лечению");
+            .WithMessage("Необходимы рекомендации по лечению")
+            .Length(1, 5000)
+            .WithMessage("Допустимая длина рекомендаций по лечению - от 1 до 5000");
 
         RuleFor(r => r.conclusion)
             .NotNull()
