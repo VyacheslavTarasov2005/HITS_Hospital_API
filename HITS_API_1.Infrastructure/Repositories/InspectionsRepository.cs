@@ -65,4 +65,13 @@ public class InspectionsRepository : IInspectionsRepository
         
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<List<Inspection>> GetAll()
+    {
+        var inspections = await _dbContext.Inspections
+            .AsNoTracking()
+            .ToListAsync();
+        
+        return inspections;
+    }
 }

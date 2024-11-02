@@ -25,7 +25,7 @@ public class Icd10Service : IIcd10Service
         
         Pagination pagination = new Pagination(size, icd10Entities.Count, page);
 
-        if (icd10Entities.Count() == 0)
+        if (icd10Entities.Count == 0)
         {
             return (icd10Entities, pagination);
         }

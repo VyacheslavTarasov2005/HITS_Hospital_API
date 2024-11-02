@@ -6,4 +6,5 @@ public interface IPatientsRepository
 {
     Task<Guid> Create(Patient patient);
     Task<Patient?> GetById(Guid patientId);
+    Task<List<Patient>> GetAllByNamePart(String name);
 }

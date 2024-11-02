@@ -39,8 +39,11 @@ public class DictionariesController : ControllerBase
             return BadRequest(validationResult.Errors);
         }
         
+        int page = request.page ?? 1;
+        int size = request.size ?? 5;
+        
         var (specialities, pagination) = await _specialitiesService.GetSpecialities(request.name, 
-            request.page, request.size);
+            page, size);
 
         if (specialities == null)
         {
@@ -63,8 +66,11 @@ public class DictionariesController : ControllerBase
             return BadRequest(validationResult.Errors);
         }
         
+        int page = queryRequest.page ?? 1;
+        int size = queryRequest.size ?? 5;
+        
         var (icd10Entities, pagination) = await _icd10Service.GetIcd10(queryRequest.request, 
-            queryRequest.page, queryRequest.size);
+            page, size);
 
         if (icd10Entities == null)
         {

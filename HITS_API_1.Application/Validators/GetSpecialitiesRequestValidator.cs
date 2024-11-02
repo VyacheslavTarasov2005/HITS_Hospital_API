@@ -8,15 +8,13 @@ public class GetSpecialitiesRequestValidator : AbstractValidator<GetSpecialities
     public GetSpecialitiesRequestValidator()
     {
         RuleFor(r => r.page)
-            .NotEmpty()
-            .WithMessage("Необходим номер страницы")
             .GreaterThan(0)
+            .When(r => r.page != null)
             .WithMessage("Номер страницы должен быть больше 0");
         
         RuleFor(r => r.size)
-            .NotEmpty()
-            .WithMessage("Необходим размер страницы")
             .GreaterThan(0)
+            .When(r => r.size != null)
             .WithMessage("Размер страницы должен быть больше 0");
     }
 }

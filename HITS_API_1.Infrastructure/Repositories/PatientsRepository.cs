@@ -28,4 +28,14 @@ public class PatientsRepository : IPatientsRepository
         
         return patient;
     }
+
+    public async Task<List<Patient>> GetAllByNamePart(String name)
+    {
+        var patients = await _dbContext.Patients
+            .AsNoTracking()
+            .Where(p => p.Name.ToLower().Contains(name.ToLower()))
+            .ToListAsync();
+        
+        return patients;
+    }
 }

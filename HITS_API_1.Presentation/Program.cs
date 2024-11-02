@@ -13,6 +13,7 @@ using HITS_API_1.Infrastructure.Data;
 using HITS_API_1.Infrastructure.Repositories;
 using HITS_API_1.Middlewares;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,7 +57,31 @@ builder.Services.AddValidatorsFromAssemblyContaining<RegistrationRequestValidato
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    // Добавляем поддержку авторизации Bearer Token
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Scheme = "Baerer"
+    });
+    
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { 
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new List<string> {} 
+        }
+    });
+});
 
 builder.Services.AddAuthentication()
     .AddBearerToken();
