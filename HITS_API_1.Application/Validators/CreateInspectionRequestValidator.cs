@@ -194,6 +194,13 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
         {
             return false;
         }
+        
+        var childInspection = await _inspectionsRepository.GetByParentInspectionId(previousInspection.Id);
+
+        if (childInspection != null)
+        {
+            return false;
+        }
 
         if (previousInspection.Conclusion == Conclusion.Death)
         {

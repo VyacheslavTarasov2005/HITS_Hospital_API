@@ -26,7 +26,16 @@ public class InspectionsRepository : IInspectionsRepository
     {
         var inspection = await _dbContext.Inspections
             .AsNoTracking()
-            .FirstOrDefaultAsync(d => d.Id == id);
+            .FirstOrDefaultAsync(i => i.Id == id);
+        
+        return inspection;
+    }
+
+    public async Task<Inspection?> GetByParentInspectionId(Guid parentInspectionId)
+    {
+        var inspection = await _dbContext.Inspections
+            .AsNoTracking()
+            .FirstOrDefaultAsync(i => i.PreviousInspectionId == parentInspectionId);
         
         return inspection;
     }
@@ -35,7 +44,7 @@ public class InspectionsRepository : IInspectionsRepository
     {
         var inspections = await _dbContext.Inspections
             .AsNoTracking()
-            .Where(d => d.PatientId == patientId)
+            .Where(i => i.PatientId == patientId)
             .ToListAsync();
         
         return inspections;

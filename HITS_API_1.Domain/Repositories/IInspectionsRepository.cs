@@ -6,6 +6,7 @@ public interface IInspectionsRepository
 {
     Task<Guid> Create(Inspection inspection);
     Task<Inspection?> GetById(Guid id);
+    Task<Inspection?> GetByParentInspectionId(Guid parentInspectionId);
     Task<List<Inspection>> GetAllByPatientId(Guid patientId);
 
     Task Update(Guid id, String anamnesis, String complaints, String treatment, Conclusion conclusion,
