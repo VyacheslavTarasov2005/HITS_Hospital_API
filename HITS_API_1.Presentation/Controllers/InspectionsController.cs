@@ -141,4 +141,18 @@ public class InspectionsController : ControllerBase
         await _inspectionsService.UpdateInspection(request, id);
         return Ok();
     }
+
+    [HttpGet("{id}/chain")]
+    [Authorize]
+    public async Task<ActionResult<GetInspectionByRootResponse>> GetInspectionByRoot([FromRoute] Guid id)
+    {
+        var inspections = await _inspectionsService.GetInspectionsByRoot(id);
+
+        if (inspections == null)
+        {
+            return NotFound("Корневая инспекция не найдена");
+        }
+        
+        return Ok(inspections);
+    }
 }

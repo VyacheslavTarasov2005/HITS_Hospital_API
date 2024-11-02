@@ -11,17 +11,23 @@ public class InspectionsService : IInspectionsService
     private readonly IDiagnosesRepository _diagnosesRepository;
     private readonly IConsultationsService _consultationsService;
     private readonly IPatientsRepository _patientsRepository;
+    private readonly IDoctorsRepository _doctorsRepository;
+    private readonly IDiagnosesService _diagnosesService;
 
     public InspectionsService(
         IInspectionsRepository inspectionsRepository,
         IDiagnosesRepository diagnosesRepository,
         IConsultationsService consultationsService,
-        IPatientsRepository patientsRepository)
+        IPatientsRepository patientsRepository,
+        IDoctorsRepository doctorsRepository,
+        IDiagnosesService diagnosesService)
     {
         _inspectionsRepository = inspectionsRepository;
         _diagnosesRepository = diagnosesRepository;
         _consultationsService = consultationsService;
         _patientsRepository = patientsRepository;
+        _doctorsRepository = doctorsRepository;
+        _diagnosesService = diagnosesService;
     }
 
     public async Task<Guid> CreateInspection(CreateInspectionRequest request, Guid patientId, Guid doctorId)
@@ -115,5 +121,43 @@ public class InspectionsService : IInspectionsService
 
             await _diagnosesRepository.Create(diagnosis);
         }
+    }
+
+    public async Task<List<GetInspectionByRootResponse>?> GetInspectionsByRoot(Guid rootId)
+    {
+        var rootInspection = await _inspectionsRepository.GetById(rootId);
+
+        if (rootInspection == null || rootInspection.PreviousInspectionId != null)
+        {
+            return null;
+        }
+        
+        List<GetInspectionByRootResponse> children = new List<GetInspectionByRootResponse>();
+        
+        var child = await _inspectionsRepository.GetByParentInspectionId(rootInspection.Id);
+
+        while (child != null)
+        {
+            var doctor = await _doctorsRepository.GetById(child.DoctorId);
+            var patient = await _patientsRepository.GetById(child.PatientId);
+
+            var diagnoses = await _diagnosesService.GetDiagnosesByInspection(child.Id);
+            
+            var mainDiagnosis = diagnoses.FirstOrDefault(d => d.diagnosisType == DiagnosisType.Main);
+            
+            var nextChild = await _inspectionsRepository.GetByParentInspectionId(child.Id);
+            
+            bool hasNested = nextChild != null;
+
+            GetInspectionByRootResponse childResponse = new GetInspectionByRootResponse(child.Id, child.CreateTime,
+                child.PreviousInspectionId, child.Date, child.Conclusion, child.DoctorId, doctor.Name, child.PatientId,
+                patient.Name, mainDiagnosis, true, hasNested);
+            
+            children.Add(childResponse);
+            
+            child = nextChild;
+        }
+
+        return children;
     }
 }
