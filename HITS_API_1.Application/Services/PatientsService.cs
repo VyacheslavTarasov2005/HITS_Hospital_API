@@ -29,8 +29,8 @@ public class PatientsService : IPatientsService
         return patient;
     }
 
-    public async Task<(List<Patient>?, Pagination)> GetPatients(String? name, List<Conclusion>? conclusions, Sorting? sorting,
-        bool scheduledVisits, Guid? doctorId, int page, int size)
+    public async Task<(List<Patient>?, Pagination)> GetPatients(String? name, List<Conclusion>? conclusions, 
+        Sorting? sorting, bool scheduledVisits, Guid? doctorId, int page, int size)
     {
         var patients = await _patientsRepository.GetAllByNamePart(name ?? "");
         

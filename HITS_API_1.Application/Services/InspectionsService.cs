@@ -1,4 +1,5 @@
 using HITS_API_1.Application.DTOs;
+using HITS_API_1.Application.Entities;
 using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Domain.Entities;
 using HITS_API_1.Domain.Repositories;
@@ -14,6 +15,7 @@ public class InspectionsService : IInspectionsService
     private readonly IDoctorsRepository _doctorsRepository;
     private readonly IDiagnosesService _diagnosesService;
     private readonly IIcd10Repository _icd10Repository;
+    private readonly IConsultationsRepository _consultationsRepository;
 
     public InspectionsService(
         IInspectionsRepository inspectionsRepository,
@@ -22,7 +24,8 @@ public class InspectionsService : IInspectionsService
         IPatientsRepository patientsRepository,
         IDoctorsRepository doctorsRepository,
         IDiagnosesService diagnosesService,
-        IIcd10Repository icd10Repository)
+        IIcd10Repository icd10Repository,
+        IConsultationsRepository consultationsRepository)
     {
         _inspectionsRepository = inspectionsRepository;
         _diagnosesRepository = diagnosesRepository;
@@ -31,6 +34,7 @@ public class InspectionsService : IInspectionsService
         _doctorsRepository = doctorsRepository;
         _diagnosesService = diagnosesService;
         _icd10Repository = icd10Repository;
+        _consultationsRepository = consultationsRepository;
     }
 
     public async Task<Guid> CreateInspection(CreateInspectionRequest request, Guid patientId, Guid doctorId)
@@ -152,9 +156,11 @@ public class InspectionsService : IInspectionsService
             
             bool hasNested = nextChild != null;
 
+            bool hasChain = !(!hasNested && child.PreviousInspectionId == null);
+
             GetInspectionByRootResponse childResponse = new GetInspectionByRootResponse(child.Id, child.CreateTime,
                 child.PreviousInspectionId, child.Date, child.Conclusion, child.DoctorId, doctor.Name, child.PatientId,
-                patient.Name, mainDiagnosis, true, hasNested);
+                patient.Name, mainDiagnosis, hasChain, hasNested);
             
             children.Add(childResponse);
             
@@ -201,5 +207,80 @@ public class InspectionsService : IInspectionsService
         }
         
         return response;
+    }
+
+    public async Task<(List<GetInspectionByRootResponse>?, Pagination)> GetInspectionsForConsultation(Doctor doctor, 
+        bool? grouped, List<Guid>? icdRoots, int page, int size)
+    {
+        grouped ??= false;
+        icdRoots ??= new List<Guid>();
+        
+        var inspections = await _inspectionsRepository.GetAll();
+
+        if (grouped.Value)
+        {
+            inspections = inspections.Where(i => i.PreviousInspectionId == null).ToList();
+        }
+
+        var consultations = await _consultationsRepository.GetAll();
+        
+        inspections = inspections.Where(i => consultations
+            .Any(c => c.SpecialityId == doctor.Speciality))
+            .ToList();
+
+        List<GetInspectionByRootResponse> response = new List<GetInspectionByRootResponse>();
+        
+        foreach (var inspection in inspections)
+        {
+            var diagnoses = await _diagnosesRepository.GetAllByInspection(inspection.Id);
+            var mainDiagnosis = diagnoses
+                .FirstOrDefault(d => d.Type == DiagnosisType.Main);
+
+            if (icdRoots != null && icdRoots.Count != 0 && !icdRoots.Contains(mainDiagnosis.Icd10Id))
+            {
+                continue;
+            }
+            
+            var author = await _doctorsRepository.GetById(inspection.DoctorId);
+            var patient = await _patientsRepository.GetById(inspection.PatientId);
+                
+            var child = await _inspectionsRepository.GetByParentInspectionId(inspection.Id);
+            
+            bool hasNested = child != null;
+                
+            bool hasChain = !(!hasNested && inspection.PreviousInspectionId == null);
+
+            Icd10Entity icd = await _icd10Repository.GetById(mainDiagnosis.Icd10Id);
+
+            GetDiagnosisResponse diagnosisResponse = new GetDiagnosisResponse(mainDiagnosis.Id,
+                mainDiagnosis.CreateTime, icd.Code, icd.Name, mainDiagnosis.Description, mainDiagnosis.Type);
+                
+            GetInspectionByRootResponse inspectionResponse = new GetInspectionByRootResponse(inspection.Id, 
+                inspection.CreateTime, inspection.PreviousInspectionId, inspection.Date, inspection.Conclusion,
+                author.Id, author.Name, patient.Id, patient.Name, diagnosisResponse, hasChain, hasNested);
+                
+            response.Add(inspectionResponse);
+        }
+
+        Pagination pagination = new Pagination(size, response.Count, page);
+        
+        if (response.Count == 0)
+        {
+            return (response, pagination);
+        }
+        
+        if (size * (page - 1) + 1 > response.Count)
+        {
+            return (null, pagination);
+        }
+        
+        List<GetInspectionByRootResponse> responsePaginated = new List<GetInspectionByRootResponse>();
+        
+        for (int i = size * (page - 1); i < int.Min(size * page, response.Count); i++)
+        {
+            responsePaginated.Add(response[i]);
+        }
+
+        return (responsePaginated, pagination);
     }
 }

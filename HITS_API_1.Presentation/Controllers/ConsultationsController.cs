@@ -23,6 +23,8 @@ public class ConsultationsController : ControllerBase
     private readonly ICommentsService _commentsService;
     private readonly RedactCommentRequestValidator _redactCommentRequestValidator;
     private readonly ICommentsRepository _commentsRepository;
+    private readonly GetFilteredInspectionsRequestValidator _getFilteredInspectionsRequestValidator;
+    private readonly IInspectionsService _inspectionsService;
 
     public ConsultationsController(
         IConsultationsService consultationsService, 
@@ -32,7 +34,9 @@ public class ConsultationsController : ControllerBase
         IConsultationsRepository consultationsRepository,
         ICommentsService commentsService,
         RedactCommentRequestValidator redactCommentRequestValidator,
-        ICommentsRepository commentsRepository)
+        ICommentsRepository commentsRepository,
+        GetFilteredInspectionsRequestValidator getFilteredInspectionsRequestValidator,
+        IInspectionsService inspectionsService)
     {
         _consultationsService = consultationsService;
         _specialitiesRepository = specialitiesRepository;
@@ -42,6 +46,48 @@ public class ConsultationsController : ControllerBase
         _commentsService = commentsService;
         _redactCommentRequestValidator = redactCommentRequestValidator;
         _commentsRepository = commentsRepository;
+        _getFilteredInspectionsRequestValidator = getFilteredInspectionsRequestValidator;
+        _inspectionsService = inspectionsService;
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<ActionResult<GetInspectionsForConsultationResponse>> GetInspectionsForConsultation(
+        [FromQuery] GetFilteredInspectionsRequest request)
+    {
+        var validationResult = await _getFilteredInspectionsRequestValidator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+        
+        var doctorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (doctorId == null)
+        {
+            return Unauthorized();
+        }
+        
+        var doctor = await _doctorsRepository.GetById(Guid.Parse(doctorId));
+
+        if (doctor == null)
+        {
+            return Unauthorized();
+        }
+
+        var (inspections, pagination) = await _inspectionsService.GetInspectionsForConsultation(
+            doctor, request.grouped, request.icdRoots, request.page ?? 1, request.size ?? 5);
+
+        if (inspections == null)
+        {
+            return BadRequest("Недопустимое значение page");
+        }
+        
+        GetInspectionsForConsultationResponse response = new GetInspectionsForConsultationResponse(inspections, 
+            pagination);
+        
+        return Ok(response);
     }
 
     [HttpGet("{id}")]

@@ -40,4 +40,13 @@ public class ConsultationsRepository : IConsultationsRepository
         
         return consultations;
     }
+
+    public async Task<List<Consultation>> GetAll()
+    {
+        var consultations = await _dbContext.Consultations
+            .AsNoTracking()
+            .ToListAsync();
+        
+        return consultations;
+    }
 }
