@@ -143,4 +143,20 @@ public class PatientsController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+
+    [HttpGet("{id}/inspections/search")]
+    [Authorize]
+    public async Task<ActionResult<List<GetPatientInspectionsNoChildrenResponse>>> GetInspectionsNoChildren(
+        [FromRoute] Guid id, [FromQuery] String? request)
+    {
+        var inspections = await 
+            _inspectionsService.GetPatientInspectionsNoChildren(id, request);
+
+        if (inspections == null)
+        {
+            return NotFound("Пациент не найден");
+        }
+        
+        return Ok(inspections);
+    }
 }

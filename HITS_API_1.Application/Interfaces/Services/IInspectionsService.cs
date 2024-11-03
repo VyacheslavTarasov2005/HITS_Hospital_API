@@ -10,4 +10,6 @@ public interface IInspectionsService
     Task<Inspection?> GetBaseInspection(Inspection inspection);
     Task UpdateInspection(RedactInspectionRequest request, Guid id);
     Task<List<GetInspectionByRootResponse>?> GetInspectionsByRoot(Guid rootId);
+
+    Task<List<GetPatientInspectionsNoChildrenResponse>?> GetPatientInspectionsNoChildren(Guid patientId, String? filter);
 }

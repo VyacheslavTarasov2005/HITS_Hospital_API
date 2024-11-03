@@ -33,15 +33,19 @@ public class PatientsService : IPatientsService
         bool scheduledVisits, Guid? doctorId, int page, int size)
     {
         var patients = await _patientsRepository.GetAllByNamePart(name ?? "");
-
+        
         var inspections = await _inspectionsRepository.GetAll();
-
-        patients = patients.Where(p => inspections
-                .Any(i => i.PatientId == p.Id &&
-                          (conclusions == null || conclusions == i.Conclusion) &&
-                          (!scheduledVisits || i.NextVisitDate > DateTime.UtcNow) &&
-                          (doctorId == null || i.DoctorId == doctorId)))
-            .ToList();
+        
+        if (conclusions != null || scheduledVisits || doctorId != null || sorting == Sorting.InspectionAsc ||
+            sorting == Sorting.InspectionDesc)
+        {
+            patients = patients.Where(p => inspections
+                    .Any(i => i.PatientId == p.Id &&
+                              (conclusions == null || conclusions == i.Conclusion) &&
+                              (!scheduledVisits || i.NextVisitDate > DateTime.UtcNow) &&
+                              (doctorId == null || i.DoctorId == doctorId)))
+                .ToList();
+        }
         
         Pagination pagination = new Pagination(size, patients.Count, page);
 

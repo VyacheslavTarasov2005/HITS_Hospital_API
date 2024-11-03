@@ -13,6 +13,7 @@ public class InspectionsService : IInspectionsService
     private readonly IPatientsRepository _patientsRepository;
     private readonly IDoctorsRepository _doctorsRepository;
     private readonly IDiagnosesService _diagnosesService;
+    private readonly IIcd10Repository _icd10Repository;
 
     public InspectionsService(
         IInspectionsRepository inspectionsRepository,
@@ -20,7 +21,8 @@ public class InspectionsService : IInspectionsService
         IConsultationsService consultationsService,
         IPatientsRepository patientsRepository,
         IDoctorsRepository doctorsRepository,
-        IDiagnosesService diagnosesService)
+        IDiagnosesService diagnosesService,
+        IIcd10Repository icd10Repository)
     {
         _inspectionsRepository = inspectionsRepository;
         _diagnosesRepository = diagnosesRepository;
@@ -28,6 +30,7 @@ public class InspectionsService : IInspectionsService
         _patientsRepository = patientsRepository;
         _doctorsRepository = doctorsRepository;
         _diagnosesService = diagnosesService;
+        _icd10Repository = icd10Repository;
     }
 
     public async Task<Guid> CreateInspection(CreateInspectionRequest request, Guid patientId, Guid doctorId)
@@ -159,5 +162,44 @@ public class InspectionsService : IInspectionsService
         }
 
         return children;
+    }
+
+    public async Task<List<GetPatientInspectionsNoChildrenResponse>?> GetPatientInspectionsNoChildren(
+        Guid patientId, String? filter)
+    {
+        var inspections = await _inspectionsRepository.GetAllByPatientId(patientId);
+
+        if (inspections.Count == 0)
+        {
+            return null;
+        }
+        
+        inspections = inspections.Where(i => i.PreviousInspectionId == null).ToList();
+        
+        List<GetPatientInspectionsNoChildrenResponse> response = new List<GetPatientInspectionsNoChildrenResponse>();
+
+        foreach (var inspection in inspections)
+        {
+            var diagnoses = await _diagnosesService.GetDiagnosesByInspection(inspection.Id);
+            
+            var mainDiagnosis = diagnoses
+                .FirstOrDefault(d => d.diagnosisType == DiagnosisType.Main);
+
+            if (filter == null)
+            {
+                filter = "";
+            }
+
+            if (mainDiagnosis.code.ToLower().Contains(filter.ToLower()) ||
+                mainDiagnosis.name.ToLower().Contains(filter.ToLower()))
+            {
+                GetPatientInspectionsNoChildrenResponse responseElement = new GetPatientInspectionsNoChildrenResponse(
+                    inspection.Id, inspection.CreateTime, inspection.Date, mainDiagnosis);
+                
+                response.Add(responseElement);
+            }
+        }
+        
+        return response;
     }
 }

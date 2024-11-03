@@ -53,7 +53,7 @@ public class Icd10Repository : IIcd10Repository
     {
         var icd10Entities = await _dbContext.Icd10Entities
             .AsNoTracking()
-            .Where(i => i.Name.ToLower().Contains(name))
+            .Where(i => i.Name.ToLower().Contains(name.ToLower()))
             .ToListAsync();
         
         return icd10Entities;
@@ -63,7 +63,7 @@ public class Icd10Repository : IIcd10Repository
     {
         var icd10Entities = await _dbContext.Icd10Entities
             .AsNoTracking()
-            .Where(i => i.Code.ToLower().Contains(code))
+            .Where(i => i.Code.ToLower().Contains(code.ToLower()))
             .ToListAsync();
         
         return icd10Entities;
