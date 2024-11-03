@@ -29,7 +29,7 @@ public class PatientsService : IPatientsService
         return patient;
     }
 
-    public async Task<(List<Patient>?, Pagination)> GetPatients(String? name, Conclusion? conclusions, Sorting? sorting,
+    public async Task<(List<Patient>?, Pagination)> GetPatients(String? name, List<Conclusion>? conclusions, Sorting? sorting,
         bool scheduledVisits, Guid? doctorId, int page, int size)
     {
         var patients = await _patientsRepository.GetAllByNamePart(name ?? "");
@@ -41,7 +41,7 @@ public class PatientsService : IPatientsService
         {
             patients = patients.Where(p => inspections
                     .Any(i => i.PatientId == p.Id &&
-                              (conclusions == null || conclusions == i.Conclusion) &&
+                              (conclusions == null || conclusions.Contains(i.Conclusion)) &&
                               (!scheduledVisits || i.NextVisitDate > DateTime.UtcNow) &&
                               (doctorId == null || i.DoctorId == doctorId)))
                 .ToList();

@@ -5,7 +5,7 @@ namespace HITS_API_1.Application.DTOs;
 
 public record GetPatientsListRequest(
     String? name,
-    Conclusion? conclusions,
+    List<Conclusion>? conclusions,
     Sorting? sorting,
     bool? scheduledVisits,
     bool? onlyMine,

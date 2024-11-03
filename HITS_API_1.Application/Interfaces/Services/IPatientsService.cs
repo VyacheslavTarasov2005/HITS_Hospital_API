@@ -8,6 +8,6 @@ public interface IPatientsService
     Task<Guid> CreatePatient(String name, DateTime? birthday, Gender gender);
     Task<Patient?> GetPatientById(Guid id);
 
-    Task<(List<Patient>?, Pagination)> GetPatients(String? name, Conclusion? conclusions, Sorting? sorting,
+    Task<(List<Patient>?, Pagination)> GetPatients(String? name, List<Conclusion>? conclusions, Sorting? sorting,
         bool scheduledVisits, Guid? doctorId, int page, int size);
 }

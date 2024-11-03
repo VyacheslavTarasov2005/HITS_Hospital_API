@@ -17,11 +17,6 @@ public class GetPatientsListRequestValidator : AbstractValidator<GetPatientsList
             .When(r => r.size != null)
             .WithMessage("Размер страницы должен быть больше 0");
 
-        RuleFor(r => r.conclusions)
-            .IsInEnum()
-            .When(r => r.conclusions != null)
-            .WithMessage("Допустимые значения заключения: Disease, Recovery, Death");
-
         RuleFor(r => r.sorting)
             .IsInEnum()
             .When(r => r.sorting != null)
