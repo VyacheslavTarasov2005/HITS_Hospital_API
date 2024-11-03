@@ -225,7 +225,7 @@ public class InspectionsService : IInspectionsService
         var consultations = await _consultationsRepository.GetAll();
         
         inspections = inspections.Where(i => consultations
-            .Any(c => c.SpecialityId == doctor.Speciality))
+            .Any(c => c.InspectionId == i.Id && c.SpecialityId == doctor.Speciality))
             .ToList();
 
         List<GetInspectionByRootResponse> response = new List<GetInspectionByRootResponse>();
