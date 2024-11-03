@@ -87,4 +87,23 @@ public class Icd10Repository : IIcd10Repository
         
         return icd10Entity;
     }
+
+    public async Task<List<Icd10Entity>> GetAllByRoot(Guid rootId, List<Icd10Entity>? rootChildren = null)
+    {
+        rootChildren ??= new List<Icd10Entity>();
+        
+        var children = await _dbContext.Icd10Entities
+            .AsNoTracking()
+            .Where(i => i.ParentId == rootId)
+            .ToListAsync();
+        
+        rootChildren.AddRange(children);
+
+        foreach (var child in children)
+        {
+            await GetAllByRoot(child.Id, rootChildren);
+        }
+        
+        return rootChildren;
+    }
 }

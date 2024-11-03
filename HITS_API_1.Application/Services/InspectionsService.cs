@@ -258,7 +258,22 @@ public class InspectionsService : IInspectionsService
 
             if (icdRoots.Count != 0 && !icdRoots.Contains(mainDiagnosis.Icd10Id))
             {
-                continue;
+                bool isValid  = false;
+                foreach (var icdRoot in icdRoots)
+                {
+                    var children = await _icd10Repository.GetAllByRoot(icdRoot);
+
+                    if (children.Any(i => i.Id == mainDiagnosis.Icd10Id))
+                    {
+                        isValid = true;
+                        break;
+                    }
+                }
+
+                if (!isValid)
+                {
+                    continue;
+                }
             }
             
             var author = await _doctorsRepository.GetById(inspection.DoctorId);
