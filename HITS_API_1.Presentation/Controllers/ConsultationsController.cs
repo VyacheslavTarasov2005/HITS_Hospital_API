@@ -52,7 +52,7 @@ public class ConsultationsController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult<GetInspectionsForConsultationResponse>> GetInspectionsForConsultation(
+    public async Task<ActionResult<InspectionPagedListResponse>> GetInspectionsForConsultation(
         [FromQuery] GetFilteredInspectionsRequest request)
     {
         var validationResult = await _getFilteredInspectionsRequestValidator.ValidateAsync(request);
@@ -84,7 +84,7 @@ public class ConsultationsController : ControllerBase
             return BadRequest("Недопустимое значение page");
         }
         
-        GetInspectionsForConsultationResponse response = new GetInspectionsForConsultationResponse(inspections, 
+        InspectionPagedListResponse response = new InspectionPagedListResponse(inspections, 
             pagination);
         
         return Ok(response);

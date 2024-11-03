@@ -212,31 +212,51 @@ public class InspectionsService : IInspectionsService
     public async Task<(List<GetInspectionByRootResponse>?, Pagination)> GetInspectionsForConsultation(Doctor doctor, 
         bool? grouped, List<Guid>? icdRoots, int page, int size)
     {
+        var inspections = await _inspectionsRepository.GetAll();
+        
+        var consultations = await _consultationsRepository.GetAll();
+        
+        inspections = inspections.Where(i => consultations
+                .Any(c => c.InspectionId == i.Id && c.SpecialityId == doctor.Speciality))
+            .ToList();
+        
+        var response = await FilterAndPaginateInspections(grouped, icdRoots, page, 
+            size, inspections);
+
+        return response;
+    }
+
+    public async Task<(List<GetInspectionByRootResponse>?, Pagination)> GetPatientInspections(Patient patient,
+        bool? grouped, List<Guid>? icdRoots, int page, int size)
+    {
+        var inspections = await _inspectionsRepository.GetAllByPatientId(patient.Id);
+        
+        var response = await FilterAndPaginateInspections(grouped, icdRoots,
+            page, size, inspections);
+
+        return response;
+    }
+
+    private async Task<(List<GetInspectionByRootResponse>?, Pagination)> FilterAndPaginateInspections(bool? grouped,
+        List<Guid>? icdRoots, int page, int size, List<Inspection> inspections)
+    {
         grouped ??= false;
         icdRoots ??= new List<Guid>();
         
-        var inspections = await _inspectionsRepository.GetAll();
-
         if (grouped.Value)
         {
             inspections = inspections.Where(i => i.PreviousInspectionId == null).ToList();
         }
-
-        var consultations = await _consultationsRepository.GetAll();
         
-        inspections = inspections.Where(i => consultations
-            .Any(c => c.InspectionId == i.Id && c.SpecialityId == doctor.Speciality))
-            .ToList();
-
         List<GetInspectionByRootResponse> response = new List<GetInspectionByRootResponse>();
         
-        foreach (var inspection in inspections)
+         foreach (var inspection in inspections)
         {
             var diagnoses = await _diagnosesRepository.GetAllByInspection(inspection.Id);
             var mainDiagnosis = diagnoses
                 .FirstOrDefault(d => d.Type == DiagnosisType.Main);
 
-            if (icdRoots != null && icdRoots.Count != 0 && !icdRoots.Contains(mainDiagnosis.Icd10Id))
+            if (icdRoots.Count != 0 && !icdRoots.Contains(mainDiagnosis.Icd10Id))
             {
                 continue;
             }

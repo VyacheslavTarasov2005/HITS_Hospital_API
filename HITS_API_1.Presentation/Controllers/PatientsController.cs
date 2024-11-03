@@ -4,6 +4,7 @@ using HITS_API_1.Application.DTOs;
 using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Application.Validators;
 using HITS_API_1.Domain.Entities;
+using HITS_API_1.Domain.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,19 +19,25 @@ public class PatientsController : ControllerBase
     private readonly IInspectionsService _inspectionsService;
     private readonly CreateInspectionRequestValidator _createInspectionRequestValidator;
     private readonly GetPatientsListRequestValidator _getPatientsListRequestValidator;
+    private readonly GetFilteredInspectionsRequestValidator _getFilteredInspectionsRequestValidator;
+    private readonly IPatientsRepository _patientsRepository;
 
     public PatientsController(
         IPatientsService patientsService, 
         IValidator<CreatePatientRequest> patientValidator,
         IInspectionsService inspectionsService,
         CreateInspectionRequestValidator createInspectionRequestValidator,
-        GetPatientsListRequestValidator getPatientsListRequestValidator)
+        GetPatientsListRequestValidator getPatientsListRequestValidator,
+        GetFilteredInspectionsRequestValidator getFilteredInspectionsRequestValidator,
+        IPatientsRepository patientsRepository)
     {
         _patientsService = patientsService;
         _patientValidator = patientValidator;
         _inspectionsService = inspectionsService;
         _createInspectionRequestValidator = createInspectionRequestValidator;
         _getPatientsListRequestValidator = getPatientsListRequestValidator;
+        _getFilteredInspectionsRequestValidator = getFilteredInspectionsRequestValidator;
+        _patientsRepository = patientsRepository;
     }
 
     [HttpPost]
@@ -158,5 +165,38 @@ public class PatientsController : ControllerBase
         }
         
         return Ok(inspections);
+    }
+
+    [HttpGet("{id}/inspections")]
+    [Authorize]
+    public async Task<ActionResult<InspectionPagedListResponse>> GetInspections([FromRoute] Guid id,
+        [FromQuery] GetFilteredInspectionsRequest request)
+    {
+        var validationResult = await _getFilteredInspectionsRequestValidator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
+        var patient = await _patientsRepository.GetById(id);
+
+        if (patient == null)
+        {
+            return NotFound("Пациент не найден");
+        }
+        
+        var (inspections, pagination) = await 
+            _inspectionsService.GetPatientInspections(patient, request.grouped, request.icdRoots, request.page ?? 1, 
+                request.size ?? 5);
+
+        if (inspections == null)
+        {
+            return BadRequest("Недопустимое значение page");
+        }
+        
+        InspectionPagedListResponse response = new InspectionPagedListResponse(inspections, pagination);
+        
+        return Ok(response);
     }
 }

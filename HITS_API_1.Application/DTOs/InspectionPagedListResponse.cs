@@ -2,6 +2,6 @@ using HITS_API_1.Application.Entities;
 
 namespace HITS_API_1.Application.DTOs;
 
-public record GetInspectionsForConsultationResponse(
+public record InspectionPagedListResponse(
     List<GetInspectionByRootResponse> inspections,
     Pagination pagination);
