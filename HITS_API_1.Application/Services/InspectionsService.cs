@@ -250,7 +250,7 @@ public class InspectionsService : IInspectionsService
         
         List<GetInspectionByRootResponse> response = new List<GetInspectionByRootResponse>();
         
-         foreach (var inspection in inspections)
+        foreach (var inspection in inspections)
         {
             var diagnoses = await _diagnosesRepository.GetAllByInspection(inspection.Id);
             var mainDiagnosis = diagnoses

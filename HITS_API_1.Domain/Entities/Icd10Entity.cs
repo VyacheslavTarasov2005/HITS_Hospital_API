@@ -6,7 +6,7 @@ public class Icd10Entity
     private Guid? _parentId;
     private DateTime _createTime;
     private int _icdId;
-    private String? _code;
+    private String _code;
     private String? _name;
     private String? _parentIcdId;
 
@@ -18,13 +18,13 @@ public class Icd10Entity
     
     public int IcdId => _icdId;
 
-    public String? Code => _code;
+    public String Code => _code;
 
     public String? Name => _name;
     
     public String? ParentIcdId => _parentIcdId;
 
-    public Icd10Entity(int icdId, String? code, String? name, String? parentIcdId)
+    public Icd10Entity(int icdId, String code, String name, String? parentIcdId)
     {
         _id = Guid.NewGuid();
         _createTime = DateTime.UtcNow;
