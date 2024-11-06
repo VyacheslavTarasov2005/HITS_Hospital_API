@@ -22,29 +22,31 @@ public class Icd10Repository : IIcd10Repository
         
         var jsonData = await File.ReadAllTextAsync(filePath);
         var icd10Data = JsonSerializer.Deserialize<Icd10ListJsonEntity>(jsonData);
+
+        if (icd10Data == null)
+        {
+            return;
+        }
         
         var icd10Dictionary = new Dictionary<String, Icd10Entity>();
         
-        foreach (var Icd10ListObject in icd10Data.records)
+        foreach (var icd10ListObject in icd10Data.records)
         {
-            Icd10Entity icd10Object = new Icd10Entity(Icd10ListObject.ID, Icd10ListObject.MKB_CODE, 
-                Icd10ListObject.MKB_NAME, Icd10ListObject.ID_PARENT);
+            Icd10Entity icd10Object = new Icd10Entity(icd10ListObject.MKB_CODE, icd10ListObject.MKB_NAME);
             
-            icd10Dictionary[Icd10ListObject.ID.ToString()] = icd10Object;
+            icd10Dictionary[icd10ListObject.ID.ToString()] = icd10Object;
         }
 
-        foreach (var Icd10ListObject in icd10Data.records)
+        foreach (var icd10ListObject in icd10Data.records)
         {
-            if (Icd10ListObject.ID_PARENT != null)
+            if (icd10ListObject.ID_PARENT != null)
             {
-                var parent = icd10Dictionary[Icd10ListObject.ID_PARENT];
-                icd10Dictionary[Icd10ListObject.ID.ToString()].setParentId(parent.Id);
+                var parent = icd10Dictionary[icd10ListObject.ID_PARENT];
+                icd10Dictionary[icd10ListObject.ID.ToString()].ParentId = parent.Id;
             }
         }
         
-        var icd10List = icd10Dictionary.Values.ToList();
-        
-        await _dbContext.AddRangeAsync(icd10List);
+        await _dbContext.AddRangeAsync(icd10Dictionary.Values);
         
         await _dbContext.SaveChangesAsync();
     }

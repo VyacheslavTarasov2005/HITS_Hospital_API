@@ -10,16 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3257228d-829e-4971-9eda-bd9dc95699c1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/HITS_API_1.Application/DTOs/GetReportFilterResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HITS_API_1.Application/DTOs/GetReportRecordResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HITS_API_1.Application/DTOs/GetReportRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HITS_API_1.Application/DTOs/GetReportResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/GetReportRequestValidator.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/Controllers/ReportsController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.HITS_API_1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.HITS_API_1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Interfaces/Services/IPatientsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Interfaces/Services/IPatientsService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/InspectionsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/InspectionsService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/PatientsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/PatientsService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Entities/Pagination.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Entities/Pagination.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Application.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Application.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Application.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Domain.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Domain.dll" afterDir="false" />
@@ -27,7 +19,6 @@
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/ref/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/ref/HITS_API_1.Application.dll" afterDir="false" />
@@ -41,6 +32,8 @@
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/HITS_API_1.Domain.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/HITS_API_1.Domain.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/ref/HITS_API_1.Domain.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/ref/HITS_API_1.Domain.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/refint/HITS_API_1.Domain.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/refint/HITS_API_1.Domain.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/Icd10EntityConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/Icd10EntityConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/Icd10Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/Icd10Repository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Application.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Application.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Application.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Domain.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Domain.dll" afterDir="false" />
@@ -66,7 +59,6 @@
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/apphost.exe" afterDir="false" />
@@ -224,7 +216,7 @@
       <workItem from="1730630313597" duration="26495000" />
       <workItem from="1730766995785" duration="658000" />
       <workItem from="1730767723606" duration="303000" />
-      <workItem from="1730905204734" duration="17881000" />
+      <workItem from="1730905204734" duration="25766000" />
     </task>
     <servers />
   </component>

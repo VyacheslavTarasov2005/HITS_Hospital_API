@@ -18,14 +18,11 @@ public class Icd10EntityConfiguration : IEntityTypeConfiguration<Icd10Entity>
         
         builder.Property(i => i.CreateTime)
             .IsRequired();
-
-        builder.Property(i => i.IcdId)
+        
+        builder.Property(i => i.Code)
             .IsRequired();
-        
-        builder.Property(i => i.Code);
 
-        builder.Property(i => i.Name);
-        
-        builder.Property(i => i.ParentIcdId);
+        builder.Property(i => i.Name)
+            .IsRequired();
     }
 }
