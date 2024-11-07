@@ -13,5 +13,9 @@ public class AddCommentRequestValidator : AbstractValidator<AddCommentRequest>
             .WithMessage("Комментарий не может быть пустым")
             .Length(1, 1000)
             .WithMessage("Допустимая длина комментария - от 1 до 1000");
+
+        RuleFor(r => r.parentId)
+            .NotEmpty()
+            .WithMessage("Необходимо указать комментарий - родителя");
     }
 }

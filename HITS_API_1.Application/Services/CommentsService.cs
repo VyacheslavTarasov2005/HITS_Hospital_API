@@ -13,21 +13,18 @@ public class CommentsService : ICommentsService
         _commentsRepository = commentsRepository;
     }
 
-    public async Task<Guid> CreateComment(String content, Guid? parentId, Guid consultationId, Guid authorId)
+    public async Task<Guid> CreateComment(String content, Guid parentId, Guid consultationId, Guid authorId)
     {
-        if (parentId != null)
+        var parentComment = await _commentsRepository.GetById(parentId);
+
+        if (parentComment == null)
         {
-            var parentComment = await _commentsRepository.GetById(parentId.Value);
+            throw new NullReferenceException("Комментарий - родитель не найден");
+        }
 
-            if (parentComment == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            if (parentComment.ConsultationId != consultationId)
-            {
-                throw new ArgumentException("ParentID не может ссылаться на консультацию, отличную от консультации комментария");
-            }
+        if (parentComment.ConsultationId != consultationId)
+        {
+            throw new ArgumentException("ParentID не может ссылаться на консультацию, отличную от консультации комментария");
         }
         
         Comment comment = new Comment(null, content, authorId, parentId, consultationId);
