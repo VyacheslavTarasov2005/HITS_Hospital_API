@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "KuPZm4DKk8g=",
+  "dgSpecHash": "QlEGjA8h0io=",
   "success": true,
   "projectFilePath": "C:\\Users\\vt45\\RiderProjects\\HITS_API_1\\HITS_API_1.Presentation\\HITS_API_1.Presentation.csproj",
   "expectedPackageFiles": [
@@ -19,6 +19,9 @@
     "C:\\Users\\vt45\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.0-rc.2.24473.5\\microsoft.extensions.configuration.abstractions.9.0.0-rc.2.24473.5.nupkg.sha512",
     "C:\\Users\\vt45\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\9.0.0-rc.2.24473.5\\microsoft.extensions.dependencyinjection.9.0.0-rc.2.24473.5.nupkg.sha512",
     "C:\\Users\\vt45\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.0-rc.2.24473.5\\microsoft.extensions.dependencyinjection.abstractions.9.0.0-rc.2.24473.5.nupkg.sha512",
+    "C:\\Users\\vt45\\.nuget\\packages\\microsoft.extensions.diagnostics.abstractions\\8.0.0\\microsoft.extensions.diagnostics.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\vt45\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\8.0.0\\microsoft.extensions.fileproviders.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\vt45\\.nuget\\packages\\microsoft.extensions.hosting.abstractions\\8.0.0\\microsoft.extensions.hosting.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\vt45\\.nuget\\packages\\microsoft.extensions.logging\\9.0.0-rc.2.24473.5\\microsoft.extensions.logging.9.0.0-rc.2.24473.5.nupkg.sha512",
     "C:\\Users\\vt45\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\9.0.0-rc.2.24473.5\\microsoft.extensions.logging.abstractions.9.0.0-rc.2.24473.5.nupkg.sha512",
     "C:\\Users\\vt45\\.nuget\\packages\\microsoft.extensions.options\\9.0.0-rc.2.24473.5\\microsoft.extensions.options.9.0.0-rc.2.24473.5.nupkg.sha512",
@@ -26,6 +29,9 @@
     "C:\\Users\\vt45\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",
     "C:\\Users\\vt45\\.nuget\\packages\\npgsql\\8.0.5\\npgsql.8.0.5.nupkg.sha512",
     "C:\\Users\\vt45\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\9.0.0-rc.2\\npgsql.entityframeworkcore.postgresql.9.0.0-rc.2.nupkg.sha512",
+    "C:\\Users\\vt45\\.nuget\\packages\\quartz\\3.13.1\\quartz.3.13.1.nupkg.sha512",
+    "C:\\Users\\vt45\\.nuget\\packages\\quartz.extensions.dependencyinjection\\3.13.1\\quartz.extensions.dependencyinjection.3.13.1.nupkg.sha512",
+    "C:\\Users\\vt45\\.nuget\\packages\\quartz.extensions.hosting\\3.13.1\\quartz.extensions.hosting.3.13.1.nupkg.sha512",
     "C:\\Users\\vt45\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "C:\\Users\\vt45\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
     "C:\\Users\\vt45\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",

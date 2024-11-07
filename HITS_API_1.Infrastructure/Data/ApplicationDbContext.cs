@@ -16,6 +16,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Diagnosis> Diagnoses { get; set; }
     public DbSet<Consultation> Consultations { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<EmailMessage> EmailMessages { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {

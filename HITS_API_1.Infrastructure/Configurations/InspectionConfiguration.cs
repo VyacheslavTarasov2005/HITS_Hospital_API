@@ -30,6 +30,10 @@ public class InspectionConfiguration : IEntityTypeConfiguration<Inspection>
             .WithMany()
             .HasForeignKey(i => i.DoctorId);
         
+        builder.HasMany<EmailMessage>()
+            .WithOne()
+            .HasForeignKey(e => e.InspectionId);
+        
         builder.Property(i => i.CreateTime)
             .IsRequired();
         

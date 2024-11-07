@@ -56,3 +56,6 @@ C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\
 C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\FluentValidation.dll
 C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
 C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\Quartz.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\Quartz.Extensions.DependencyInjection.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\Quartz.Extensions.Hosting.dll

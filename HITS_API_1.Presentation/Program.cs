@@ -1,12 +1,10 @@
 using System.Text.Json.Serialization;
 using FluentValidation;
-using HITS_API_1.Application.DTOs;
 using HITS_API_1.Application.Interfaces;
 using HITS_API_1.Application.Interfaces.Services;
+using HITS_API_1.Application.Jobs;
 using HITS_API_1.Application.Services;
 using HITS_API_1.Application.Validators;
-using HITS_API_1.Domain;
-using HITS_API_1.Domain.Entities;
 using HITS_API_1.Domain.Repositories;
 using HITS_API_1.Infrastructure.Authentication;
 using HITS_API_1.Infrastructure.Data;
@@ -14,6 +12,7 @@ using HITS_API_1.Infrastructure.Repositories;
 using HITS_API_1.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +39,7 @@ builder.Services.AddScoped<IInspectionsRepository, InspectionsRepository>();
 builder.Services.AddScoped<IDiagnosesRepository, DiagnosesRepository>();
 builder.Services.AddScoped<IConsultationsRepository, ConsultationsRepository>();
 builder.Services.AddScoped<ICommentsRepository, CommentsRepository>();
+builder.Services.AddScoped<IEmailMessagesRepository, EmailMessagesRepository>();
 
 // Сервисы
 builder.Services.AddScoped<IDoctorsService, DoctorsService>();
@@ -51,9 +51,28 @@ builder.Services.AddScoped<IInspectionsService, InspectionsService>();
 builder.Services.AddScoped<IConsultationsService, ConsultationsService>();
 builder.Services.AddScoped<ICommentsService, CommentsService>();
 builder.Services.AddScoped<IDiagnosesService, DiagnosesService>();
+builder.Services.AddScoped<IEmailsService, EmailsService>();
 
 // Валидаторы
 builder.Services.AddValidatorsFromAssemblyContaining<RegistrationRequestValidator>();
+
+// Quartz
+builder.Services.AddQuartz(q =>
+{
+    q.UseMicrosoftDependencyInjectionJobFactory();
+    
+    var jobKey = new JobKey("SendEmailJob");
+    
+    q.AddJob<SendEmailJob>(opts => opts.WithIdentity(jobKey));
+
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("SendEmailJob-trigger")
+        .WithCronSchedule("0 * * ? * *")
+    );
+});
+
+builder.Services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

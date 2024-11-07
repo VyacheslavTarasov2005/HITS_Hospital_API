@@ -52,6 +52,10 @@
             "FluentValidation.AspNetCore": {
               "target": "Package",
               "version": "[11.3.0, )"
+            },
+            "Quartz": {
+              "target": "Package",
+              "version": "[3.13.1, )"
             }
           },
           "imports": [
@@ -259,6 +263,14 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.5, )"
+            },
+            "Quartz.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[3.13.1, )"
+            },
+            "Quartz.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[3.13.1, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
