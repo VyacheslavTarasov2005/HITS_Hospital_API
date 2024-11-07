@@ -7,14 +7,11 @@ namespace HITS_API_1.Application.Validators;
 
 public class RedactInspectionRequestValidator : AbstractValidator<RedactInspectionRequest>
 {
-    private readonly IInspectionsRepository _inspectionsRepository;
     private readonly CreateDiagnosisModelValidator _createDiagnosisModelValidator;
     
     public RedactInspectionRequestValidator(
-        IInspectionsRepository inspectionsRepository,
         CreateDiagnosisModelValidator createDiagnosisModelValidator)
     {
-        _inspectionsRepository = inspectionsRepository;
         _createDiagnosisModelValidator = createDiagnosisModelValidator;
         
         RuleFor(r => r.anamnesis)
@@ -58,7 +55,7 @@ public class RedactInspectionRequestValidator : AbstractValidator<RedactInspecti
     
     private bool ValidateNextVisitDateExisting(DateTime? date, Conclusion conclusion)
     {
-        if (conclusion == Conclusion.Death || conclusion == Conclusion.Recovery)
+        if (conclusion != Conclusion.Disease)
         {
             if (date == null)
             {
@@ -74,16 +71,6 @@ public class RedactInspectionRequestValidator : AbstractValidator<RedactInspecti
         }
         
         return true;
-    }
-    
-    private bool ValidateNextVisitDate(DateTime? nextDate, DateTime date)
-    {
-        if (nextDate == null)
-        {
-            return true;
-        }
-        
-        return nextDate >= date;
     }
 
     private bool ValidateDeathDateExisting(DateTime? date, Conclusion conclusion)
@@ -104,26 +91,6 @@ public class RedactInspectionRequestValidator : AbstractValidator<RedactInspecti
         }
 
         return true;
-    }
-
-    private async Task<bool> ValidateDeathDate(DateTime? deathDate, DateTime date, Guid? previousInspectionId)
-    {
-        if (deathDate == null)
-        {
-            return true;
-        }
-        
-        if (previousInspectionId != null)
-        {
-            var previousInspection = await _inspectionsRepository.GetById(previousInspectionId.Value);
-
-            if (deathDate < previousInspection.Date)
-            {
-                return false;
-            }
-        }
-        
-        return deathDate <= date;
     }
     
     private async Task<bool> ValidateDiagnoses(List<CreateDiagnosisModel> diagnoses)

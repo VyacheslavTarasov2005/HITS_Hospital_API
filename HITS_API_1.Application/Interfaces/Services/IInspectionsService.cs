@@ -9,8 +9,8 @@ public interface IInspectionsService
     Task<Guid> CreateInspection(CreateInspectionRequest request, Guid patientId, Guid doctorId);
     Task<Inspection?> GetInspectionById(Guid inspectionId);
     Task<Inspection?> GetBaseInspection(Inspection inspection);
-    Task UpdateInspection(RedactInspectionRequest request, Guid id);
-    Task<List<GetInspectionByRootResponse>?> GetInspectionsByRoot(Guid rootId);
+    Task UpdateInspection(RedactInspectionRequest request, Inspection inspection);
+    Task<List<GetInspectionByRootResponse>> GetInspectionsByRoot(Guid rootId);
     Task<List<GetPatientInspectionsNoChildrenResponse>?> GetPatientInspectionsNoChildren(Guid patientId, 
         String? filter);
 

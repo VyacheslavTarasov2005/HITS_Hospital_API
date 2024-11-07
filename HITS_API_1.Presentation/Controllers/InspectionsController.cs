@@ -108,37 +108,18 @@ public class InspectionsController : ControllerBase
 
         if (inspection.DoctorId != Guid.Parse(doctorId))
         {
-            return StatusCode(403, "Пользователь не редактировать этот осмотр");
+            return StatusCode(403, "Пользователь не может редактировать этот осмотр");
         }
-        
-        if (request.nextVisitDate != null)
+
+        try
         {
-            if (inspection.Date > request.nextVisitDate)
-            {
-                return BadRequest("Дата следующего визита не может быть раньше даты осмотра");
-            }
+            await _inspectionsService.UpdateInspection(request, inspection);
         }
-
-        if (request.deathDate != null)
+        catch (Exception ex)
         {
-            if (inspection.PreviousInspectionId != null)
-            {
-                var previousInspection = await _inspectionsService.GetInspectionById(
-                    inspection.PreviousInspectionId.Value);
-
-                if (request.deathDate < previousInspection.Date)
-                {
-                    return BadRequest("Дата смерти не может быть раньше даты предыдущего осмотра");
-                }
-            }
-
-            if (request.deathDate > inspection.Date)
-            {
-                return BadRequest("Дата смерти не может быть позже даты осмотра");
-            }
+            return BadRequest(ex.Message);
         }
 
-        await _inspectionsService.UpdateInspection(request, id);
         return Ok();
     }
 
@@ -146,13 +127,19 @@ public class InspectionsController : ControllerBase
     [Authorize]
     public async Task<ActionResult<GetInspectionByRootResponse>> GetInspectionByRoot([FromRoute] Guid id)
     {
-        var inspections = await _inspectionsService.GetInspectionsByRoot(id);
-
-        if (inspections == null)
+        try
         {
-            return NotFound("Корневая инспекция не найдена");
+            var inspections = await _inspectionsService.GetInspectionsByRoot(id);
+            return Ok(inspections);
         }
-        
-        return Ok(inspections);
+        catch (Exception ex)
+        {
+            if (ex is NullReferenceException)
+            {
+                return NotFound(ex.Message);
+            }
+            
+            return BadRequest(ex.Message);
+        }
     }
 }

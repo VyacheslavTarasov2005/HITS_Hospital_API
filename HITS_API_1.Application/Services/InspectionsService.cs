@@ -56,15 +56,20 @@ public class InspectionsService : IInspectionsService
         {
             if (patientInspection.Conclusion == Conclusion.Death)
             {
-                if (patientInspection.Date < inspection.Date)
-                {
-                    throw new ArgumentException("Нельзя посавить дату осмотра позже даты смерти пациента");
-                }
-
                 if (inspection.Conclusion == Conclusion.Death)
                 {
                     throw new ArgumentException("Пациент уже умер");
                 }
+                
+                if (patientInspection.Date < inspection.Date)
+                {
+                    throw new ArgumentException("Нельзя посавить дату осмотра позже даты смерти пациента");
+                }
+            }
+
+            if (request.conclusion == Conclusion.Death && request.deathDate < patientInspection.Date)
+            {
+                throw new ArgumentException("Дата смерти не может быть раньше даты какого-либо другого осмотра");
             }
         }
         
@@ -114,29 +119,67 @@ public class InspectionsService : IInspectionsService
         return parentInspection;
     }
 
-    public async Task UpdateInspection(RedactInspectionRequest request, Guid id)
+    public async Task UpdateInspection(RedactInspectionRequest request, Inspection inspection)
     {
-        await _inspectionsRepository.Update(id, request.anamnesis, request.complaints, request.treatment,
+        if (request.nextVisitDate != null)
+        {
+            if (inspection.Date > request.nextVisitDate)
+            {
+                throw new ArgumentException("Дата следующего визита не может быть раньше даты осмотра");
+            }
+        }
+        
+        var patientInspections = await _inspectionsRepository.GetAllByPatientId(inspection.PatientId);
+        
+        foreach (var patientInspection in patientInspections)
+        {
+            if (patientInspection.Id != inspection.Id)
+            {
+                if (patientInspection.Conclusion == Conclusion.Death)
+                {
+                    if (request.conclusion == Conclusion.Death)
+                    {
+                        throw new ArgumentException("Пациент уже умер");
+                    }
+                }
+                
+                if (request.conclusion == Conclusion.Death && request.deathDate < patientInspection.Date)
+                {
+                    throw new ArgumentException("Дата смерти не может быть раньше даты какого-либо другого осмотра");
+                }
+            }
+            else if (request.deathDate != null && request.deathDate > patientInspection.Date)
+            {
+                throw new ArgumentException("Дата смерти не может быть позже даты осмотра");
+            }
+        }
+        
+        await _inspectionsRepository.Update(inspection.Id, request.anamnesis, request.complaints, request.treatment,
             request.conclusion, request.nextVisitDate, request.deathDate);
         
-        await _diagnosesRepository.DeleteByInspectionId(id);
+        await _diagnosesRepository.DeleteByInspectionId(inspection.Id);
 
         foreach (var diagnosisRequest in request.diagnoses)
         {
-            Diagnosis diagnosis = new Diagnosis(diagnosisRequest.description, diagnosisRequest.type, id,
+            Diagnosis diagnosis = new Diagnosis(diagnosisRequest.description, diagnosisRequest.type, inspection.Id,
                 diagnosisRequest.icdDiagnosisId);
 
             await _diagnosesRepository.Create(diagnosis);
         }
     }
 
-    public async Task<List<GetInspectionByRootResponse>?> GetInspectionsByRoot(Guid rootId)
+    public async Task<List<GetInspectionByRootResponse>> GetInspectionsByRoot(Guid rootId)
     {
         var rootInspection = await _inspectionsRepository.GetById(rootId);
 
-        if (rootInspection == null || rootInspection.PreviousInspectionId != null)
+        if (rootInspection == null)
         {
-            return null;
+            throw new NullReferenceException("Корневой осмотр не найден");
+        }
+
+        if (rootInspection.PreviousInspectionId != null)
+        {
+            throw new ArgumentException("Осмотр не является корневым");
         }
         
         List<GetInspectionByRootResponse> children = new List<GetInspectionByRootResponse>();

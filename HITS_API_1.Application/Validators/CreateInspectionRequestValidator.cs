@@ -67,10 +67,7 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
 
         RuleFor(r => r.deathDate)
             .Must((request, deathDate) => ValidateDeathDateExisting(deathDate, request.conclusion))
-            .WithMessage("Дату смерти необходимо указать если заключение принимает значение Death")
-            .MustAsync(async (request, deathDate, CancellationToken) => await ValidateDeathDate(deathDate,
-                request.date, request.previousInspectionId))
-            .WithMessage("Дата смерти не может быть раньше предыдущего осмотра или позже текущего");
+            .WithMessage("Дату смерти необходимо указать если заключение принимает значение Death");
 
         RuleFor(r => r.diagnoses)
             .NotEmpty()
@@ -91,11 +88,6 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
     
     private async Task<bool> ValidateByPreviousDate(DateTime date, Guid? previousInspectionId)
     {
-        if (date > DateTime.UtcNow)
-        {
-            return false;
-        }
-
         if (previousInspectionId == null)
         {
             return true;
@@ -108,12 +100,12 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
             return date >= previousInspection.Date;
         }
 
-        return true;
+        return false;
     }
 
     private bool ValidateNextVisitDateExisting(DateTime? date, Conclusion conclusion)
     {
-        if (conclusion == Conclusion.Death || conclusion == Conclusion.Recovery)
+        if (conclusion != Conclusion.Disease)
         {
             if (date == null)
             {
@@ -159,26 +151,6 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
         }
 
         return true;
-    }
-
-    private async Task<bool> ValidateDeathDate(DateTime? deathDate, DateTime date, Guid? previousInspectionId)
-    {
-        if (deathDate == null)
-        {
-            return true;
-        }
-        
-        if (previousInspectionId != null)
-        {
-            var previousInspection = await _inspectionsRepository.GetById(previousInspectionId.Value);
-
-            if (deathDate < previousInspection.Date)
-            {
-                return false;
-            }
-        }
-        
-        return deathDate <= date;
     }
 
     private async Task<bool> ValidatePreviousInspection(Guid? previousInspectionId)
