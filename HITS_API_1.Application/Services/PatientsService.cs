@@ -128,7 +128,7 @@ public class PatientsService : IPatientsService
                 var mainDiagnosis = diagnoses.FirstOrDefault(d => d.Type == DiagnosisType.Main);
 
                 if (request.icdRoots != null && request.icdRoots.Count > 0 &&
-                    !request.icdRoots.Contains(mainDiagnosis.Id))
+                    !request.icdRoots.Contains(mainDiagnosis.Icd10Id))
                 {
                     foreach (var icdRoot in request.icdRoots)
                     {
@@ -196,7 +196,10 @@ public class PatientsService : IPatientsService
             }
         }
         
+        records = records.OrderBy(r=> r.patientName).ToList();
+        
         GetReportFilterResponse filter;
+        
         if (request.icdRoots == null || request.icdRoots.Count == 0)
         {
             var roots = await _icd10Repository.GetRoots();
@@ -210,7 +213,9 @@ public class PatientsService : IPatientsService
             }
             
             filter = new GetReportFilterResponse(request.start, request.end, roots
-                .Select(i => i.Code).ToList());
+                .Select(i => i.Code)
+                .Order()
+                .ToList());
         }
         else
         {
@@ -220,10 +225,19 @@ public class PatientsService : IPatientsService
             {
                 var icd = await _icd10Repository.GetById(id);
                 roots.Add(icd.Code);
+                
+                if (!icdCounter.ContainsKey(icd.Code))
+                {
+                    icdCounter[icd.Code] = 0;
+                }
             }
             
-            filter = new GetReportFilterResponse(request.start, request.end, roots);
+            filter = new GetReportFilterResponse(request.start, request.end, roots.Order().ToList());
         }
+        
+        icdCounter = icdCounter
+            .OrderBy(i => i.Key)
+            .ToDictionary(i => i.Key, i => i.Value);
         
         GetReportResponse response = new GetReportResponse(filter, records, icdCounter);
         
