@@ -52,6 +52,7 @@ builder.Services.AddScoped<IConsultationsService, ConsultationsService>();
 builder.Services.AddScoped<ICommentsService, CommentsService>();
 builder.Services.AddScoped<IDiagnosesService, DiagnosesService>();
 builder.Services.AddScoped<IEmailsService, EmailsService>();
+builder.Services.AddScoped<IPaginationService, PaginationService>();
 
 // Валидаторы
 builder.Services.AddValidatorsFromAssemblyContaining<RegistrationRequestValidator>();

@@ -38,21 +38,20 @@ public class DictionariesController : ControllerBase
         {
             return BadRequest(validationResult.Errors);
         }
-        
-        int page = request.page ?? 1;
-        int size = request.size ?? 5;
-        
-        var (specialities, pagination) = await _specialitiesService.GetSpecialities(request.name, 
-            page, size);
 
-        if (specialities == null)
+        try
         {
-            return BadRequest("Недопустимое значение page");
+            var (specialities, pagination) = await _specialitiesService.GetSpecialities(request.name, 
+                request.page, request.size);
+            
+            GetSpecialitiesResponse response = new GetSpecialitiesResponse(specialities, pagination);
+        
+            return Ok(response);
         }
-        
-        GetSpecialitiesResponse response = new GetSpecialitiesResponse(specialities, pagination);
-        
-        return Ok(response);
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpGet("icd10")]
@@ -65,27 +64,26 @@ public class DictionariesController : ControllerBase
         {
             return BadRequest(validationResult.Errors);
         }
-        
-        int page = queryRequest.page ?? 1;
-        int size = queryRequest.size ?? 5;
-        
-        var (icd10Entities, pagination) = await _icd10Service.GetIcd10(queryRequest.request, 
-            page, size);
 
-        if (icd10Entities == null)
+        try
         {
-            return BadRequest("Недопустимое значение page");
+            var (icd10Entities, pagination) = await _icd10Service.GetIcd10(queryRequest.request, 
+                queryRequest.page, queryRequest.size);
+            
+            var responseList = icd10Entities.Select(root => new Icd10Response(
+                root.Code,
+                root.Name,
+                root.Id,
+                root.CreateTime)
+            ).ToList();
+            
+            GetIcd10Response response = new GetIcd10Response(responseList, pagination);
+            return Ok(response);
         }
-        
-        var responseList = icd10Entities.Select(root => new Icd10Response(
-            root.Code,
-            root.Name,
-            root.Id,
-            root.CreateTime)
-        ).ToList();
-        
-        GetIcd10Response response = new GetIcd10Response(responseList, pagination);
-        return Ok(response);
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
 

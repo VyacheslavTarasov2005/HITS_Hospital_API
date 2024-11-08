@@ -16,6 +16,7 @@ public class InspectionsService : IInspectionsService
     private readonly IDiagnosesService _diagnosesService;
     private readonly IIcd10Repository _icd10Repository;
     private readonly IConsultationsRepository _consultationsRepository;
+    private readonly IPaginationService _paginationService;
 
     public InspectionsService(
         IInspectionsRepository inspectionsRepository,
@@ -25,7 +26,8 @@ public class InspectionsService : IInspectionsService
         IDoctorsRepository doctorsRepository,
         IDiagnosesService diagnosesService,
         IIcd10Repository icd10Repository,
-        IConsultationsRepository consultationsRepository)
+        IConsultationsRepository consultationsRepository,
+        IPaginationService paginationService)
     {
         _inspectionsRepository = inspectionsRepository;
         _diagnosesRepository = diagnosesRepository;
@@ -35,6 +37,7 @@ public class InspectionsService : IInspectionsService
         _diagnosesService = diagnosesService;
         _icd10Repository = icd10Repository;
         _consultationsRepository = consultationsRepository;
+        _paginationService = paginationService;
     }
 
     public async Task<Guid> CreateInspection(CreateInspectionRequest request, Guid patientId, Guid doctorId)
@@ -252,8 +255,8 @@ public class InspectionsService : IInspectionsService
         return response;
     }
 
-    public async Task<(List<GetInspectionByRootResponse>?, Pagination)> GetInspectionsForConsultation(Doctor doctor, 
-        bool? grouped, List<Guid>? icdRoots, int page, int size)
+    public async Task<(List<GetInspectionByRootResponse>, Pagination)> GetInspectionsForConsultation(Doctor doctor, 
+        bool? grouped, List<Guid>? icdRoots, int? page, int? size)
     {
         var inspections = await _inspectionsRepository.GetAll();
         
@@ -269,8 +272,8 @@ public class InspectionsService : IInspectionsService
         return response;
     }
 
-    public async Task<(List<GetInspectionByRootResponse>?, Pagination)> GetPatientInspections(Patient patient,
-        bool? grouped, List<Guid>? icdRoots, int page, int size)
+    public async Task<(List<GetInspectionByRootResponse>, Pagination)> GetPatientInspections(Patient patient,
+        bool? grouped, List<Guid>? icdRoots, int? page, int? size)
     {
         var inspections = await _inspectionsRepository.GetAllByPatientId(patient.Id);
         
@@ -280,8 +283,8 @@ public class InspectionsService : IInspectionsService
         return response;
     }
 
-    private async Task<(List<GetInspectionByRootResponse>?, Pagination)> FilterAndPaginateInspections(bool? grouped,
-        List<Guid>? icdRoots, int page, int size, List<Inspection> inspections)
+    private async Task<(List<GetInspectionByRootResponse>, Pagination)> FilterAndPaginateInspections(bool? grouped,
+        List<Guid>? icdRoots, int? page, int? size, List<Inspection> inspections)
     {
         grouped ??= false;
         icdRoots ??= new List<Guid>();
@@ -340,25 +343,6 @@ public class InspectionsService : IInspectionsService
             response.Add(inspectionResponse);
         }
 
-        Pagination pagination = new Pagination(size, response.Count, page);
-        
-        if (response.Count == 0)
-        {
-            return (response, pagination);
-        }
-        
-        if (size * (page - 1) + 1 > response.Count)
-        {
-            return (null, pagination);
-        }
-        
-        List<GetInspectionByRootResponse> responsePaginated = new List<GetInspectionByRootResponse>();
-        
-        for (int i = size * (page - 1); i < int.Min(size * page, response.Count); i++)
-        {
-            responsePaginated.Add(response[i]);
-        }
-
-        return (responsePaginated, pagination);
+        return _paginationService.PaginateList(response, page, size);
     }
 }

@@ -76,18 +76,19 @@ public class ConsultationsController : ControllerBase
             return Unauthorized();
         }
 
-        var (inspections, pagination) = await _inspectionsService.GetInspectionsForConsultation(
-            doctor, request.grouped, request.icdRoots, request.page ?? 1, request.size ?? 5);
-
-        if (inspections == null)
+        try
         {
-            return BadRequest("Недопустимое значение page");
+            var (inspections, pagination) = await _inspectionsService.GetInspectionsForConsultation(
+                doctor, request.grouped, request.icdRoots, request.page, request.size);
+        
+            InspectionPagedListResponse response = new InspectionPagedListResponse(inspections, pagination);
+        
+            return Ok(response);
         }
-        
-        InspectionPagedListResponse response = new InspectionPagedListResponse(inspections, 
-            pagination);
-        
-        return Ok(response);
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpGet("{id}")]

@@ -12,17 +12,20 @@ public class PatientsService : IPatientsService
     private readonly IInspectionsRepository _inspectionsRepository;
     private readonly IDiagnosesRepository _diagnosesRepository;
     private readonly IIcd10Repository _icd10Repository;
+    private readonly IPaginationService _paginationService;
 
     public PatientsService(
         IPatientsRepository patientsRepository, 
         IInspectionsRepository inspectionsRepository,
         IDiagnosesRepository diagnosesRepository,
-        IIcd10Repository icd10Repository)
+        IIcd10Repository icd10Repository,
+        IPaginationService paginationService)
     {
         _patientsRepository = patientsRepository;
         _inspectionsRepository = inspectionsRepository;
         _diagnosesRepository = diagnosesRepository;
         _icd10Repository = icd10Repository;
+        _paginationService = paginationService;
     }
 
     public async Task<Guid> CreatePatient(String name, DateTime? birthday, Gender gender)
@@ -38,8 +41,8 @@ public class PatientsService : IPatientsService
         return patient;
     }
 
-    public async Task<(List<Patient>?, Pagination)> GetPatients(String? name, List<Conclusion>? conclusions, 
-        Sorting? sorting, bool scheduledVisits, Guid? doctorId, int page, int size)
+    public async Task<(List<Patient>, Pagination)> GetPatients(String? name, List<Conclusion>? conclusions, 
+        Sorting? sorting, bool scheduledVisits, Guid? doctorId, int? page, int? size)
     {
         var patients = await _patientsRepository.GetAllByNamePart(name ?? "");
         
@@ -54,13 +57,6 @@ public class PatientsService : IPatientsService
                               (!scheduledVisits || i.NextVisitDate > DateTime.UtcNow) &&
                               (doctorId == null || i.DoctorId == doctorId)))
                 .ToList();
-        }
-        
-        Pagination pagination = new Pagination(size, patients.Count, page);
-
-        if (patients.Count == 0)
-        {
-            return (patients, pagination);
         }
 
         switch (sorting)
@@ -93,20 +89,8 @@ public class PatientsService : IPatientsService
                     .Max(i => i.Date)).ToList();
                 break;
         }
-        
-        if (size * (page - 1) + 1 > patients.Count)
-        {
-            return (null, pagination);
-        }
-        
-        List<Patient> patientsPaginated = new List<Patient>();
-        
-        for (int i = size * (page - 1); i < int.Min(size * page, patients.Count); i++)
-        {
-            patientsPaginated.Add(patients[i]);
-        }
-        
-        return (patientsPaginated, pagination);
+
+        return _paginationService.PaginateList(patients, page, size);
     }
 
     public async Task<GetReportResponse> GetPatientsReport(GetReportRequest request)

@@ -8,13 +8,15 @@ namespace HITS_API_1.Application.Services;
 public class Icd10Service : IIcd10Service
 {
     private readonly IIcd10Repository _icd10Repository;
+    private readonly IPaginationService _paginationService;
 
-    public Icd10Service(IIcd10Repository icd10Repository)
+    public Icd10Service(IIcd10Repository icd10Repository, IPaginationService paginationService)
     {
         _icd10Repository = icd10Repository;
+        _paginationService = paginationService;
     }
 
-    public async Task<(List<Icd10Entity>?, Pagination)> GetIcd10(String? request, int page, int size)
+    public async Task<(List<Icd10Entity>, Pagination)> GetIcd10(String? request, int? page, int? size)
     {
         var icd10Entities = await _icd10Repository.GetAllByName(request ?? "");
 
@@ -22,27 +24,8 @@ public class Icd10Service : IIcd10Service
         {
             icd10Entities = await _icd10Repository.GetAllByCode(request ?? "");
         }
-        
-        Pagination pagination = new Pagination(size, icd10Entities.Count, page);
 
-        if (icd10Entities.Count == 0)
-        {
-            return (icd10Entities, pagination);
-        }
-        
-        if (size * (page - 1) + 1 > icd10Entities.Count)
-        {
-            return (null, pagination);
-        }
-        
-        List<Icd10Entity> icd10EntitiesPaginated = new List<Icd10Entity>();
-        
-        for (int i = size * (page - 1); i < int.Min(size * page, icd10Entities.Count); i++)
-        {
-            icd10EntitiesPaginated.Add(icd10Entities[i]);
-        }
-        
-        return (icd10EntitiesPaginated, pagination);
+        return _paginationService.PaginateList(icd10Entities, page, size);
     }
 
     public async Task<List<Icd10Entity>> GetRootsIcd10()

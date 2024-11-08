@@ -8,35 +8,21 @@ namespace HITS_API_1.Application.Services;
 public class SpecialitiesService : ISpecialitiesService
 {
     private readonly ISpecialitiesRepository _specialitiesRepository;
+    private readonly IPaginationService _paginationService;
 
-    public SpecialitiesService(ISpecialitiesRepository specialitiesRepository)
+    public SpecialitiesService(
+        ISpecialitiesRepository specialitiesRepository,
+        IPaginationService paginationService)
     {
         _specialitiesRepository = specialitiesRepository;
+        _paginationService = paginationService;
     }
 
-    public async Task<(List<Speciality>?, Pagination)> GetSpecialities(String? name, int page, int size)
+    public async Task<(List<Speciality>, Pagination)> GetSpecialities(String? name, int? page, int? size)
     {
         var specialities = await _specialitiesRepository.GetAllByName(name ?? "");
-        
-        Pagination pagination = new Pagination(size, specialities.Count, page);
 
-        if (specialities.Count == 0)
-        {
-            return (specialities, pagination);
-        }
-
-        if (size * (page - 1) + 1 > specialities.Count)
-        {
-            return (null, pagination);
-        }
-        
-        List<Speciality> specialitiesPaginated = new List<Speciality>();
-
-        for (int i = size * (page - 1); i < int.Min(size * page, specialities.Count); i++)
-        {
-            specialitiesPaginated.Add(specialities[i]);
-        }
-        
-        return (specialitiesPaginated, pagination);
+        return _paginationService.PaginateList(specialities, page, 
+            size);
     }
 }

@@ -14,9 +14,9 @@ public interface IInspectionsService
     Task<List<GetPatientInspectionsNoChildrenResponse>?> GetPatientInspectionsNoChildren(Guid patientId, 
         String? filter);
 
-    Task<(List<GetInspectionByRootResponse>?, Pagination)> GetInspectionsForConsultation(Doctor doctor,
-        bool? grouped, List<Guid>? icdRoots, int page, int size);
+    Task<(List<GetInspectionByRootResponse>, Pagination)> GetInspectionsForConsultation(Doctor doctor,
+        bool? grouped, List<Guid>? icdRoots, int? page, int? size);
 
-    Task<(List<GetInspectionByRootResponse>?, Pagination)> GetPatientInspections(Patient patient,
-        bool? grouped, List<Guid>? icdRoots, int page, int size);
+    Task<(List<GetInspectionByRootResponse>, Pagination)> GetPatientInspections(Patient patient,
+        bool? grouped, List<Guid>? icdRoots, int? page, int? size);
 }

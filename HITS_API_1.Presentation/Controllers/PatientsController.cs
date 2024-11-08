@@ -73,35 +73,34 @@ public class PatientsController : ControllerBase
         {
             return Unauthorized();
         }
-        
-        int page = request.page ?? 1;
-        int size = request.size ?? 5;
 
         bool onlyMine = request.onlyMine ?? false;
         
         bool visits = request.scheduledVisits ?? false;
-        
-        var (patients, pagination) = await _patientsService.GetPatients(request.name, request.conclusions, 
-            request.sorting, visits, onlyMine ? Guid.Parse(doctorId) : null, page, size);
-        
-        if (patients == null)
-        {
-            return BadRequest("Недопустимое значение page");
-        }
-        
-        List<GetPatientByIdResponse> patientsResponse = new List<GetPatientByIdResponse>();
 
-        foreach (var patient in patients)
+        try
         {
-            GetPatientByIdResponse patientResponse = new GetPatientByIdResponse(patient.Id, patient.CreateTime,
-                patient.Name, patient.Birthday, patient.Sex);
+            var (patients, pagination) = await _patientsService.GetPatients(request.name, request.conclusions, 
+                request.sorting, visits, onlyMine ? Guid.Parse(doctorId) : null, request.page, request.size);
             
-            patientsResponse.Add(patientResponse);
+            List<GetPatientByIdResponse> patientsResponse = new List<GetPatientByIdResponse>();
+
+            foreach (var patient in patients)
+            {
+                GetPatientByIdResponse patientResponse = new GetPatientByIdResponse(patient.Id, patient.CreateTime,
+                    patient.Name, patient.Birthday, patient.Sex);
+            
+                patientsResponse.Add(patientResponse);
+            }
+        
+            GetPatientsListResponse response = new GetPatientsListResponse(patientsResponse, pagination);
+        
+            return Ok(response);
         }
-        
-        GetPatientsListResponse response = new GetPatientsListResponse(patientsResponse, pagination);
-        
-        return Ok(response);
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpGet("{id}")]
@@ -185,18 +184,20 @@ public class PatientsController : ControllerBase
         {
             return NotFound("Пациент не найден");
         }
-        
-        var (inspections, pagination) = await 
-            _inspectionsService.GetPatientInspections(patient, request.grouped, request.icdRoots, request.page ?? 1, 
-                request.size ?? 5);
 
-        if (inspections == null)
+        try
         {
-            return BadRequest("Недопустимое значение page");
+            var (inspections, pagination) = await 
+                _inspectionsService.GetPatientInspections(patient, request.grouped, request.icdRoots, request.page, 
+                    request.size);
+        
+            InspectionPagedListResponse response = new InspectionPagedListResponse(inspections, pagination);
+        
+            return Ok(response);
         }
-        
-        InspectionPagedListResponse response = new InspectionPagedListResponse(inspections, pagination);
-        
-        return Ok(response);
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 }
