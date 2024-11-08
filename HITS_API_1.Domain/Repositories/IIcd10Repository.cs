@@ -4,7 +4,6 @@ namespace HITS_API_1.Domain.Repositories;
 
 public interface IIcd10Repository
 {
-    Task Load();
     Task<List<Icd10Entity>> GetAllByName(String name);
     Task<List<Icd10Entity>> GetAllByCode(String code);
     Task<List<Icd10Entity>> GetRoots();

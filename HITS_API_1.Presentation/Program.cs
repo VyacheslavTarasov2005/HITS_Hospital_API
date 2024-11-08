@@ -8,6 +8,7 @@ using HITS_API_1.Application.Validators;
 using HITS_API_1.Domain.Repositories;
 using HITS_API_1.Infrastructure.Authentication;
 using HITS_API_1.Infrastructure.Data;
+using HITS_API_1.Infrastructure.Data.ICD10;
 using HITS_API_1.Infrastructure.Repositories;
 using HITS_API_1.Middlewares;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +54,9 @@ builder.Services.AddScoped<ICommentsService, CommentsService>();
 builder.Services.AddScoped<IDiagnosesService, DiagnosesService>();
 builder.Services.AddScoped<IEmailsService, EmailsService>();
 builder.Services.AddScoped<IPaginationService, PaginationService>();
+
+// Загрузка МКБ
+builder.Services.AddScoped<IIcdLoader, IcdLoader>();
 
 // Валидаторы
 builder.Services.AddValidatorsFromAssemblyContaining<RegistrationRequestValidator>();
@@ -126,11 +130,11 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    var icd10Repository = scope.ServiceProvider.GetRequiredService<IIcd10Repository>();
+    var icdLoader = scope.ServiceProvider.GetRequiredService<IIcdLoader>();
 
     try
     {
-        await DbInitializer.Initialize(dbContext, icd10Repository);
+        await DbInitializer.Initialize(dbContext, icdLoader);
 
         // Проверка, получилось ли подклюиться к БД
         if (dbContext.Database.CanConnect())
