@@ -52,8 +52,9 @@ public class ConsultationsController(
 
         try
         {
-            var (inspections, pagination) = await inspectionsService.GetInspectionsForConsultation(
-                doctor, request.grouped, request.icdRoots, request.page, request.size);
+            var (inspections, pagination) = 
+                await inspectionsService.GetInspectionsForConsultation(doctor, request.grouped, request.icdRoots, 
+                    request.page, request.size);
         
             InspectionPagedListResponse response = new InspectionPagedListResponse(inspections, pagination);
         

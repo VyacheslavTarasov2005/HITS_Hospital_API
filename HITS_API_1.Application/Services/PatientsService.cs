@@ -97,63 +97,59 @@ public class PatientsService(
 
                 var mainDiagnosis = diagnoses.FirstOrDefault(d => d.Type == DiagnosisType.Main);
 
+                if (mainDiagnosis == null)
+                {
+                    continue;
+                }
+                
+                var mainDiagnosisIcdRoot = await icd10Repository.GetRootByChildId(mainDiagnosis.Icd10Id);
+
                 if (request.icdRoots != null && request.icdRoots.Count > 0 &&
                     !request.icdRoots.Contains(mainDiagnosis.Icd10Id))
                 {
-                    foreach (var icdRoot in request.icdRoots)
+                    if (mainDiagnosisIcdRoot != null && request.icdRoots.Contains(mainDiagnosisIcdRoot.Id))
                     {
-                        var children = await icd10Repository.GetAllByRoot(icdRoot);
-
-                        if (children.Any(i => i.Id == mainDiagnosis.Icd10Id))
+                        // Обновление количества у пациента
+                        if (!patientIcdCounter.ContainsKey(mainDiagnosisIcdRoot.Code))
                         {
-                            var icdEntity = await icd10Repository.GetById(icdRoot);
-                            
-                            // Обновление количества у пациента
-                            if (!patientIcdCounter.ContainsKey(icdEntity.Code))
-                            {
-                                patientIcdCounter[icdEntity.Code] = 1;
-                            }
-                            else
-                            {
-                                patientIcdCounter[icdEntity.Code]++;
-                            }
-                            
-                            // Обновление общего количества
-                            if (!icdCounter.ContainsKey(icdEntity.Code))
-                            {
-                                icdCounter[icdEntity.Code] = 1;
-                            }
-                            else
-                            {
-                                icdCounter[icdEntity.Code]++;
-                            }
-                            
-                            break;
+                            patientIcdCounter[mainDiagnosisIcdRoot.Code] = 1;
+                        }
+                        else
+                        {
+                            patientIcdCounter[mainDiagnosisIcdRoot.Code]++;
+                        }
+                        
+                        // Обновление общего количества
+                        if (!icdCounter.ContainsKey(mainDiagnosisIcdRoot.Code))
+                        {
+                            icdCounter[mainDiagnosisIcdRoot.Code] = 1;
+                        }
+                        else
+                        {
+                            icdCounter[mainDiagnosisIcdRoot.Code]++;
                         }
                     }
                 }
                 else
                 {
-                    var icd = await icd10Repository.GetById(mainDiagnosis.Icd10Id);
-                    
                     // Обновление количества у пациента
-                    if (!patientIcdCounter.ContainsKey(icd.Code))
+                    if (!patientIcdCounter.ContainsKey(mainDiagnosisIcdRoot.Code))
                     {
-                        patientIcdCounter[icd.Code] = 1;
+                        patientIcdCounter[mainDiagnosisIcdRoot.Code] = 1;
                     }
                     else
                     {
-                        patientIcdCounter[icd.Code]++;
+                        patientIcdCounter[mainDiagnosisIcdRoot.Code]++;
                     }
                     
                     // Обновление общего количества
-                    if (!icdCounter.ContainsKey(icd.Code))
+                    if (!icdCounter.ContainsKey(mainDiagnosisIcdRoot.Code))
                     {
-                        icdCounter[icd.Code] = 1;
+                        icdCounter[mainDiagnosisIcdRoot.Code] = 1;
                     }
                     else
                     {
-                        icdCounter[icd.Code]++;
+                        icdCounter[mainDiagnosisIcdRoot.Code]++;
                     }
                 }
             }

@@ -83,22 +83,16 @@ public class Icd10Repository(ApplicationDbContext dbContext) : IIcd10Repository
         return icd10Entity;
     }
 
-    public async Task<List<Icd10Entity>> GetAllByRoot(Guid rootId, List<Icd10Entity>? rootChildren = null)
+    public async Task<Icd10Entity?> GetRootByChildId(Guid childId)
     {
-        rootChildren ??= new List<Icd10Entity>();
-        
-        var children = await dbContext.Icd10Entities
-            .AsNoTracking()
-            .Where(i => i.ParentId == rootId)
-            .ToListAsync();
-        
-        rootChildren.AddRange(children);
+        var child = await GetById(childId);
 
-        foreach (var child in children)
+        while (child?.ParentId != null)
         {
-            await GetAllByRoot(child.Id, rootChildren);
+            var parent = await GetById(child.ParentId.Value);
+            child = parent;
         }
         
-        return rootChildren;
+        return child;
     }
 }

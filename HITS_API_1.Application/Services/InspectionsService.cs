@@ -280,21 +280,16 @@ public class InspectionsService(
             var mainDiagnosis = diagnoses
                 .FirstOrDefault(d => d.Type == DiagnosisType.Main);
 
-            if (icdRoots.Count != 0 && !icdRoots.Contains(mainDiagnosis.Icd10Id))
+            if (mainDiagnosis == null)
             {
-                bool isValid  = false;
-                foreach (var icdRoot in icdRoots)
-                {
-                    var children = await icd10Repository.GetAllByRoot(icdRoot);
+                continue;
+            }
 
-                    if (children.Any(i => i.Id == mainDiagnosis.Icd10Id))
-                    {
-                        isValid = true;
-                        break;
-                    }
-                }
+            if (icdRoots != null && icdRoots.Count > 0 && !icdRoots.Contains(mainDiagnosis.Icd10Id))
+            {
+                var mainDiagnosisIcdRoot = await icd10Repository.GetRootByChildId(mainDiagnosis.Icd10Id);
 
-                if (!isValid)
+                if (mainDiagnosisIcdRoot == null || !icdRoots.Contains(mainDiagnosisIcdRoot.Id))
                 {
                     continue;
                 }
