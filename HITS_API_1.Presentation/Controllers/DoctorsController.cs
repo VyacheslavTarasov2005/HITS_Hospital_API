@@ -11,30 +11,18 @@ namespace HITS_API_1.Controllers;
 
 [ApiController]
 [Route("api/doctor")]
-public class DoctorsController : ControllerBase
+public class DoctorsController(
+    IDoctorsService doctorsService,
+    IValidator<RegistrationRequest> registrationRequestValidator,
+    IValidator<LoginRequest> loginRequestValidator,
+    IValidator<UpdateDoctorRequest> updateDoctorRequestValidator)
+    : ControllerBase
 {
-    private readonly IDoctorsService _doctorsService;
-    private readonly IValidator<RegistrationRequest> _registrationRequestValidator;
-    private readonly IValidator<LoginRequest> _loginRequestValidator;
-    private readonly IValidator<UpdateDoctorRequest> _updateDoctorRequestValidator;
-
-    public DoctorsController(
-        IDoctorsService doctorsService, 
-        IValidator<RegistrationRequest> registrationRequestValidator,
-        IValidator<LoginRequest> loginRequestValidator,
-        IValidator<UpdateDoctorRequest> updateDoctorRequestValidator)
-    {
-        _doctorsService = doctorsService;
-        _registrationRequestValidator = registrationRequestValidator;
-        _loginRequestValidator = loginRequestValidator;
-        _updateDoctorRequestValidator = updateDoctorRequestValidator;
-    }
-
     [HttpPost("register")]
     [AllowAnonymous]
     public async Task<ActionResult<AuthenticationResponse>> RegisterDoctor([FromBody] RegistrationRequest request)
     {
-        var validationResult = await _registrationRequestValidator.ValidateAsync(request);
+        var validationResult = await registrationRequestValidator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
             return BadRequest(validationResult.Errors);
@@ -43,7 +31,7 @@ public class DoctorsController : ControllerBase
         Doctor doctor = new Doctor(request.name, request.birthday, request.gender, request.phone, request.email,
             request.password, request.speciality);
 
-        String accesToken = await _doctorsService.RegisterDoctor(doctor);
+        String accesToken = await doctorsService.RegisterDoctor(doctor);
         
         AuthenticationResponse response = new AuthenticationResponse(accesToken);
         
@@ -54,13 +42,13 @@ public class DoctorsController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<AuthenticationResponse>> LoginDoctor([FromBody] LoginRequest request)
     {
-        var validationResult = await _loginRequestValidator.ValidateAsync(request);
+        var validationResult = await loginRequestValidator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
             return BadRequest(validationResult.Errors);
         }
         
-        var accesToken = await _doctorsService.LoginDoctor(request.email, request.password);
+        var accesToken = await doctorsService.LoginDoctor(request.email, request.password);
 
         if (accesToken == null)
         {
@@ -78,7 +66,7 @@ public class DoctorsController : ControllerBase
     {
         var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         
-        await _doctorsService.LogoutDoctor(token);
+        await doctorsService.LogoutDoctor(token);
         
         return Ok();
     }
@@ -93,7 +81,7 @@ public class DoctorsController : ControllerBase
             return NotFound();
         }
         
-        var doctor = await _doctorsService.GetDoctor(Guid.Parse(doctorId));
+        var doctor = await doctorsService.GetDoctor(Guid.Parse(doctorId));
         if (doctor == null)
         {
             return NotFound();
@@ -109,7 +97,7 @@ public class DoctorsController : ControllerBase
     [Authorize]
     public async Task<ActionResult> UpdateDoctor([FromBody] UpdateDoctorRequest request)
     {
-        var validationResult = await _updateDoctorRequestValidator.ValidateAsync(request);
+        var validationResult = await updateDoctorRequestValidator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
             return BadRequest(validationResult.Errors);
@@ -123,7 +111,7 @@ public class DoctorsController : ControllerBase
 
         try
         {
-            await _doctorsService.UpdateDoctor(Guid.Parse(doctorId), request.email, request.name, request.birthday,
+            await doctorsService.UpdateDoctor(Guid.Parse(doctorId), request.email, request.name, request.birthday,
                 request.gender, request.phone);
             
             return Ok();

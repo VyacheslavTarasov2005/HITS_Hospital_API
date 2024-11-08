@@ -5,28 +5,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HITS_API_1.Infrastructure.Repositories;
 
-public class TokensRepository : ITokensRepository
+public class TokensRepository(ApplicationDbContext dbContext) : ITokensRepository
 {
-    private readonly ApplicationDbContext _dbContext;
-    
-    public TokensRepository(ApplicationDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public async Task<String> Create(String token, Guid doctorId)
     {
         var newToken = new Token(token, doctorId);
         
-        await _dbContext.AddAsync(newToken);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.AddAsync(newToken);
+        await dbContext.SaveChangesAsync();
 
         return newToken.AccesToken;
     }
 
     public async Task<Token?> Get(String accessToken)
     {
-        var tokens = await _dbContext.Tokens
+        var tokens = await dbContext.Tokens
             .AsNoTracking()
             .ToListAsync();
 
@@ -43,7 +36,7 @@ public class TokensRepository : ITokensRepository
 
     public async Task Delete(String accesToken)
     {
-        var tokens = await _dbContext.Tokens
+        var tokens = await dbContext.Tokens
             .AsNoTracking()
             .ToListAsync();
         
@@ -51,10 +44,10 @@ public class TokensRepository : ITokensRepository
         {
             if (BCrypt.Net.BCrypt.EnhancedVerify(accesToken, token.AccesToken))
             {
-                _dbContext.Tokens.Remove(token);
+                dbContext.Tokens.Remove(token);
             }
         }
         
-        await _dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 }

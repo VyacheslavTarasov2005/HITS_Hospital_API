@@ -12,46 +12,28 @@ namespace HITS_API_1.Controllers;
 
 [ApiController]
 [Route("api/patient")]
-public class PatientsController : ControllerBase
+public class PatientsController(
+    IPatientsService patientsService,
+    IValidator<CreatePatientRequest> patientValidator,
+    IInspectionsService inspectionsService,
+    CreateInspectionRequestValidator createInspectionRequestValidator,
+    GetPatientsListRequestValidator getPatientsListRequestValidator,
+    GetFilteredInspectionsRequestValidator getFilteredInspectionsRequestValidator,
+    IPatientsRepository patientsRepository)
+    : ControllerBase
 {
-    private readonly IPatientsService _patientsService;
-    private readonly IValidator<CreatePatientRequest> _patientValidator;
-    private readonly IInspectionsService _inspectionsService;
-    private readonly CreateInspectionRequestValidator _createInspectionRequestValidator;
-    private readonly GetPatientsListRequestValidator _getPatientsListRequestValidator;
-    private readonly GetFilteredInspectionsRequestValidator _getFilteredInspectionsRequestValidator;
-    private readonly IPatientsRepository _patientsRepository;
-
-    public PatientsController(
-        IPatientsService patientsService, 
-        IValidator<CreatePatientRequest> patientValidator,
-        IInspectionsService inspectionsService,
-        CreateInspectionRequestValidator createInspectionRequestValidator,
-        GetPatientsListRequestValidator getPatientsListRequestValidator,
-        GetFilteredInspectionsRequestValidator getFilteredInspectionsRequestValidator,
-        IPatientsRepository patientsRepository)
-    {
-        _patientsService = patientsService;
-        _patientValidator = patientValidator;
-        _inspectionsService = inspectionsService;
-        _createInspectionRequestValidator = createInspectionRequestValidator;
-        _getPatientsListRequestValidator = getPatientsListRequestValidator;
-        _getFilteredInspectionsRequestValidator = getFilteredInspectionsRequestValidator;
-        _patientsRepository = patientsRepository;
-    }
-
     [HttpPost]
     [Authorize]
     public async Task<ActionResult> CreatePatient([FromBody] CreatePatientRequest request)
     {
-        var validationResult = await _patientValidator.ValidateAsync(request);
+        var validationResult = await patientValidator.ValidateAsync(request);
 
         if (!validationResult.IsValid)
         {
             return BadRequest(validationResult.Errors);
         }
         
-        var patientId = await _patientsService.CreatePatient(request.name, request.birthday, request.gender);
+        var patientId = await patientsService.CreatePatient(request.name, request.birthday, request.gender);
         
         return Ok(patientId.ToString());
     }
@@ -60,7 +42,7 @@ public class PatientsController : ControllerBase
     [Authorize]
     public async Task<ActionResult<GetPatientsListResponse>> GetPatients([FromQuery] GetPatientsListRequest request)
     {
-        var validationResult = _getPatientsListRequestValidator.Validate(request);
+        var validationResult = getPatientsListRequestValidator.Validate(request);
 
         if (!validationResult.IsValid)
         {
@@ -80,7 +62,7 @@ public class PatientsController : ControllerBase
 
         try
         {
-            var (patients, pagination) = await _patientsService.GetPatients(request.name, request.conclusions, 
+            var (patients, pagination) = await patientsService.GetPatients(request.name, request.conclusions, 
                 request.sorting, visits, onlyMine ? Guid.Parse(doctorId) : null, request.page, request.size);
             
             List<GetPatientByIdResponse> patientsResponse = new List<GetPatientByIdResponse>();
@@ -107,7 +89,7 @@ public class PatientsController : ControllerBase
     [Authorize]
     public async Task<ActionResult> GetPatientById([FromRoute] Guid id)
     {
-        var patient = await _patientsService.GetPatientById(id);
+        var patient = await patientsService.GetPatientById(id);
 
         if (patient == null)
         {
@@ -125,7 +107,7 @@ public class PatientsController : ControllerBase
     public async Task<ActionResult> CreateInspection([FromRoute] Guid id,
         [FromBody] CreateInspectionRequest request)
     {
-        var validationResult = await _createInspectionRequestValidator.ValidateAsync(request);
+        var validationResult = await createInspectionRequestValidator.ValidateAsync(request);
 
         if (!validationResult.IsValid)
         {
@@ -141,11 +123,16 @@ public class PatientsController : ControllerBase
 
         try
         {
-            var inspectionId = await _inspectionsService.CreateInspection(request, id, Guid.Parse(doctorId));
+            var inspectionId = await inspectionsService.CreateInspection(request, id, Guid.Parse(doctorId));
             return Ok(inspectionId.ToString());
         }
         catch (Exception e)
         {
+            if (e is NullReferenceException)
+            {
+                return NotFound(e.Message);
+            }
+            
             return BadRequest(e.Message);
         }
     }
@@ -156,7 +143,7 @@ public class PatientsController : ControllerBase
         [FromRoute] Guid id, [FromQuery] String? request)
     {
         var inspections = await 
-            _inspectionsService.GetPatientInspectionsNoChildren(id, request);
+            inspectionsService.GetPatientInspectionsNoChildren(id, request);
 
         if (inspections == null)
         {
@@ -171,14 +158,14 @@ public class PatientsController : ControllerBase
     public async Task<ActionResult<InspectionPagedListResponse>> GetInspections([FromRoute] Guid id,
         [FromQuery] GetFilteredInspectionsRequest request)
     {
-        var validationResult = await _getFilteredInspectionsRequestValidator.ValidateAsync(request);
+        var validationResult = await getFilteredInspectionsRequestValidator.ValidateAsync(request);
 
         if (!validationResult.IsValid)
         {
             return BadRequest(validationResult.Errors);
         }
 
-        var patient = await _patientsRepository.GetById(id);
+        var patient = await patientsRepository.GetById(id);
 
         if (patient == null)
         {
@@ -188,7 +175,7 @@ public class PatientsController : ControllerBase
         try
         {
             var (inspections, pagination) = await 
-                _inspectionsService.GetPatientInspections(patient, request.grouped, request.icdRoots, request.page, 
+                inspectionsService.GetPatientInspections(patient, request.grouped, request.icdRoots, request.page, 
                     request.size);
         
             InspectionPagedListResponse response = new InspectionPagedListResponse(inspections, pagination);

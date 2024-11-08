@@ -8,29 +8,21 @@ namespace HITS_API_1.Controllers;
 
 [ApiController]
 [Route("api/report")]
-public class ReportsController : ControllerBase
+public class ReportsController(GetReportRequestValidator getReportRequestValidator, IPatientsService patientsService)
+    : ControllerBase
 {
-    private readonly GetReportRequestValidator _getReportRequestValidator;
-    private readonly IPatientsService _patientsService;
-
-    public ReportsController(GetReportRequestValidator getReportRequestValidator, IPatientsService patientsService)
-    {
-        _getReportRequestValidator = getReportRequestValidator;
-        _patientsService = patientsService;
-    }
-
     [HttpGet("icdrootsreport")]
     [Authorize]
     public async Task<ActionResult<GetReportResponse>> GetReport([FromQuery] GetReportRequest request)
     {
-        var validationResult = await _getReportRequestValidator.ValidateAsync(request);
+        var validationResult = await getReportRequestValidator.ValidateAsync(request);
 
         if (!validationResult.IsValid)
         {
             return BadRequest(validationResult.Errors);
         }
         
-        var response = await _patientsService.GetPatientsReport(request);
+        var response = await patientsService.GetPatientsReport(request);
         
         return Ok(response);
     }

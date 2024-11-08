@@ -5,49 +5,37 @@ using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Services;
 
-public class EmailsService : IEmailsService
+public class EmailsService(
+    IEmailMessagesRepository emailMessagesRepository,
+    IPatientsRepository patientsRepository,
+    IInspectionsRepository inspectionsRepository,
+    IDoctorsRepository doctorsRepository)
+    : IEmailsService
 {
     private readonly String _smtpServer = "localhost";
     private readonly int _smtpPort = 1025;
-    
-    private readonly IEmailMessagesRepository _emailMessagesRepository;
-    private readonly IPatientsRepository _patientsRepository;
-    private readonly IInspectionsRepository _inspectionsRepository;
-    private readonly IDoctorsRepository _doctorsRepository;
-
-    public EmailsService(
-        IEmailMessagesRepository emailMessagesRepository,
-        IPatientsRepository patientsRepository,
-        IInspectionsRepository inspectionsRepository,
-        IDoctorsRepository doctorsRepository)
-    {
-        _emailMessagesRepository = emailMessagesRepository;
-        _patientsRepository = patientsRepository;
-        _inspectionsRepository = inspectionsRepository;
-        _doctorsRepository = doctorsRepository;
-    }
 
     public async Task CheckInspecions()
     {
-        var patients = await _patientsRepository.GetAllByNamePart("");
+        var patients = await patientsRepository.GetAllByNamePart("");
 
         foreach (var patient in patients)
         {
-            var inspections = await _inspectionsRepository.GetAllByPatientId(patient.Id);
+            var inspections = await inspectionsRepository.GetAllByPatientId(patient.Id);
             inspections = inspections
                 .Where(i => i.NextVisitDate != null && i.NextVisitDate < DateTime.UtcNow)
                 .ToList();
 
             foreach (var inspection in inspections)
             {
-                var childInspection = await _inspectionsRepository.GetByParentInspectionId(inspection.Id);
+                var childInspection = await inspectionsRepository.GetByParentInspectionId(inspection.Id);
 
                 if (childInspection == null)
                 {
-                    var email = await _emailMessagesRepository.GetByInspectionId(inspection.Id);
+                    var email = await emailMessagesRepository.GetByInspectionId(inspection.Id);
                     if (email == null)
                     {
-                        var inspectionAuthor = await _doctorsRepository.GetById(inspection.DoctorId);
+                        var inspectionAuthor = await doctorsRepository.GetById(inspection.DoctorId);
                     
                         try
                         {
@@ -61,7 +49,7 @@ public class EmailsService : IEmailsService
                         EmailMessage emailEntity = new EmailMessage(inspection.Id, patient.Name, 
                             inspectionAuthor.Email);
                         
-                        await _emailMessagesRepository.Add(emailEntity);
+                        await emailMessagesRepository.Add(emailEntity);
                     }
                 }
             }

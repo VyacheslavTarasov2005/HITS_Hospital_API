@@ -5,26 +5,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HITS_API_1.Infrastructure.Repositories;
 
-public class InspectionsRepository : IInspectionsRepository
+public class InspectionsRepository(ApplicationDbContext dbContext) : IInspectionsRepository
 {
-    private readonly ApplicationDbContext _dbContext;
-
-    public InspectionsRepository(ApplicationDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public async Task<Guid> Create(Inspection inspection)
     {
-        await _dbContext.Inspections.AddAsync(inspection);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.Inspections.AddAsync(inspection);
+        await dbContext.SaveChangesAsync();
         
         return inspection.Id;
     }
 
     public async Task<Inspection?> GetById(Guid id)
     {
-        var inspection = await _dbContext.Inspections
+        var inspection = await dbContext.Inspections
             .AsNoTracking()
             .FirstOrDefaultAsync(i => i.Id == id);
         
@@ -33,7 +26,7 @@ public class InspectionsRepository : IInspectionsRepository
 
     public async Task<Inspection?> GetByParentInspectionId(Guid parentInspectionId)
     {
-        var inspection = await _dbContext.Inspections
+        var inspection = await dbContext.Inspections
             .AsNoTracking()
             .FirstOrDefaultAsync(i => i.PreviousInspectionId == parentInspectionId);
         
@@ -42,7 +35,7 @@ public class InspectionsRepository : IInspectionsRepository
 
     public async Task<List<Inspection>> GetAllByPatientId(Guid patientId)
     {
-        var inspections = await _dbContext.Inspections
+        var inspections = await dbContext.Inspections
             .AsNoTracking()
             .Where(i => i.PatientId == patientId)
             .ToListAsync();
@@ -53,7 +46,7 @@ public class InspectionsRepository : IInspectionsRepository
     public async Task Update(Guid id, String anamnesis, String complaints, String treatment, Conclusion conclusion,
         DateTime? nextVisitDate, DateTime? deathDate)
     {
-        await _dbContext.Inspections
+        await dbContext.Inspections
             .Where(i => i.Id == id)
             .ExecuteUpdateAsync(s => s
                 .SetProperty(i => i.Anamnesis, i => anamnesis)
@@ -63,12 +56,12 @@ public class InspectionsRepository : IInspectionsRepository
                 .SetProperty(i => i.NextVisitDate, i => nextVisitDate)
                 .SetProperty(i => i.DeathDate, i => deathDate));
         
-        await _dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task<List<Inspection>> GetAll()
     {
-        var inspections = await _dbContext.Inspections
+        var inspections = await dbContext.Inspections
             .AsNoTracking()
             .ToListAsync();
         

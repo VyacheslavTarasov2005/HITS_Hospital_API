@@ -5,68 +5,56 @@ using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Services;
 
-public class ConsultationsService : IConsultationsService
+public class ConsultationsService(
+    IConsultationsRepository consultationsRepository,
+    ICommentsRepository commentsRepository,
+    IDoctorsService doctorsService,
+    ISpecialitiesRepository specialitiesRepository)
+    : IConsultationsService
 {
-    private readonly IConsultationsRepository _consultationsRepository;
-    private readonly ICommentsRepository _commentsRepository;
-    private readonly IDoctorsService _doctorsService;
-    private readonly ISpecialitiesRepository _specialitiesRepository;
-
-    public ConsultationsService(
-        IConsultationsRepository consultationsRepository,
-        ICommentsRepository commentsRepository,
-        IDoctorsService doctorsService,
-        ISpecialitiesRepository specialitiesRepository)
-    {
-        _consultationsRepository = consultationsRepository;
-        _commentsRepository = commentsRepository;
-        _doctorsService = doctorsService;
-        _specialitiesRepository = specialitiesRepository;
-    }
-
     public async Task<Guid> CreateConsultation(Guid inspectionId, Guid specialityId, Guid doctorId,
         String commentContent)
     {
         Consultation consultation = new Consultation(inspectionId, specialityId);
         
-        await _consultationsRepository.Create(consultation);
+        await consultationsRepository.Create(consultation);
         
         Comment comment = new Comment(null, commentContent, doctorId, null, consultation.Id);
         
-        await _commentsRepository.Create(comment);
+        await commentsRepository.Create(comment);
         
         return consultation.Id;
     }
 
     public async Task<(Consultation?, List<Comment>)> GetConsultationById(Guid consultationId)
     {
-        var consultation = await _consultationsRepository.GetById(consultationId);
+        var consultation = await consultationsRepository.GetById(consultationId);
 
         if (consultation == null)
         {
             return (null, []);
         }
         
-        var comments = await _commentsRepository.GetByConsultationId(consultationId);
+        var comments = await commentsRepository.GetByConsultationId(consultationId);
 
         return (consultation, comments);
     }
 
     public async Task<List<InspectionConsultationModel>> GetAllConsultationsByInspection(Guid inspectionId)
     {
-        var consultations = await _consultationsRepository.GetAllByInspectionId(inspectionId);
+        var consultations = await consultationsRepository.GetAllByInspectionId(inspectionId);
         
         List<InspectionConsultationModel> consultationResponse = new List<InspectionConsultationModel>();
 
         foreach (var consultation in consultations)
         {
-            var speciality = await _specialitiesRepository.GetById(consultation.SpecialityId);
+            var speciality = await specialitiesRepository.GetById(consultation.SpecialityId);
                 
-            var comments = await _commentsRepository.GetByConsultationId(consultation.Id);
+            var comments = await commentsRepository.GetByConsultationId(consultation.Id);
 
             var rootComment = comments.MinBy(c => c.CreateTime);
         
-            var rootCommentAuthor = await _doctorsService.GetDoctor(rootComment.AuthorId);
+            var rootCommentAuthor = await doctorsService.GetDoctor(rootComment.AuthorId);
         
             int commentsNumber = comments.Count();
             

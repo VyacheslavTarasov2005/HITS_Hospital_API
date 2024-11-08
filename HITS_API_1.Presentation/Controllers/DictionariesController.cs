@@ -9,30 +9,18 @@ namespace HITS_API_1.Controllers;
 
 [ApiController]
 [Route("api/dictionary")]
-public class DictionariesController : ControllerBase
+public class DictionariesController(
+    ISpecialitiesService specialitiesService,
+    IIcd10Service icd10Service,
+    IValidator<GetSpecialitiesRequest> getSpecialitiesRequestValidator,
+    IValidator<GetIcd10Request> getIcd10RequestValidator)
+    : ControllerBase
 {
-    private readonly ISpecialitiesService _specialitiesService;
-    private readonly IIcd10Service _icd10Service;
-    private readonly IValidator<GetSpecialitiesRequest> _getSpecialitiesRequestValidator;
-    private readonly IValidator<GetIcd10Request> _getIcd10RequestValidator;
-
-    public DictionariesController(
-        ISpecialitiesService specialitiesService, 
-        IIcd10Service icd10Service,
-        IValidator<GetSpecialitiesRequest> getSpecialitiesRequestValidator, 
-        IValidator<GetIcd10Request> getIcd10RequestValidator)
-    {
-        _specialitiesService = specialitiesService;
-        _icd10Service = icd10Service;
-        _getSpecialitiesRequestValidator = getSpecialitiesRequestValidator;
-        _getIcd10RequestValidator = getIcd10RequestValidator;
-    }
-
     [HttpGet("speciality")]
     [AllowAnonymous]
     public async Task<ActionResult<GetSpecialitiesResponse>> GetSpecialities([FromQuery] GetSpecialitiesRequest request)
     {
-        var validationResult = await _getSpecialitiesRequestValidator.ValidateAsync(request);
+        var validationResult = await getSpecialitiesRequestValidator.ValidateAsync(request);
 
         if (!validationResult.IsValid)
         {
@@ -41,7 +29,7 @@ public class DictionariesController : ControllerBase
 
         try
         {
-            var (specialities, pagination) = await _specialitiesService.GetSpecialities(request.name, 
+            var (specialities, pagination) = await specialitiesService.GetSpecialities(request.name, 
                 request.page, request.size);
             
             GetSpecialitiesResponse response = new GetSpecialitiesResponse(specialities, pagination);
@@ -58,7 +46,7 @@ public class DictionariesController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<GetIcd10Response>> GetIcd10([FromQuery] GetIcd10Request queryRequest)
     {
-        var validationResult = await _getIcd10RequestValidator.ValidateAsync(queryRequest);
+        var validationResult = await getIcd10RequestValidator.ValidateAsync(queryRequest);
 
         if (!validationResult.IsValid)
         {
@@ -67,7 +55,7 @@ public class DictionariesController : ControllerBase
 
         try
         {
-            var (icd10Entities, pagination) = await _icd10Service.GetIcd10(queryRequest.request, 
+            var (icd10Entities, pagination) = await icd10Service.GetIcd10(queryRequest.request, 
                 queryRequest.page, queryRequest.size);
             
             var responseList = icd10Entities.Select(root => new Icd10Response(
@@ -91,7 +79,7 @@ public class DictionariesController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<Icd10Response>> GetIcd10Roots()
     {
-        var icd10RootsList = await _icd10Service.GetRootsIcd10();
+        var icd10RootsList = await icd10Service.GetRootsIcd10();
         
         var response = icd10RootsList.Select(root => new Icd10Response(
             root.Code,

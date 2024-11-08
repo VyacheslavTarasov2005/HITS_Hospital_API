@@ -5,34 +5,25 @@ using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Services;
 
-public class TokensService : ITokensService
+public class TokensService(ITokensRepository tokensRepository, IHasher hasher) : ITokensService
 {
-    private readonly ITokensRepository _tokensRepository;
-    private readonly IHasher _hasher;
-
-    public TokensService(ITokensRepository tokensRepository, IHasher hasher)
-    {
-        _tokensRepository = tokensRepository;
-        _hasher = hasher;
-    }
-
     public async Task<String> CreateToken(Guid doctorId)
     {
         String token = Guid.NewGuid().ToString();
-        String hashedToken = _hasher.Hash(token);
+        String hashedToken = hasher.Hash(token);
         
-        await _tokensRepository.Create(hashedToken, doctorId);
+        await tokensRepository.Create(hashedToken, doctorId);
         
         return token;
     }
 
     public async Task<Token?> GetToken(String token)
     {
-        return await _tokensRepository.Get(token);
+        return await tokensRepository.Get(token);
     }
 
     public async Task DeleteToken(String token)
     {
-        await _tokensRepository.Delete(token);
+        await tokensRepository.Delete(token);
     }
 }

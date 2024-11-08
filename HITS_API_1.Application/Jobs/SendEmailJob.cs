@@ -3,17 +3,10 @@ using Quartz;
 
 namespace HITS_API_1.Application.Jobs;
 
-public class SendEmailJob : IJob
+public class SendEmailJob(IEmailsService emailsService) : IJob
 {
-    private readonly IEmailsService _emailsService;
-
-    public SendEmailJob(IEmailsService emailsService)
-    {
-        _emailsService = emailsService;
-    }
-
     public async Task Execute(IJobExecutionContext context)
     {
-        await _emailsService.CheckInspecions();
+        await emailsService.CheckInspecions();
     }
 }

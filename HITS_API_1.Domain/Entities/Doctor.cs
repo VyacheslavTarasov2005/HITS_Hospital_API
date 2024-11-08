@@ -10,7 +10,7 @@ public class Doctor : Person
     private String _password;
     private Guid _speciality;
     
-    public String Phone
+    public String? Phone
     {
         get => _phone;
         set => _phone = value;
@@ -34,11 +34,12 @@ public class Doctor : Person
         set => _speciality = value;
     }
 
-    public Doctor(String name, DateTime? birthday, Gender sex, String? phone, String email, String password, Guid speciality) : base(name, birthday, sex)
+    public Doctor(String name, DateTime? birthday, Gender sex, String? phone, String email, String password, 
+        Guid speciality) : base(name, birthday, sex)
     {
-        Phone = phone;
-        Email = email;
-        Password = password;
-        Speciality = speciality;
+        _phone = phone;
+        _email = email;
+        _password = password;
+        _speciality = speciality;
     }
 }

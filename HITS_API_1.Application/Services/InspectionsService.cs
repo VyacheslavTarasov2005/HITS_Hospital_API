@@ -6,54 +6,32 @@ using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Services;
 
-public class InspectionsService : IInspectionsService
+public class InspectionsService(
+    IInspectionsRepository inspectionsRepository,
+    IDiagnosesRepository diagnosesRepository,
+    IConsultationsService consultationsService,
+    IPatientsRepository patientsRepository,
+    IDoctorsRepository doctorsRepository,
+    IDiagnosesService diagnosesService,
+    IIcd10Repository icd10Repository,
+    IConsultationsRepository consultationsRepository,
+    IPaginationService paginationService)
+    : IInspectionsService
 {
-    private readonly IInspectionsRepository _inspectionsRepository;
-    private readonly IDiagnosesRepository _diagnosesRepository;
-    private readonly IConsultationsService _consultationsService;
-    private readonly IPatientsRepository _patientsRepository;
-    private readonly IDoctorsRepository _doctorsRepository;
-    private readonly IDiagnosesService _diagnosesService;
-    private readonly IIcd10Repository _icd10Repository;
-    private readonly IConsultationsRepository _consultationsRepository;
-    private readonly IPaginationService _paginationService;
-
-    public InspectionsService(
-        IInspectionsRepository inspectionsRepository,
-        IDiagnosesRepository diagnosesRepository,
-        IConsultationsService consultationsService,
-        IPatientsRepository patientsRepository,
-        IDoctorsRepository doctorsRepository,
-        IDiagnosesService diagnosesService,
-        IIcd10Repository icd10Repository,
-        IConsultationsRepository consultationsRepository,
-        IPaginationService paginationService)
-    {
-        _inspectionsRepository = inspectionsRepository;
-        _diagnosesRepository = diagnosesRepository;
-        _consultationsService = consultationsService;
-        _patientsRepository = patientsRepository;
-        _doctorsRepository = doctorsRepository;
-        _diagnosesService = diagnosesService;
-        _icd10Repository = icd10Repository;
-        _consultationsRepository = consultationsRepository;
-        _paginationService = paginationService;
-    }
-
     public async Task<Guid> CreateInspection(CreateInspectionRequest request, Guid patientId, Guid doctorId)
     {
-        var patient = await _patientsRepository.GetById(patientId);
+        var patient = await patientsRepository.GetById(patientId);
 
         if (patient == null)
         {
-            throw new ArgumentException("Пациента не существует");
+            throw new NullReferenceException("Пациента не существует");
         }
         
         Inspection inspection = new Inspection(request.date, request.anamnesis, request.complaints, request.treatment, 
             request.conclusion, request.nextVisitDate, request.deathDate, request.previousInspectionId, 
             patientId, doctorId);
         
-        var patientInspections = await _inspectionsRepository.GetAllByPatientId(patientId);
+        var patientInspections = await inspectionsRepository.GetAllByPatientId(patientId);
 
         foreach (var patientInspection in patientInspections)
         {
@@ -76,21 +54,21 @@ public class InspectionsService : IInspectionsService
             }
         }
         
-        await _inspectionsRepository.Create(inspection);
+        await inspectionsRepository.Create(inspection);
 
         foreach (var diagnosis in request.diagnoses)
         {
             Diagnosis item = new Diagnosis(diagnosis.description, diagnosis.type, inspection.Id, 
                 diagnosis.icdDiagnosisId);
             
-            await _diagnosesRepository.Create(item);
+            await diagnosesRepository.Create(item);
         }
         
         if (request.consultations != null && request.consultations.Count > 0)
         {
             foreach (var consultation in request.consultations)
             {
-                await _consultationsService.CreateConsultation(inspection.Id, consultation.specialityId, 
+                await consultationsService.CreateConsultation(inspection.Id, consultation.specialityId, 
                     inspection.DoctorId, consultation.comment.content);
             }
         }
@@ -100,7 +78,7 @@ public class InspectionsService : IInspectionsService
 
     public async Task<Inspection?> GetInspectionById(Guid inspectionId)
     {
-        var inspection = await _inspectionsRepository.GetById(inspectionId);
+        var inspection = await inspectionsRepository.GetById(inspectionId);
 
         return inspection;
     }
@@ -112,11 +90,11 @@ public class InspectionsService : IInspectionsService
             return null;
         }
         
-        var parentInspection = await _inspectionsRepository.GetById(inspection.PreviousInspectionId.Value);
+        var parentInspection = await inspectionsRepository.GetById(inspection.PreviousInspectionId.Value);
 
         while (parentInspection?.PreviousInspectionId != null)
         {
-            parentInspection = await _inspectionsRepository.GetById(parentInspection.PreviousInspectionId.Value);
+            parentInspection = await inspectionsRepository.GetById(parentInspection.PreviousInspectionId.Value);
         }
 
         return parentInspection;
@@ -132,7 +110,7 @@ public class InspectionsService : IInspectionsService
             }
         }
         
-        var patientInspections = await _inspectionsRepository.GetAllByPatientId(inspection.PatientId);
+        var patientInspections = await inspectionsRepository.GetAllByPatientId(inspection.PatientId);
         
         foreach (var patientInspection in patientInspections)
         {
@@ -157,23 +135,23 @@ public class InspectionsService : IInspectionsService
             }
         }
         
-        await _inspectionsRepository.Update(inspection.Id, request.anamnesis, request.complaints, request.treatment,
+        await inspectionsRepository.Update(inspection.Id, request.anamnesis, request.complaints, request.treatment,
             request.conclusion, request.nextVisitDate, request.deathDate);
         
-        await _diagnosesRepository.DeleteByInspectionId(inspection.Id);
+        await diagnosesRepository.DeleteByInspectionId(inspection.Id);
 
         foreach (var diagnosisRequest in request.diagnoses)
         {
             Diagnosis diagnosis = new Diagnosis(diagnosisRequest.description, diagnosisRequest.type, inspection.Id,
                 diagnosisRequest.icdDiagnosisId);
 
-            await _diagnosesRepository.Create(diagnosis);
+            await diagnosesRepository.Create(diagnosis);
         }
     }
 
     public async Task<List<GetInspectionByRootResponse>> GetInspectionsByRoot(Guid rootId)
     {
-        var rootInspection = await _inspectionsRepository.GetById(rootId);
+        var rootInspection = await inspectionsRepository.GetById(rootId);
 
         if (rootInspection == null)
         {
@@ -187,18 +165,18 @@ public class InspectionsService : IInspectionsService
         
         List<GetInspectionByRootResponse> children = new List<GetInspectionByRootResponse>();
         
-        var child = await _inspectionsRepository.GetByParentInspectionId(rootInspection.Id);
+        var child = await inspectionsRepository.GetByParentInspectionId(rootInspection.Id);
 
         while (child != null)
         {
-            var doctor = await _doctorsRepository.GetById(child.DoctorId);
-            var patient = await _patientsRepository.GetById(child.PatientId);
+            var doctor = await doctorsRepository.GetById(child.DoctorId);
+            var patient = await patientsRepository.GetById(child.PatientId);
 
-            var diagnoses = await _diagnosesService.GetDiagnosesByInspection(child.Id);
+            var diagnoses = await diagnosesService.GetDiagnosesByInspection(child.Id);
             
             var mainDiagnosis = diagnoses.FirstOrDefault(d => d.diagnosisType == DiagnosisType.Main);
             
-            var nextChild = await _inspectionsRepository.GetByParentInspectionId(child.Id);
+            var nextChild = await inspectionsRepository.GetByParentInspectionId(child.Id);
             
             bool hasNested = nextChild != null;
 
@@ -219,7 +197,7 @@ public class InspectionsService : IInspectionsService
     public async Task<List<GetPatientInspectionsNoChildrenResponse>?> GetPatientInspectionsNoChildren(
         Guid patientId, String? filter)
     {
-        var inspections = await _inspectionsRepository.GetAllByPatientId(patientId);
+        var inspections = await inspectionsRepository.GetAllByPatientId(patientId);
 
         if (inspections.Count == 0)
         {
@@ -232,7 +210,7 @@ public class InspectionsService : IInspectionsService
 
         foreach (var inspection in inspections)
         {
-            var diagnoses = await _diagnosesService.GetDiagnosesByInspection(inspection.Id);
+            var diagnoses = await diagnosesService.GetDiagnosesByInspection(inspection.Id);
             
             var mainDiagnosis = diagnoses
                 .FirstOrDefault(d => d.diagnosisType == DiagnosisType.Main);
@@ -258,9 +236,9 @@ public class InspectionsService : IInspectionsService
     public async Task<(List<GetInspectionByRootResponse>, Pagination)> GetInspectionsForConsultation(Doctor doctor, 
         bool? grouped, List<Guid>? icdRoots, int? page, int? size)
     {
-        var inspections = await _inspectionsRepository.GetAll();
+        var inspections = await inspectionsRepository.GetAll();
         
-        var consultations = await _consultationsRepository.GetAll();
+        var consultations = await consultationsRepository.GetAll();
         
         inspections = inspections.Where(i => consultations
                 .Any(c => c.InspectionId == i.Id && c.SpecialityId == doctor.Speciality))
@@ -275,7 +253,7 @@ public class InspectionsService : IInspectionsService
     public async Task<(List<GetInspectionByRootResponse>, Pagination)> GetPatientInspections(Patient patient,
         bool? grouped, List<Guid>? icdRoots, int? page, int? size)
     {
-        var inspections = await _inspectionsRepository.GetAllByPatientId(patient.Id);
+        var inspections = await inspectionsRepository.GetAllByPatientId(patient.Id);
         
         var response = await FilterAndPaginateInspections(grouped, icdRoots,
             page, size, inspections);
@@ -298,7 +276,7 @@ public class InspectionsService : IInspectionsService
         
         foreach (var inspection in inspections)
         {
-            var diagnoses = await _diagnosesRepository.GetAllByInspection(inspection.Id);
+            var diagnoses = await diagnosesRepository.GetAllByInspection(inspection.Id);
             var mainDiagnosis = diagnoses
                 .FirstOrDefault(d => d.Type == DiagnosisType.Main);
 
@@ -307,7 +285,7 @@ public class InspectionsService : IInspectionsService
                 bool isValid  = false;
                 foreach (var icdRoot in icdRoots)
                 {
-                    var children = await _icd10Repository.GetAllByRoot(icdRoot);
+                    var children = await icd10Repository.GetAllByRoot(icdRoot);
 
                     if (children.Any(i => i.Id == mainDiagnosis.Icd10Id))
                     {
@@ -322,16 +300,16 @@ public class InspectionsService : IInspectionsService
                 }
             }
             
-            var author = await _doctorsRepository.GetById(inspection.DoctorId);
-            var patient = await _patientsRepository.GetById(inspection.PatientId);
+            var author = await doctorsRepository.GetById(inspection.DoctorId);
+            var patient = await patientsRepository.GetById(inspection.PatientId);
                 
-            var child = await _inspectionsRepository.GetByParentInspectionId(inspection.Id);
+            var child = await inspectionsRepository.GetByParentInspectionId(inspection.Id);
             
             bool hasNested = child != null;
                 
             bool hasChain = !(!hasNested && inspection.PreviousInspectionId == null);
 
-            Icd10Entity icd = await _icd10Repository.GetById(mainDiagnosis.Icd10Id);
+            Icd10Entity icd = await icd10Repository.GetById(mainDiagnosis.Icd10Id);
 
             GetDiagnosisResponse diagnosisResponse = new GetDiagnosisResponse(mainDiagnosis.Id,
                 mainDiagnosis.CreateTime, icd.Code, icd.Name, mainDiagnosis.Description, mainDiagnosis.Type);
@@ -343,6 +321,6 @@ public class InspectionsService : IInspectionsService
             response.Add(inspectionResponse);
         }
 
-        return _paginationService.PaginateList(response, page, size);
+        return paginationService.PaginateList(response, page, size);
     }
 }

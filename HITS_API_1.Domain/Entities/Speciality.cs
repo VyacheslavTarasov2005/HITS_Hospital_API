@@ -5,14 +5,15 @@ namespace HITS_API_1.Domain.Entities;
 
 public class Speciality
 {
+    private Guid _id;
     private DateTime _createTime;
-    private string _name;
-    
-    public Guid Id { get; set; }
+    private String _name;
+
+    public Guid Id => _id;
     
     public DateTime CreateTime => _createTime;
     
-    public string Name
+    public String Name
     {
         get => _name;
         set
@@ -25,9 +26,9 @@ public class Speciality
         }
     }
 
-    public Speciality(string name)
+    public Speciality(String name)
     {
-        Id = Guid.NewGuid();
+        _id = Guid.NewGuid();
         _createTime = DateTime.UtcNow;
         _name = name;
     }

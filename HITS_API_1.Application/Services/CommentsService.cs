@@ -4,18 +4,11 @@ using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Services;
 
-public class CommentsService : ICommentsService
+public class CommentsService(ICommentsRepository commentsRepository) : ICommentsService
 {
-    private readonly ICommentsRepository _commentsRepository;
-
-    public CommentsService(ICommentsRepository commentsRepository)
-    {
-        _commentsRepository = commentsRepository;
-    }
-
     public async Task<Guid> CreateComment(String content, Guid parentId, Guid consultationId, Guid authorId)
     {
-        var parentComment = await _commentsRepository.GetById(parentId);
+        var parentComment = await commentsRepository.GetById(parentId);
 
         if (parentComment == null)
         {
@@ -29,13 +22,13 @@ public class CommentsService : ICommentsService
         
         Comment comment = new Comment(null, content, authorId, parentId, consultationId);
         
-        await _commentsRepository.Create(comment);
+        await commentsRepository.Create(comment);
         
         return comment.Id;
     }
 
     public async Task RedactComment(Guid commentId, String content)
     {
-        await _commentsRepository.Update(commentId, content);
+        await commentsRepository.Update(commentId, content);
     }
 }

@@ -4,58 +4,32 @@ using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Application.Validators;
 using HITS_API_1.Domain.Entities;
 using HITS_API_1.Domain.Repositories;
-using HITS_API_1.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HITS_API_1.Controllers;
 
 [ApiController]
 [Route("api/consultation")]
-public class ConsultationsController : ControllerBase
+public class ConsultationsController(
+    IConsultationsService consultationsService,
+    ISpecialitiesRepository specialitiesRepository,
+    IDoctorsRepository doctorsRepository,
+    AddCommentRequestValidator addCommentRequestValidator,
+    IConsultationsRepository consultationsRepository,
+    ICommentsService commentsService,
+    RedactCommentRequestValidator redactCommentRequestValidator,
+    ICommentsRepository commentsRepository,
+    GetFilteredInspectionsRequestValidator getFilteredInspectionsRequestValidator,
+    IInspectionsService inspectionsService)
+    : ControllerBase
 {
-    private readonly IConsultationsService _consultationsService;
-    private readonly ISpecialitiesRepository _specialitiesRepository;
-    private readonly IDoctorsRepository _doctorsRepository;
-    private readonly AddCommentRequestValidator _addCommentRequestValidator;
-    private readonly IConsultationsRepository _consultationsRepository;
-    private readonly ICommentsService _commentsService;
-    private readonly RedactCommentRequestValidator _redactCommentRequestValidator;
-    private readonly ICommentsRepository _commentsRepository;
-    private readonly GetFilteredInspectionsRequestValidator _getFilteredInspectionsRequestValidator;
-    private readonly IInspectionsService _inspectionsService;
-
-    public ConsultationsController(
-        IConsultationsService consultationsService, 
-        ISpecialitiesRepository specialitiesRepository,
-        IDoctorsRepository doctorsRepository,
-        AddCommentRequestValidator addCommentRequestValidator,
-        IConsultationsRepository consultationsRepository,
-        ICommentsService commentsService,
-        RedactCommentRequestValidator redactCommentRequestValidator,
-        ICommentsRepository commentsRepository,
-        GetFilteredInspectionsRequestValidator getFilteredInspectionsRequestValidator,
-        IInspectionsService inspectionsService)
-    {
-        _consultationsService = consultationsService;
-        _specialitiesRepository = specialitiesRepository;
-        _doctorsRepository = doctorsRepository;
-        _addCommentRequestValidator = addCommentRequestValidator;
-        _consultationsRepository = consultationsRepository;
-        _commentsService = commentsService;
-        _redactCommentRequestValidator = redactCommentRequestValidator;
-        _commentsRepository = commentsRepository;
-        _getFilteredInspectionsRequestValidator = getFilteredInspectionsRequestValidator;
-        _inspectionsService = inspectionsService;
-    }
-
     [HttpGet]
     [Authorize]
     public async Task<ActionResult<InspectionPagedListResponse>> GetInspectionsForConsultation(
         [FromQuery] GetFilteredInspectionsRequest request)
     {
-        var validationResult = await _getFilteredInspectionsRequestValidator.ValidateAsync(request);
+        var validationResult = await getFilteredInspectionsRequestValidator.ValidateAsync(request);
 
         if (!validationResult.IsValid)
         {
@@ -69,7 +43,7 @@ public class ConsultationsController : ControllerBase
             return Unauthorized();
         }
         
-        var doctor = await _doctorsRepository.GetById(Guid.Parse(doctorId));
+        var doctor = await doctorsRepository.GetById(Guid.Parse(doctorId));
 
         if (doctor == null)
         {
@@ -78,7 +52,7 @@ public class ConsultationsController : ControllerBase
 
         try
         {
-            var (inspections, pagination) = await _inspectionsService.GetInspectionsForConsultation(
+            var (inspections, pagination) = await inspectionsService.GetInspectionsForConsultation(
                 doctor, request.grouped, request.icdRoots, request.page, request.size);
         
             InspectionPagedListResponse response = new InspectionPagedListResponse(inspections, pagination);
@@ -95,14 +69,14 @@ public class ConsultationsController : ControllerBase
     [Authorize]
     public async Task<ActionResult<GetConsultationByIdResponse>> GetConsultationById([FromRoute] Guid id)
     {
-        var (consultation, comments) = await _consultationsService.GetConsultationById(id);
+        var (consultation, comments) = await consultationsService.GetConsultationById(id);
 
         if (consultation == null)
         {
             return NotFound("Консультация не найдена");
         }
         
-        Speciality speciality = await _specialitiesRepository.GetById(consultation.SpecialityId);
+        Speciality speciality = await specialitiesRepository.GetById(consultation.SpecialityId);
         
         if (comments.Count == 0)
         {
@@ -116,7 +90,7 @@ public class ConsultationsController : ControllerBase
 
         foreach (var comment in comments)
         {
-            var author = await _doctorsRepository.GetById(comment.AuthorId);
+            var author = await doctorsRepository.GetById(comment.AuthorId);
             
             GetCommentModel commentResponse = new GetCommentModel(comment.Id, comment.CreateTime, comment.ModifiedDate,
                 comment.Content, comment.AuthorId, author.Name, comment.ParentId);
@@ -134,7 +108,7 @@ public class ConsultationsController : ControllerBase
     [Authorize]
     public async Task<ActionResult> AddCommentToConsulatation([FromRoute] Guid id, [FromBody] AddCommentRequest request)
     {
-        var validationResult = _addCommentRequestValidator.Validate(request);
+        var validationResult = addCommentRequestValidator.Validate(request);
 
         if (!validationResult.IsValid)
         {
@@ -148,14 +122,14 @@ public class ConsultationsController : ControllerBase
             return Unauthorized();
         }
         
-        var consultation = await _consultationsRepository.GetById(id);
+        var consultation = await consultationsRepository.GetById(id);
 
         if (consultation == null)
         {
             return NotFound("Консультация не найдена");
         }
         
-        var doctor = await _doctorsRepository.GetById(Guid.Parse(doctorId));
+        var doctor = await doctorsRepository.GetById(Guid.Parse(doctorId));
 
         if (doctor == null)
         {
@@ -169,7 +143,7 @@ public class ConsultationsController : ControllerBase
         
         try
         {
-            var commentId = await _commentsService.CreateComment(request.content, request.parentId, id, 
+            var commentId = await commentsService.CreateComment(request.content, request.parentId, id, 
                 Guid.Parse(doctorId));
 
             return Ok(commentId.ToString());
@@ -189,14 +163,14 @@ public class ConsultationsController : ControllerBase
     [Authorize]
     public async Task<ActionResult> RedactComment([FromRoute] Guid id, [FromBody] RedactCommentRequest request)
     {
-        var validationResult = _redactCommentRequestValidator.Validate(request);
+        var validationResult = redactCommentRequestValidator.Validate(request);
 
         if (!validationResult.IsValid)
         {
             return BadRequest(validationResult.Errors);
         }
         
-        var comment = await _commentsRepository.GetById(id);
+        var comment = await commentsRepository.GetById(id);
 
         if (comment == null)
         {
@@ -220,7 +194,7 @@ public class ConsultationsController : ControllerBase
             return StatusCode(403, "Пользователь может изменять только свои комментарии"); 
         }
         
-        await _commentsService.RedactComment(id, request.content);
+        await commentsService.RedactComment(id, request.content);
 
         return Ok();
     }

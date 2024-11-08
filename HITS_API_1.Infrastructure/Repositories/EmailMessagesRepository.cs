@@ -5,18 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HITS_API_1.Infrastructure.Repositories;
 
-public class EmailMessagesRepository : IEmailMessagesRepository
+public class EmailMessagesRepository(ApplicationDbContext dbContext) : IEmailMessagesRepository
 {
-    private readonly ApplicationDbContext _dbContext;
-
-    public EmailMessagesRepository(ApplicationDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public Task<EmailMessage?> GetByInspectionId(Guid inspectionId)
     {
-        var email = _dbContext.EmailMessages
+        var email = dbContext.EmailMessages
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.InspectionId == inspectionId);
         
@@ -25,7 +18,7 @@ public class EmailMessagesRepository : IEmailMessagesRepository
 
     public async Task Add(EmailMessage email)
     {
-        await _dbContext.EmailMessages.AddAsync(email);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.EmailMessages.AddAsync(email);
+        await dbContext.SaveChangesAsync();
     }
 }

@@ -5,26 +5,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HITS_API_1.Infrastructure.Repositories;
 
-public class DiagnosesRepository : IDiagnosesRepository
+public class DiagnosesRepository(ApplicationDbContext dbContext) : IDiagnosesRepository
 {
-    private readonly ApplicationDbContext _dbContext;
-
-    public DiagnosesRepository(ApplicationDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public async Task<Guid> Create(Diagnosis diagnosis)
     {
-        await _dbContext.Diagnoses.AddAsync(diagnosis);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.Diagnoses.AddAsync(diagnosis);
+        await dbContext.SaveChangesAsync();
         
         return diagnosis.Id;
     }
 
     public async Task<List<Diagnosis>> GetAllByInspection(Guid inspectionId)
     {
-        var diagnoses = await _dbContext.Diagnoses
+        var diagnoses = await dbContext.Diagnoses
             .AsNoTracking()
             .Where(d => d.InspectionId == inspectionId)
             .ToListAsync();
@@ -34,10 +27,10 @@ public class DiagnosesRepository : IDiagnosesRepository
 
     public async Task DeleteByInspectionId(Guid inspectionId)
     {
-        await _dbContext.Diagnoses
+        await dbContext.Diagnoses
             .Where(d => d.InspectionId == inspectionId)
             .ExecuteDeleteAsync();
         
-        await _dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 }

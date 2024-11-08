@@ -6,37 +6,23 @@ using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Services;
 
-public class PatientsService : IPatientsService
+public class PatientsService(
+    IPatientsRepository patientsRepository,
+    IInspectionsRepository inspectionsRepository,
+    IDiagnosesRepository diagnosesRepository,
+    IIcd10Repository icd10Repository,
+    IPaginationService paginationService)
+    : IPatientsService
 {
-    private readonly IPatientsRepository _patientsRepository;
-    private readonly IInspectionsRepository _inspectionsRepository;
-    private readonly IDiagnosesRepository _diagnosesRepository;
-    private readonly IIcd10Repository _icd10Repository;
-    private readonly IPaginationService _paginationService;
-
-    public PatientsService(
-        IPatientsRepository patientsRepository, 
-        IInspectionsRepository inspectionsRepository,
-        IDiagnosesRepository diagnosesRepository,
-        IIcd10Repository icd10Repository,
-        IPaginationService paginationService)
-    {
-        _patientsRepository = patientsRepository;
-        _inspectionsRepository = inspectionsRepository;
-        _diagnosesRepository = diagnosesRepository;
-        _icd10Repository = icd10Repository;
-        _paginationService = paginationService;
-    }
-
     public async Task<Guid> CreatePatient(String name, DateTime? birthday, Gender gender)
     {
         Patient patient = new Patient(name, birthday, gender);
-        return await _patientsRepository.Create(patient);
+        return await patientsRepository.Create(patient);
     }
 
     public async Task<Patient?> GetPatientById(Guid id)
     {
-        var patient = await _patientsRepository.GetById(id);
+        var patient = await patientsRepository.GetById(id);
         
         return patient;
     }
@@ -44,9 +30,9 @@ public class PatientsService : IPatientsService
     public async Task<(List<Patient>, Pagination)> GetPatients(String? name, List<Conclusion>? conclusions, 
         Sorting? sorting, bool scheduledVisits, Guid? doctorId, int? page, int? size)
     {
-        var patients = await _patientsRepository.GetAllByNamePart(name ?? "");
+        var patients = await patientsRepository.GetAllByNamePart(name ?? "");
         
-        var inspections = await _inspectionsRepository.GetAll();
+        var inspections = await inspectionsRepository.GetAll();
         
         if (conclusions != null || scheduledVisits || doctorId != null || sorting == Sorting.InspectionAsc ||
             sorting == Sorting.InspectionDesc)
@@ -90,24 +76,24 @@ public class PatientsService : IPatientsService
                 break;
         }
 
-        return _paginationService.PaginateList(patients, page, size);
+        return paginationService.PaginateList(patients, page, size);
     }
 
     public async Task<GetReportResponse> GetPatientsReport(GetReportRequest request)
     {
-        var patients = await _patientsRepository.GetAllByNamePart("");
+        var patients = await patientsRepository.GetAllByNamePart("");
         
         Dictionary<String, int> icdCounter = new Dictionary<String, int>();
         List<GetReportRecordResponse> records = new List<GetReportRecordResponse>();
 
         foreach (var patient in patients)
         {
-            var inspections = await _inspectionsRepository.GetAllByPatientId(patient.Id);
+            var inspections = await inspectionsRepository.GetAllByPatientId(patient.Id);
             Dictionary<String, int> patientIcdCounter = new Dictionary<String, int>();
 
             foreach (var inspection in inspections)
             {
-                var diagnoses = await _diagnosesRepository.GetAllByInspection(inspection.Id);
+                var diagnoses = await diagnosesRepository.GetAllByInspection(inspection.Id);
 
                 var mainDiagnosis = diagnoses.FirstOrDefault(d => d.Type == DiagnosisType.Main);
 
@@ -116,11 +102,11 @@ public class PatientsService : IPatientsService
                 {
                     foreach (var icdRoot in request.icdRoots)
                     {
-                        var children = await _icd10Repository.GetAllByRoot(icdRoot);
+                        var children = await icd10Repository.GetAllByRoot(icdRoot);
 
                         if (children.Any(i => i.Id == mainDiagnosis.Icd10Id))
                         {
-                            var icdEntity = await _icd10Repository.GetById(icdRoot);
+                            var icdEntity = await icd10Repository.GetById(icdRoot);
                             
                             // Обновление количества у пациента
                             if (!patientIcdCounter.ContainsKey(icdEntity.Code))
@@ -148,7 +134,7 @@ public class PatientsService : IPatientsService
                 }
                 else
                 {
-                    var icd = await _icd10Repository.GetById(mainDiagnosis.Icd10Id);
+                    var icd = await icd10Repository.GetById(mainDiagnosis.Icd10Id);
                     
                     // Обновление количества у пациента
                     if (!patientIcdCounter.ContainsKey(icd.Code))
@@ -186,7 +172,7 @@ public class PatientsService : IPatientsService
         
         if (request.icdRoots == null || request.icdRoots.Count == 0)
         {
-            var roots = await _icd10Repository.GetRoots();
+            var roots = await icd10Repository.GetRoots();
 
             foreach (var icd in roots)
             {
@@ -207,7 +193,7 @@ public class PatientsService : IPatientsService
 
             foreach (var id in request.icdRoots)
             {
-                var icd = await _icd10Repository.GetById(id);
+                var icd = await icd10Repository.GetById(id);
                 roots.Add(icd.Code);
                 
                 if (!icdCounter.ContainsKey(icd.Code))
