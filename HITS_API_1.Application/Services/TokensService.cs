@@ -26,4 +26,9 @@ public class TokensService(ITokensRepository tokensRepository, IHasher hasher) :
     {
         await tokensRepository.Delete(token);
     }
+
+    public async Task DeleteExpiredTokens()
+    {
+        await tokensRepository.DeleteExpired();
+    }
 }

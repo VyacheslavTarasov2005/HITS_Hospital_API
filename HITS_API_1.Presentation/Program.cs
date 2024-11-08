@@ -66,14 +66,26 @@ builder.Services.AddQuartz(q =>
 {
     q.UseMicrosoftDependencyInjectionJobFactory();
     
-    var jobKey = new JobKey("SendEmailJob");
+    // Рассылка email
+    var emailsJobKey = new JobKey("SendEmailJob");
     
-    q.AddJob<SendEmailJob>(opts => opts.WithIdentity(jobKey));
+    q.AddJob<SendEmailJob>(opts => opts.WithIdentity(emailsJobKey));
 
     q.AddTrigger(opts => opts
-        .ForJob(jobKey)
+        .ForJob(emailsJobKey)
         .WithIdentity("SendEmailJob-trigger")
         .WithCronSchedule("0 * * ? * *")
+    );
+    
+    // Удаление истекших токенов
+    var tokensJobKey = new JobKey("DeleteExpiredTokensJob");
+    
+    q.AddJob<DeleteExpiredTokensJob>(opts => opts.WithIdentity(tokensJobKey));
+
+    q.AddTrigger(opts => opts
+        .ForJob(tokensJobKey)
+        .WithIdentity("DeleteExpiredTokensJob-trigger")
+        .WithCronSchedule("0 0 * * * ?")
     );
 });
 

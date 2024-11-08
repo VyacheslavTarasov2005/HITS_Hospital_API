@@ -10,9 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3257228d-829e-4971-9eda-bd9dc95699c1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/ICD10/IIcdLoader.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/ICD10/IcdLoader.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HITS_API_1.Application/Jobs/DeleteExpiredTokensJob.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.HITS_API_1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.HITS_API_1/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Interfaces/Services/ITokensService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Interfaces/Services/ITokensService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/TokensService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/TokensService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Application.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Application.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Application.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Domain.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Domain.dll" afterDir="false" />
@@ -20,11 +21,12 @@
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/ref/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/ref/HITS_API_1.Application.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/refint/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/refint/HITS_API_1.Application.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Repositories/IIcd10Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Repositories/IIcd10Repository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Repositories/ITokensRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Repositories/ITokensRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/bin/Debug/net8.0/HITS_API_1.Domain.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/bin/Debug/net8.0/HITS_API_1.Domain.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/bin/Debug/net8.0/HITS_API_1.Domain.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/bin/Debug/net8.0/HITS_API_1.Domain.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/HITS_API_1.Domain.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/HITS_API_1.Domain.AssemblyInfo.cs" afterDir="false" />
@@ -34,7 +36,7 @@
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/ref/HITS_API_1.Domain.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/ref/HITS_API_1.Domain.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/refint/HITS_API_1.Domain.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/refint/HITS_API_1.Domain.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/DbInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/DbInitializer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/Icd10Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/Icd10Repository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/TokensRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/TokensRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Application.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Application.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Application.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Domain.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Domain.dll" afterDir="false" />
@@ -44,7 +46,6 @@
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/ref/HITS_API_1.Infrastructure.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/ref/HITS_API_1.Infrastructure.dll" afterDir="false" />
@@ -67,7 +68,6 @@
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/apphost.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/ref/HITS_API_1.Presentation.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/ref/HITS_API_1.Presentation.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/refint/HITS_API_1.Presentation.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/refint/HITS_API_1.Presentation.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.sln.DotSettings.user" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -235,7 +235,7 @@
       <workItem from="1730766995785" duration="658000" />
       <workItem from="1730767723606" duration="303000" />
       <workItem from="1730905204734" duration="27485000" />
-      <workItem from="1730938758186" duration="65454000" />
+      <workItem from="1730938758186" duration="68213000" />
     </task>
     <servers />
   </component>
@@ -257,5 +257,37 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/HITS_API_1.Application/Services/TokensService.cs</url>
+          <line>31</line>
+          <properties documentPath="C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Application\Services\TokensService.cs" containingFunctionPresentation="Method 'DeleteExpiredTokens'">
+            <startOffsets>
+              <option value="858" />
+            </startOffsets>
+            <endOffsets>
+              <option value="897" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="84" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/TokensRepository.cs</url>
+          <line>60</line>
+          <properties documentPath="C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Infrastructure\Repositories\TokensRepository.cs" containingFunctionPresentation="Method 'DeleteExpired'">
+            <startOffsets>
+              <option value="1595" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1639" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="85" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

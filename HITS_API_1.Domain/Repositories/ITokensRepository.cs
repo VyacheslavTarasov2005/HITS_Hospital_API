@@ -7,4 +7,5 @@ public interface ITokensRepository
     Task<String> Create(String token, Guid doctorId);
     Task<Token?> Get(String token);
     Task Delete(String accesToken);
+    Task DeleteExpired();
 }

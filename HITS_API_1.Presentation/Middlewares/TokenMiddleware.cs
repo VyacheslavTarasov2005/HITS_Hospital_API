@@ -40,7 +40,6 @@ public class TokenMiddleware
 
         if (dbToken.ExpiryDate < DateTime.UtcNow)
         {
-            await tokensService.DeleteToken(token);
             httpContext.Response.StatusCode = 401;
             return;
         }

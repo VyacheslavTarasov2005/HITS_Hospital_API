@@ -50,4 +50,15 @@ public class TokensRepository(ApplicationDbContext dbContext) : ITokensRepositor
         
         await dbContext.SaveChangesAsync();
     }
+
+    public async Task DeleteExpired()
+    {
+        var expiredTokens = await dbContext.Tokens
+            .AsNoTracking()
+            .Where(t => t.ExpiryDate < DateTime.UtcNow)
+            .ToListAsync();
+        
+        dbContext.Tokens.RemoveRange(expiredTokens);
+        await dbContext.SaveChangesAsync();
+    }
 }
