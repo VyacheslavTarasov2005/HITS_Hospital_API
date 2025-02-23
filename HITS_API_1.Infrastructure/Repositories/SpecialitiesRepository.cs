@@ -13,13 +13,24 @@ public class SpecialitiesRepository(ApplicationDbContext dbContext) : ISpecialit
         return speciality;
     }
 
-    public async Task<List<Speciality>> GetAllByName(String name)
+    public async Task<List<Speciality>> GetAllByNamePart(String name)
     {
-        var specialities = await dbContext.Specialities
-            .AsNoTracking()
-            .Where(s => s.Name.ToLower().Contains(name.ToLower()))
-            .ToListAsync();
+        if (name.Length == 0)
+        {
+            var specialities = await dbContext.Specialities
+                .AsNoTracking()
+                .ToListAsync();
         
-        return specialities;
+            return specialities;
+        }
+        else
+        {
+            var specialities = await dbContext.Specialities
+                .AsNoTracking()
+                .Where(s => EF.Functions.ILike(s.Name, $"%{name}%"))
+                .ToListAsync();
+        
+            return specialities;
+        }
     }
 }

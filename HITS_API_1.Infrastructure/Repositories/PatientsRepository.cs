@@ -22,13 +22,25 @@ public class PatientsRepository(ApplicationDbContext dbContext) : IPatientsRepos
         return patient;
     }
 
-    public async Task<List<Patient>> GetAllByNamePart(String name)
+    public async Task<List<Patient>> GetAll()
     {
         var patients = await dbContext.Patients
             .AsNoTracking()
-            .Where(p => p.Name.ToLower().Contains(name.ToLower()))
             .ToListAsync();
         
         return patients;
+    }
+
+    public async Task<List<Patient>> GetAllByNamePart(String name)
+    {
+        if (name.Length == 0)
+        {
+            return await GetAll();
+        }
+
+        return await dbContext.Patients
+            .AsNoTracking()
+            .Where(p => EF.Functions.ILike(p.Name, $"%{name}%"))
+            .ToListAsync();
     }
 }

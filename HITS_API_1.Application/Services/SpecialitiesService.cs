@@ -21,7 +21,7 @@ public class SpecialitiesService(
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
         
-        var specialities = await specialitiesRepository.GetAllByName(request.name ?? "");
+        var specialities = await specialitiesRepository.GetAllByNamePart(request.name ?? "");
 
         return paginationService.PaginateList(specialities, request.page, request.size);
     }

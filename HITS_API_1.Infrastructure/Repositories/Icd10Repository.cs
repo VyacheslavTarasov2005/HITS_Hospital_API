@@ -7,24 +7,46 @@ namespace HITS_API_1.Infrastructure.Repositories;
 
 public class Icd10Repository(ApplicationDbContext dbContext) : IIcd10Repository
 {
-    public async Task<List<Icd10Entity>> GetAllByName(String name)
+    public async Task<List<Icd10Entity>> GetAllByNamePart(String name)
     {
-        var icd10Entities = await dbContext.Icd10Entities
-            .AsNoTracking()
-            .Where(i => i.Name.ToLower().Contains(name.ToLower()))
-            .ToListAsync();
+        if (name.Length == 0)
+        {
+            var icd10Entities = await dbContext.Icd10Entities
+                .AsNoTracking()
+                .ToListAsync();
+            
+            return icd10Entities;
+        }
+        else
+        {
+            var icd10Entities = await dbContext.Icd10Entities
+                .AsNoTracking()
+                .Where(i => EF.Functions.ILike(i.Name, $"%{name}%"))
+                .ToListAsync();
         
-        return icd10Entities;
+            return icd10Entities;
+        }
     }
     
-    public async Task<List<Icd10Entity>> GetAllByCode(String code)
+    public async Task<List<Icd10Entity>> GetAllByCodePart(String code)
     {
-        var icd10Entities = await dbContext.Icd10Entities
-            .AsNoTracking()
-            .Where(i => i.Code.ToLower().Contains(code.ToLower()))
-            .ToListAsync();
+        if (code.Length == 0)
+        {
+            var icd10Entities = await dbContext.Icd10Entities
+                .AsNoTracking()
+                .ToListAsync();
         
-        return icd10Entities;
+            return icd10Entities;
+        }
+        else
+        {
+            var icd10Entities = await dbContext.Icd10Entities
+                .AsNoTracking()
+                .Where(i => EF.Functions.ILike(i.Code, $"%{code}%"))
+                .ToListAsync();
+        
+            return icd10Entities;
+        }
     }
     
     public async Task<List<Icd10Entity>> GetRoots()

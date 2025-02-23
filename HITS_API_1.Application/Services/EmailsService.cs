@@ -17,7 +17,7 @@ public class EmailsService(
 
     public async Task CheckInspecions()
     {
-        var patients = await patientsRepository.GetAllByNamePart("");
+        var patients = await patientsRepository.GetAll();
 
         foreach (var patient in patients)
         {

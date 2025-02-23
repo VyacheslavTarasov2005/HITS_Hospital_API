@@ -5,5 +5,5 @@ namespace HITS_API_1.Domain.Repositories;
 public interface ISpecialitiesRepository
 {
     Task<Speciality?> GetById(Guid specialityId);
-    Task<List<Speciality>> GetAllByName(String name);
+    Task<List<Speciality>> GetAllByNamePart(String name);
 }

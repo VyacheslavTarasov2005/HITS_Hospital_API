@@ -22,11 +22,11 @@ public class Icd10Service(
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
         
-        var icd10Entities = await icd10Repository.GetAllByName(getIcd10Request.request ?? "");
+        var icd10Entities = await icd10Repository.GetAllByNamePart(getIcd10Request.request ?? "");
 
         if (icd10Entities.Count == 0)
         {
-            icd10Entities = await icd10Repository.GetAllByCode(getIcd10Request.request ?? "");
+            icd10Entities = await icd10Repository.GetAllByCodePart(getIcd10Request.request ?? "");
         }
 
         return paginationService.PaginateList(icd10Entities, getIcd10Request.page, getIcd10Request.size);

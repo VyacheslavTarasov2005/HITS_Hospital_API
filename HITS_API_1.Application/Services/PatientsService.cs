@@ -123,7 +123,7 @@ public class PatientsService(
             }
         }
         
-        var patients = await patientsRepository.GetAllByNamePart("");
+        var patients = await patientsRepository.GetAll();
         
         Dictionary<String, int> icdCounter = new Dictionary<String, int>();
         List<GetReportRecordResponse> records = new List<GetReportRecordResponse>();

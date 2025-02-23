@@ -11,7 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3257228d-829e-4971-9eda-bd9dc95699c1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.HITS_API_1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.HITS_API_1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/CommentsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/CommentsService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/PatientsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/PatientsService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Application.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Application.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/bin/Debug/net8.0/HITS_API_1.Application.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfo.cs" afterDir="false" />
@@ -21,6 +21,10 @@
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/ref/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/ref/HITS_API_1.Application.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/refint/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/refint/HITS_API_1.Application.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Repositories/IPatientsRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Repositories/IPatientsRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/Icd10Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/Icd10Repository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/PatientsRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/PatientsRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/SpecialitiesRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/SpecialitiesRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Application.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Application.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Application.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Application.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Infrastructure.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/bin/Debug/net8.0/HITS_API_1.Infrastructure.dll" afterDir="false" />
@@ -37,18 +41,6 @@
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Application.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Application.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Infrastructure.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Infrastructure.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Infrastructure.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Infrastructure.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Presentation.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Presentation.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Presentation.exe" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Presentation.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Presentation.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/bin/Debug/net8.0/HITS_API_1.Presentation.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/apphost.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/ref/HITS_API_1.Presentation.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/ref/HITS_API_1.Presentation.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/refint/HITS_API_1.Presentation.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/refint/HITS_API_1.Presentation.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -239,7 +231,7 @@
       <workItem from="1739439093180" duration="30311000" />
       <workItem from="1739890663147" duration="13278000" />
       <workItem from="1740053308809" duration="18568000" />
-      <workItem from="1740138753711" duration="44864000" />
+      <workItem from="1740138753711" duration="47403000" />
     </task>
     <servers />
   </component>
