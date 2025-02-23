@@ -1,5 +1,6 @@
 using HITS_API_1.Application.Entities;
 using HITS_API_1.Application.Interfaces.Services;
+using HITS_API_1.Domain.Exceptions;
 
 namespace HITS_API_1.Application.Services;
 
@@ -7,7 +8,7 @@ public class PaginationService : IPaginationService
 {
     public (List<T>, Pagination) PaginateList<T>(List<T> list, int? page, int? size)
     {
-        Pagination pagination = new Pagination(size, list.Count, page);
+        var pagination = new Pagination(size, list.Count, page);
         
         if (pagination.Count == 0)
         {
@@ -18,7 +19,7 @@ public class PaginationService : IPaginationService
         
         if (startIndex + 1 > list.Count)
         {
-            throw new ArgumentException("Недопустимое значение номера страницы");
+            throw new IncorrectFieldException("pagination/page", "Недопустимое значение номера страницы");
         }
 
         int endIndex = int.Min(pagination.Size * pagination.Current, list.Count);

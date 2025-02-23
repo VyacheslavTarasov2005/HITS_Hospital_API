@@ -13,3 +13,4 @@ C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Application\obj\Debug\net8.0\H
 C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Application\obj\Debug\net8.0\refint\HITS_API_1.Application.dll
 C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Application\obj\Debug\net8.0\HITS_API_1.Application.pdb
 C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Application\obj\Debug\net8.0\ref\HITS_API_1.Application.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Application\obj\Debug\net8.0\HITS_API_1.Application.sourcelink.json

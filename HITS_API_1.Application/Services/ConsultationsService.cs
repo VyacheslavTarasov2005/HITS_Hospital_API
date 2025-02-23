@@ -1,6 +1,8 @@
 using HITS_API_1.Application.DTOs;
+using HITS_API_1.Application.Exceptions;
 using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Domain.Entities;
+using HITS_API_1.Domain.Exceptions;
 using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Services;
@@ -26,18 +28,19 @@ public class ConsultationsService(
         return consultation.Id;
     }
 
-    public async Task<(Consultation?, List<Comment>)> GetConsultationById(Guid consultationId)
+    public async Task<(Consultation, List<Comment>, Speciality)> GetConsultationById(Guid consultationId)
     {
         var consultation = await consultationsRepository.GetById(consultationId);
-
         if (consultation == null)
         {
-            return (null, []);
+            throw new NotFoundObjectException("consultation", "Консультация не найдена");
         }
+        
+        var speciality = await specialitiesRepository.GetById(consultation.SpecialityId);
         
         var comments = await commentsRepository.GetByConsultationId(consultationId);
 
-        return (consultation, comments);
+        return (consultation, comments, speciality);
     }
 
     public async Task<List<InspectionConsultationModel>> GetAllConsultationsByInspection(Guid inspectionId)
@@ -73,5 +76,21 @@ public class ConsultationsService(
         }
         
         return consultationResponse;
+    }
+    
+    public async Task ValidateConsultations(List<CreateConsultationModel> consultations)
+    {
+        if (consultations.Count > 0)
+        {
+            foreach (var consultation in consultations)
+            {
+                var speciality = await specialitiesRepository.GetById(consultation.specialityId);
+                if (speciality == null)
+                {
+                    throw new IncorrectFieldException("consultations/specialityId",
+                        $"Специальность {consultation.specialityId} не найдена");
+                }
+            }
+        }
     }
 }

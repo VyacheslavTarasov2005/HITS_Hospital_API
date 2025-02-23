@@ -59,3 +59,4 @@ C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\
 C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\Quartz.dll
 C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\Quartz.Extensions.DependencyInjection.dll
 C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\bin\Debug\net8.0\Quartz.Extensions.Hosting.dll
+C:\Users\vt45\RiderProjects\HITS_API_1\HITS_API_1.Presentation\obj\Debug\net8.0\HITS_API_1.Presentation.sourcelink.json

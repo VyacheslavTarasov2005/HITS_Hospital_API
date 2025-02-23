@@ -7,33 +7,22 @@ namespace HITS_API_1.Application.Validators;
 
 public class CreateInspectionRequestValidator : AbstractValidator<CreateInspectionRequest>
 {
-    private readonly IInspectionsRepository _inspectionsRepository;
     private readonly CreateDiagnosisModelValidator _createDiagnosisModelValidator;
     private readonly CreateConsultationModelValidator _createConsultationModelValidator;
     
     public CreateInspectionRequestValidator(
-        IInspectionsRepository inspectionsRepository,
         CreateDiagnosisModelValidator createDiagnosisModelValidator,
         CreateConsultationModelValidator createConsultationModelValidator)
     {
-        _inspectionsRepository = inspectionsRepository;
         _createDiagnosisModelValidator = createDiagnosisModelValidator;
         _createConsultationModelValidator = createConsultationModelValidator;
-        
-        RuleFor(r => r.previousInspectionId)
-            .MustAsync(async (previousInspectionId, CancellationToken) => 
-                await ValidatePreviousInspection(previousInspectionId))
-            .WithMessage("Некорректное значение предыдущего осмотра");
             
         
         RuleFor(r => r.date)
             .NotEmpty()
             .WithMessage("Необходима дата")
-            .Must(ValidateDate)
-            .WithMessage("Дата осмотра не может быть позже текущей даты")
-            .MustAsync(async (request, date, CancellationToken) => await ValidateByPreviousDate(date, 
-                request.previousInspectionId))
-            .WithMessage("Дата осмотра не может быть раньше даты предыдущего осмотра");
+            .Must(date => date <= DateTime.UtcNow)
+            .WithMessage("Дата осмотра не может быть позже текущей даты");
 
         RuleFor(r => r.anamnesis)
             .NotEmpty()
@@ -67,40 +56,20 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
 
         RuleFor(r => r.deathDate)
             .Must((request, deathDate) => ValidateDeathDateExisting(deathDate, request.conclusion))
-            .WithMessage("Дату смерти необходимо указать если заключение принимает значение Death");
+            .WithMessage("Дату смерти необходимо указать если заключение принимает значение Death")
+            .Must(deathDate => deathDate == null || deathDate <= DateTime.UtcNow)
+            .WithMessage("Дата смерти не может быть позже текущей даты");
 
         RuleFor(r => r.diagnoses)
             .NotEmpty()
             .WithMessage("Необходим хотя бы 1 диагноз")
-            .MustAsync((diagnoses, CancellationToken) => ValidateDiagnoses(diagnoses))
+            .MustAsync((diagnoses, _) => ValidateDiagnoses(diagnoses))
             .WithMessage("Некорректные диагнозы");
 
         RuleFor(r => r.consultations)
-            .MustAsync(async (consultations, CancellationToken) =>
+            .MustAsync(async (consultations, _) =>
                 await ValidateConsultations(consultations))
             .WithMessage("Некорректные консультации");
-    }
-    
-    private bool ValidateDate(DateTime date)
-    {
-        return date <= DateTime.UtcNow;
-    }
-    
-    private async Task<bool> ValidateByPreviousDate(DateTime date, Guid? previousInspectionId)
-    {
-        if (previousInspectionId == null)
-        {
-            return true;
-        }
-        
-        var previousInspection = await _inspectionsRepository.GetById(previousInspectionId.Value);
-        
-        if (previousInspection != null)
-        {
-            return date >= previousInspection.Date;
-        }
-
-        return false;
     }
 
     private bool ValidateNextVisitDateExisting(DateTime? date, Conclusion conclusion)
@@ -153,42 +122,12 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
         return true;
     }
 
-    private async Task<bool> ValidatePreviousInspection(Guid? previousInspectionId)
-    {
-        if (previousInspectionId == null)
-        {
-            return true;
-        }
-        
-        var previousInspection = await _inspectionsRepository.GetById(previousInspectionId.Value);
-
-        if (previousInspection == null)
-        {
-            return false;
-        }
-        
-        var childInspection = await _inspectionsRepository.GetByParentInspectionId(previousInspection.Id);
-
-        if (childInspection != null)
-        {
-            return false;
-        }
-
-        if (previousInspection.Conclusion == Conclusion.Death)
-        {
-            return false;
-        }
-        
-        return true;
-    }
-
     private async Task<bool> ValidateDiagnoses(List<CreateDiagnosisModel> diagnoses)
     {
-        bool mainDiagnosis = false;
+        var mainDiagnosis = false;
         foreach (var diagnosis in diagnoses)
         {
             var validationResult = await _createDiagnosisModelValidator.ValidateAsync(diagnosis);
-
             if (!validationResult.IsValid)
             {
                 return false;

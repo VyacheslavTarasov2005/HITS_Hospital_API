@@ -1,9 +1,6 @@
 using System.Security.Claims;
-using FluentValidation;
 using HITS_API_1.Application.DTOs;
 using HITS_API_1.Application.Interfaces.Services;
-using HITS_API_1.Domain;
-using HITS_API_1.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,29 +9,16 @@ namespace HITS_API_1.Controllers;
 [ApiController]
 [Route("api/doctor")]
 public class DoctorsController(
-    IDoctorsService doctorsService,
-    IValidator<RegistrationRequest> registrationRequestValidator,
-    IValidator<LoginRequest> loginRequestValidator,
-    IValidator<UpdateDoctorRequest> updateDoctorRequestValidator)
+    IDoctorsService doctorsService)
     : ControllerBase
 {
     [HttpPost("register")]
     [AllowAnonymous]
     public async Task<ActionResult<AuthenticationResponse>> RegisterDoctor([FromBody] RegistrationRequest request)
     {
-        var validationResult = await registrationRequestValidator.ValidateAsync(request);
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(validationResult.Errors);
-        }
+        String accesToken = await doctorsService.RegisterDoctor(request);
         
-        Doctor doctor = new Doctor(request.name, request.birthday, request.gender, request.phone, request.email,
-            request.password, request.speciality);
-
-        String accesToken = await doctorsService.RegisterDoctor(doctor);
-        
-        AuthenticationResponse response = new AuthenticationResponse(accesToken);
-        
+        var response = new AuthenticationResponse(accesToken);
         return Ok(response);
     }
 
@@ -42,21 +26,9 @@ public class DoctorsController(
     [AllowAnonymous]
     public async Task<ActionResult<AuthenticationResponse>> LoginDoctor([FromBody] LoginRequest request)
     {
-        var validationResult = await loginRequestValidator.ValidateAsync(request);
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(validationResult.Errors);
-        }
+        var accesToken = await doctorsService.LoginDoctor(request);
         
-        var accesToken = await doctorsService.LoginDoctor(request.email, request.password);
-
-        if (accesToken == null)
-        {
-            return BadRequest("Пользователь с такими данными не найдем");
-        }
-        
-        AuthenticationResponse response = new AuthenticationResponse(accesToken);
-        
+        var response = new AuthenticationResponse(accesToken);
         return Ok(response);
     }
 
@@ -65,7 +37,6 @@ public class DoctorsController(
     public async Task<ActionResult> LogoutDoctor()
     {
         var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        
         await doctorsService.LogoutDoctor(token);
         
         return Ok();
@@ -78,18 +49,13 @@ public class DoctorsController(
         var doctorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (doctorId == null)
         {
-            return NotFound();
+            throw new UnauthorizedAccessException();
         }
         
         var doctor = await doctorsService.GetDoctor(Guid.Parse(doctorId));
-        if (doctor == null)
-        {
-            return NotFound();
-        }
 
-        GetDoctorResponse response = new GetDoctorResponse(doctor.Id, doctor.CreateTime, doctor.Name, doctor.Birthday,
+        var response = new GetDoctorResponse(doctor.Id, doctor.CreateTime, doctor.Name, doctor.Birthday,
             doctor.Sex, doctor.Email, doctor.Phone);
-        
         return Ok(response);
     }
 
@@ -97,33 +63,13 @@ public class DoctorsController(
     [Authorize]
     public async Task<ActionResult> UpdateDoctor([FromBody] UpdateDoctorRequest request)
     {
-        var validationResult = await updateDoctorRequestValidator.ValidateAsync(request);
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(validationResult.Errors);
-        }
-        
         var doctorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (doctorId == null)
         {
-            return NotFound();
+            throw new UnauthorizedAccessException();
         }
-
-        try
-        {
-            await doctorsService.UpdateDoctor(Guid.Parse(doctorId), request.email, request.name, request.birthday,
-                request.gender, request.phone);
-            
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            if (e.Message == "Пользователь не найден")
-            {
-                return NotFound();
-            }
-            
-            return BadRequest("email уже использован");
-        }
+        
+        await doctorsService.UpdateDoctor(Guid.Parse(doctorId), request);
+        return Ok();
     }
 }

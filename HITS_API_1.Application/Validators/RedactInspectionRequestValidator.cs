@@ -1,7 +1,6 @@
 using FluentValidation;
 using HITS_API_1.Application.DTOs;
 using HITS_API_1.Domain.Entities;
-using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Validators;
 
@@ -9,8 +8,7 @@ public class RedactInspectionRequestValidator : AbstractValidator<RedactInspecti
 {
     private readonly CreateDiagnosisModelValidator _createDiagnosisModelValidator;
     
-    public RedactInspectionRequestValidator(
-        CreateDiagnosisModelValidator createDiagnosisModelValidator)
+    public RedactInspectionRequestValidator(CreateDiagnosisModelValidator createDiagnosisModelValidator)
     {
         _createDiagnosisModelValidator = createDiagnosisModelValidator;
         
@@ -49,28 +47,18 @@ public class RedactInspectionRequestValidator : AbstractValidator<RedactInspecti
         RuleFor(r => r.diagnoses)
             .NotEmpty()
             .WithMessage("Необходим хотя бы 1 диагноз")
-            .MustAsync((diagnoses, CancellationToken) => ValidateDiagnoses(diagnoses))
-            .WithMessage("Некорректные диагнозы");
+            .MustAsync((diagnoses, _) => ValidateDiagnoses(diagnoses))
+            .WithMessage("Некорректные диагнозы");;
     }
     
     private bool ValidateNextVisitDateExisting(DateTime? date, Conclusion conclusion)
     {
         if (conclusion != Conclusion.Disease)
         {
-            if (date == null)
-            {
-                return true;
-            }
-
-            return false;
+            return date == null;
         }
 
-        if (date == null)
-        {
-            return false;
-        }
-        
-        return true;
+        return date != null;
     }
 
     private bool ValidateDeathDateExisting(DateTime? date, Conclusion conclusion)
@@ -85,37 +73,20 @@ public class RedactInspectionRequestValidator : AbstractValidator<RedactInspecti
             return true;
         }
 
-        if (date != null)
-        {
-            return false;
-        }
-
-        return true;
+        return date == null;
     }
-    
+
     private async Task<bool> ValidateDiagnoses(List<CreateDiagnosisModel> diagnoses)
     {
-        bool mainDiagnosis = false;
         foreach (var diagnosis in diagnoses)
         {
             var validationResult = await _createDiagnosisModelValidator.ValidateAsync(diagnosis);
-
             if (!validationResult.IsValid)
             {
                 return false;
             }
-
-            if (diagnosis.type == DiagnosisType.Main)
-            {
-                if (mainDiagnosis)
-                {
-                    return false;
-                }
-                
-                mainDiagnosis = true;
-            }
         }
-
-        return mainDiagnosis;
+        
+        return true;
     }
 }

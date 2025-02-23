@@ -7,16 +7,8 @@ namespace HITS_API_1.Application.Validators;
 
 public class RegistrationRequestValidator : AbstractValidator<RegistrationRequest>
 {
-    private readonly IDoctorsRepository _doctorsRepository;
-    private readonly ISpecialitiesRepository _specialitiesRepository;
-
-    public RegistrationRequestValidator(
-        IDoctorsRepository doctorsRepository,
-        ISpecialitiesRepository specialitiesRepository)
+    public RegistrationRequestValidator()
     {
-        _doctorsRepository = doctorsRepository;
-        _specialitiesRepository = specialitiesRepository;
-
         RuleFor(r => r.name)
             .NotEmpty()
             .WithMessage("Необходимо ФИО")
@@ -33,13 +25,10 @@ public class RegistrationRequestValidator : AbstractValidator<RegistrationReques
             .NotEmpty()
             .WithMessage("Необходим email")
             .EmailAddress()
-            .WithMessage("email не соответствует требованиям email")
-            .MustAsync(async (email, CancellationToken) => await ValidateEmail(email))
-            .WithMessage("email уже использован");
+            .WithMessage("email не соответствует требованиям email");
 
         RuleFor(r => r.birthday)
-            .Must(ValidateBirthday)
-            .When(r => r.birthday != null)
+            .Must(birthday => birthday == null || birthday <= DateTime.UtcNow)
             .WithMessage("Дата рождения не может быть позже теккущей даты");
 
         RuleFor(r => r.gender)
@@ -55,37 +44,6 @@ public class RegistrationRequestValidator : AbstractValidator<RegistrationReques
 
         RuleFor(r => r.speciality)
             .NotEmpty()
-            .WithMessage("Необходима специальность")
-            .MustAsync(async (specialityId, CancellationToken) => await ValidateSpeciality(specialityId))
-            .WithMessage("Специальность не существует");
-    }
-
-    private async Task<bool> ValidateEmail(string email)
-    {
-        var doctor = await _doctorsRepository.GetByEmail(email);
-
-        if (doctor == null)
-        {
-            return true;
-        }
-        
-        return false;
-    }
-
-    private bool ValidateBirthday(DateTime? birthday)
-    {
-        return birthday.Value <= DateTime.UtcNow;
-    }
-
-    private async Task<bool> ValidateSpeciality(Guid specialityId)
-    {
-        var speciality = await _specialitiesRepository.GetById(specialityId);
-
-        if (speciality == null)
-        {
-            return false;
-        }
-        
-        return true;
+            .WithMessage("Необходима специальность");
     }
 }

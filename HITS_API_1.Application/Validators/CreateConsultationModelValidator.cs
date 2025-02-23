@@ -6,17 +6,11 @@ namespace HITS_API_1.Application.Validators;
 
 public class CreateConsultationModelValidator : AbstractValidator<CreateConsultationModel>
 {
-    private readonly ISpecialitiesRepository _specialitiesRepository;
-    
-    public CreateConsultationModelValidator(ISpecialitiesRepository specialitiesRepository)
+    public CreateConsultationModelValidator()
     {
-        _specialitiesRepository = specialitiesRepository;
-
         RuleFor(r => r.specialityId)
             .NotEmpty()
-            .WithMessage("Необходима специальность")
-            .MustAsync(async (specialityId, cancellationToken) => await ValidateSpeciality(specialityId))
-            .WithMessage("Специальность не найдена");
+            .WithMessage("Необходима специальность");
 
         RuleFor(r => r.comment)
             .NotEmpty()
@@ -25,21 +19,9 @@ public class CreateConsultationModelValidator : AbstractValidator<CreateConsulta
             .WithMessage("Допустимая длина комментария - от 1 до 1000 символов");
     }
 
-    public async Task<bool> ValidateSpeciality(Guid specialityId)
+    private bool ValidateComment(CreateInspectionCommentModel comment)
     {
-        var speciality = await _specialitiesRepository.GetById(specialityId);
-
-        if (speciality == null)
-        {
-            return false;
-        }
-        
-        return true;
-    }
-
-    public bool ValidateComment(CreateInspectionCommentModel comment)
-    {
-        if (comment.content == null || comment.content.Length < 1 || comment.content.Length > 1000)
+        if (comment.content.Length < 1 || comment.content.Length > 1000)
         {
             return false;
         }

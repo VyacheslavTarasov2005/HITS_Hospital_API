@@ -1,10 +1,14 @@
 using HITS_API_1.Application.DTOs;
 using HITS_API_1.Application.Interfaces.Services;
+using HITS_API_1.Domain.Entities;
+using HITS_API_1.Domain.Exceptions;
 using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Services;
 
-public class DiagnosesService(IDiagnosesRepository diagnosesRepository, IIcd10Repository icd10Repository)
+public class DiagnosesService(
+    IDiagnosesRepository diagnosesRepository, 
+    IIcd10Repository icd10Repository)
     : IDiagnosesService
 {
     public async Task<List<GetDiagnosisResponse>> GetDiagnosesByInspection(Guid inspectionId)
@@ -24,5 +28,34 @@ public class DiagnosesService(IDiagnosesRepository diagnosesRepository, IIcd10Re
         }
         
         return response;
+    }
+    
+    public async Task ValidateDiagnoses(List<CreateDiagnosisModel> diagnoses)
+    {
+        var mainDiagnosis = false;
+        foreach (var diagnosis in diagnoses)
+        {
+            var icd = await icd10Repository.GetById(diagnosis.icdDiagnosisId);
+            if (icd is null)
+            {
+                throw new IncorrectFieldException("diagnoses/icdDiagnosisId",
+                    $"ICD {diagnosis.icdDiagnosisId} не найден");
+            }
+
+            if (diagnosis.type == DiagnosisType.Main)
+            {
+                if (mainDiagnosis)
+                {
+                    throw new IncorrectFieldException("diagnoses/type", "Может быть только 1 главный диагноз");
+                }
+                
+                mainDiagnosis = true;
+            }
+        }
+
+        if (mainDiagnosis == false)
+        {
+            throw new IncorrectFieldException("diagnoses/type", "Необходим главный диагноз");
+        }
     }
 }
