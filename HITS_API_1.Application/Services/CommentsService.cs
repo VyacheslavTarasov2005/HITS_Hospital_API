@@ -13,7 +13,8 @@ public class CommentsService(
     AddCommentRequestValidator addCommentRequestValidator,
     IDoctorsRepository doctorsRepository,
     IConsultationsRepository consultationsRepository,
-    RedactCommentRequestValidator redactCommentRequestValidator)
+    RedactCommentRequestValidator redactCommentRequestValidator,
+    IInspectionsRepository inspectionsRepository)
     : ICommentsService
 {
     public async Task<Guid> CreateComment(Guid consultationId, AddCommentRequest request, Guid authorId)
@@ -38,7 +39,12 @@ public class CommentsService(
 
         if (consultation.SpecialityId != author.Speciality)
         {
-            throw new ForbiddenOperationException("Пользователь не может добавлять комментарии к этой консультации");
+            var inspection = await inspectionsRepository.GetById(consultation.InspectionId);
+            if (inspection.DoctorId != authorId)
+            {
+                throw new ForbiddenOperationException(
+                    "Пользователь не может добавлять комментарии к этой консультации");
+            }
         }
         
         var parentComment = await commentsRepository.GetById(request.parentId);
