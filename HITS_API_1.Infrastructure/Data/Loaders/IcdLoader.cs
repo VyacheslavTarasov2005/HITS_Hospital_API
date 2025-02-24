@@ -9,7 +9,7 @@ public class IcdLoader(ApplicationDbContext dbContext) : IIcdLoader
 {
     public async Task Load()
     {
-        string filePath = "C:\\Users\\vt45\\RiderProjects\\HITS_API_1\\HITS_API_1.Infrastructure\\Data\\ICD10\\Icd10_json.json";
+        const string filePath = "/app/Data/ICD10/Icd10_json.json";
 
         var jsonData = await File.ReadAllTextAsync(filePath);
         var icd10Data = JsonSerializer.Deserialize<Icd10ListJsonEntity>(jsonData);

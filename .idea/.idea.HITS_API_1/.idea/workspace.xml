@@ -10,85 +10,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3257228d-829e-4971-9eda-bd9dc95699c1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.HITS_API_1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.HITS_API_1/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Entities/Pagination.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Entities/Pagination.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Interfaces/Services/IInspectionsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Interfaces/Services/IInspectionsService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/CommentsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/CommentsService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/ConsultationsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/ConsultationsService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/DiagnosesService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/DiagnosesService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/DoctorsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/DoctorsService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/EmailsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/EmailsService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/Icd10Service.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/Icd10Service.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/InspectionsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/InspectionsService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/PaginationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/PaginationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/PatientsService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/PatientsService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/SpecialitiesService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/SpecialitiesService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Services/TokensService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Services/TokensService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/AddCommentRequestValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/AddCommentRequestValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/CreateConsultationModelValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/CreateConsultationModelValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/CreateDiagnosisModelValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/CreateDiagnosisModelValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/CreateInspectionRequestValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/CreateInspectionRequestValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/CreatePatientRequestValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/CreatePatientRequestValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/GetFilteredInspectionsRequestValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/GetFilteredInspectionsRequestValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/GetIcd10RequestValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/GetIcd10RequestValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/GetPatientsListRequestValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/GetPatientsListRequestValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/GetSpecialitiesRequestValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/GetSpecialitiesRequestValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/LoginRequestValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/LoginRequestValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/RedactInspectionRequestValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/RedactInspectionRequestValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/RegistrationRequestValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/RegistrationRequestValidator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/Validators/UpdateDoctorRequestValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/Validators/UpdateDoctorRequestValidator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Application/obj/Debug/net8.0/HITS_API_1.Application.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Comment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Comment.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Consultation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Consultation.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Diagnosis.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Diagnosis.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Doctor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Doctor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/EmailMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/EmailMessage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Icd10Entity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Icd10Entity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Inspection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Inspection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Person.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Person.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Speciality.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Entities/Speciality.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/Exceptions/FieldException.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/Exceptions/FieldException.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/HITS_API_1.Domain.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/HITS_API_1.Domain.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/HITS_API_1.Domain.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Domain/obj/Debug/net8.0/HITS_API_1.Domain.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/CommentConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/CommentConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/ConsultationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/ConsultationConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/DiagnosisConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/DiagnosisConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/DoctorConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/DoctorConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/EmailMessageConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/EmailMessageConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/Icd10EntityConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/Icd10EntityConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/InspectionConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/InspectionConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/PatientConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/PatientConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/SpecialityConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/SpecialityConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/TokenConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Configurations/TokenConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/ApplicationDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/DbInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/DbInitializer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/Loaders/IcdLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/Loaders/IcdLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/Loaders/SpecialitiesLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Data/Loaders/SpecialitiesLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/CommentsRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/CommentsRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/ConsultationsRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/ConsultationsRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/DiagnosesRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/DiagnosesRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/DoctorsRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/DoctorsRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/EmailMessagesRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/EmailMessagesRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/Icd10Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/Icd10Repository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/InspectionsRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/InspectionsRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/PatientsRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/PatientsRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/SpecialitiesRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/SpecialitiesRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/TokensRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/Repositories/TokensRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Infrastructure/obj/Debug/net8.0/HITS_API_1.Infrastructure.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/Controllers/ConsultationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/Controllers/ConsultationsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/Controllers/DictionariesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/Controllers/DictionariesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/Controllers/DoctorsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/Controllers/DoctorsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/Controllers/InspectionsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/Controllers/InspectionsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/Controllers/PatientsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/Controllers/PatientsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/Entities/ErrorResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/Entities/ErrorResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/Middlewares/ExceptionMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/Middlewares/ExceptionMiddleware.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/Middlewares/TokenMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/Middlewares/TokenMiddleware.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/HITS_API_1.Presentation.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/HITS_API_1.Presentation.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.Presentation/obj/Debug/net8.0/HITS_API_1.Presentation.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HITS_API_1.sln" beforeDir="false" afterPath="$PROJECT_DIR$/HITS_API_1.sln" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,6 +166,50 @@
         <option name="Build" />
       </method>
     </configuration>
+    <configuration name="HITS_API_1.Presentation/Dockerfile" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="imageTag" value="hits_api_1.presentation" />
+          <option name="containerName" value="hits_api_1.presentation" />
+          <option name="contextFolderPath" value="C:\Users\vt45\RiderProjects\HITS_API_1" />
+          <option name="portBindings">
+            <list>
+              <DockerPortBindingImpl>
+                <option name="containerPort" value="8080" />
+                <option name="hostIp" value="127.0.0.1" />
+                <option name="hostPort" value="8080" />
+              </DockerPortBindingImpl>
+            </list>
+          </option>
+          <option name="sourceFilePath" value="HITS_API_1.Presentation/Dockerfile" />
+        </settings>
+      </deployment>
+      <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
+      <deployment type="dockerfile">
+        <settings />
+      </deployment>
+      <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="HTTP Request.HITS_API_1 | #1" />
@@ -279,7 +258,8 @@
       <workItem from="1739439093180" duration="30311000" />
       <workItem from="1739890663147" duration="13278000" />
       <workItem from="1740053308809" duration="18568000" />
-      <workItem from="1740138753711" duration="59185000" />
+      <workItem from="1740138753711" duration="59556000" />
+      <workItem from="1740422603222" duration="616000" />
     </task>
     <servers />
   </component>
