@@ -1,4 +1,4 @@
-namespace HITS_API_1.Infrastructure.Data.ICD10;
+namespace HITS_API_1.Infrastructure.Interfaces;
 
 public interface IIcdLoader
 {

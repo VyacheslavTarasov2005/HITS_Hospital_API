@@ -8,7 +8,8 @@ using HITS_API_1.Application.Validators;
 using HITS_API_1.Domain.Repositories;
 using HITS_API_1.Infrastructure.Authentication;
 using HITS_API_1.Infrastructure.Data;
-using HITS_API_1.Infrastructure.Data.ICD10;
+using HITS_API_1.Infrastructure.Data.Loaders;
+using HITS_API_1.Infrastructure.Interfaces;
 using HITS_API_1.Infrastructure.Repositories;
 using HITS_API_1.Middlewares;
 using Microsoft.EntityFrameworkCore;
@@ -55,8 +56,9 @@ builder.Services.AddScoped<IDiagnosesService, DiagnosesService>();
 builder.Services.AddScoped<IEmailsService, EmailsService>();
 builder.Services.AddScoped<IPaginationService, PaginationService>();
 
-// Загрузка МКБ
+// Загрузка первичных данных в БД
 builder.Services.AddScoped<IIcdLoader, IcdLoader>();
+builder.Services.AddScoped<ISpecialitiesLoader, SpecialitiesLoader>();
 
 // Валидаторы
 builder.Services.AddValidatorsFromAssemblyContaining<RegistrationRequestValidator>();
@@ -144,10 +146,11 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     var icdLoader = scope.ServiceProvider.GetRequiredService<IIcdLoader>();
+    var specialitiesLoader = scope.ServiceProvider.GetRequiredService<ISpecialitiesLoader>();
 
     try
     {
-        await DbInitializer.Initialize(dbContext, icdLoader);
+        await DbInitializer.Initialize(dbContext, icdLoader, specialitiesLoader);
 
         // Проверка, получилось ли подклюиться к БД
         if (dbContext.Database.CanConnect())

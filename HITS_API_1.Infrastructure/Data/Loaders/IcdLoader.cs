@@ -1,7 +1,9 @@
 using System.Text.Json;
 using HITS_API_1.Domain.Entities;
+using HITS_API_1.Infrastructure.Data.ICD10;
+using HITS_API_1.Infrastructure.Interfaces;
 
-namespace HITS_API_1.Infrastructure.Data.ICD10;
+namespace HITS_API_1.Infrastructure.Data.Loaders;
 
 public class IcdLoader(ApplicationDbContext dbContext) : IIcdLoader
 {
