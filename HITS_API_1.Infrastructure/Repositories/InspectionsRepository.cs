@@ -11,7 +11,7 @@ public class InspectionsRepository(ApplicationDbContext dbContext) : IInspection
     {
         await dbContext.Inspections.AddAsync(inspection);
         await dbContext.SaveChangesAsync();
-        
+
         return inspection.Id;
     }
 
@@ -20,7 +20,7 @@ public class InspectionsRepository(ApplicationDbContext dbContext) : IInspection
         var inspection = await dbContext.Inspections
             .AsNoTracking()
             .FirstOrDefaultAsync(i => i.Id == id);
-        
+
         return inspection;
     }
 
@@ -29,7 +29,7 @@ public class InspectionsRepository(ApplicationDbContext dbContext) : IInspection
         var inspection = await dbContext.Inspections
             .AsNoTracking()
             .FirstOrDefaultAsync(i => i.PreviousInspectionId == parentInspectionId);
-        
+
         return inspection;
     }
 
@@ -39,7 +39,7 @@ public class InspectionsRepository(ApplicationDbContext dbContext) : IInspection
             .AsNoTracking()
             .Where(i => i.PatientId == patientId)
             .ToListAsync();
-        
+
         return inspections;
     }
 
@@ -55,7 +55,7 @@ public class InspectionsRepository(ApplicationDbContext dbContext) : IInspection
                 .SetProperty(i => i.Conclusion, i => conclusion)
                 .SetProperty(i => i.NextVisitDate, i => nextVisitDate)
                 .SetProperty(i => i.DeathDate, i => deathDate));
-        
+
         await dbContext.SaveChangesAsync();
     }
 
@@ -64,7 +64,7 @@ public class InspectionsRepository(ApplicationDbContext dbContext) : IInspection
         var inspections = await dbContext.Inspections
             .AsNoTracking()
             .ToListAsync();
-        
+
         return inspections;
     }
 }

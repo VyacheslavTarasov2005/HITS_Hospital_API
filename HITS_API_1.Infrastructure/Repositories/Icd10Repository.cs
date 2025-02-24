@@ -14,7 +14,7 @@ public class Icd10Repository(ApplicationDbContext dbContext) : IIcd10Repository
             var icd10Entities = await dbContext.Icd10Entities
                 .AsNoTracking()
                 .ToListAsync();
-            
+
             return icd10Entities;
         }
         else
@@ -23,11 +23,11 @@ public class Icd10Repository(ApplicationDbContext dbContext) : IIcd10Repository
                 .AsNoTracking()
                 .Where(i => EF.Functions.ILike(i.Name, $"%{name}%"))
                 .ToListAsync();
-        
+
             return icd10Entities;
         }
     }
-    
+
     public async Task<List<Icd10Entity>> GetAllByCodePart(String code)
     {
         if (code.Length == 0)
@@ -35,7 +35,7 @@ public class Icd10Repository(ApplicationDbContext dbContext) : IIcd10Repository
             var icd10Entities = await dbContext.Icd10Entities
                 .AsNoTracking()
                 .ToListAsync();
-        
+
             return icd10Entities;
         }
         else
@@ -44,18 +44,18 @@ public class Icd10Repository(ApplicationDbContext dbContext) : IIcd10Repository
                 .AsNoTracking()
                 .Where(i => EF.Functions.ILike(i.Code, $"%{code}%"))
                 .ToListAsync();
-        
+
             return icd10Entities;
         }
     }
-    
+
     public async Task<List<Icd10Entity>> GetRoots()
     {
         var icd10Entities = await dbContext.Icd10Entities
             .AsNoTracking()
             .Where(i => i.ParentId == null)
             .ToListAsync();
-        
+
         return icd10Entities;
     }
 
@@ -64,7 +64,7 @@ public class Icd10Repository(ApplicationDbContext dbContext) : IIcd10Repository
         var icd10Entity = await dbContext.Icd10Entities
             .AsNoTracking()
             .FirstOrDefaultAsync(i => i.Id == id);
-        
+
         return icd10Entity;
     }
 
@@ -77,7 +77,7 @@ public class Icd10Repository(ApplicationDbContext dbContext) : IIcd10Repository
             var parent = await GetById(child.ParentId.Value);
             child = parent;
         }
-        
+
         return child;
     }
 }

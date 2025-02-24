@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace HITS_API_1.Domain.Entities;
 
 public class Speciality
@@ -10,9 +7,9 @@ public class Speciality
     private String _name;
 
     public Guid Id => _id;
-    
+
     public DateTime CreateTime => _createTime;
-    
+
     public String Name
     {
         get => _name;

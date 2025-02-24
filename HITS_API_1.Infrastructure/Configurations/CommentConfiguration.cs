@@ -17,17 +17,17 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
         builder.HasOne<Doctor>()
             .WithOne()
             .HasForeignKey<Comment>(c => c.AuthorId);
-        
+
         builder.HasMany<Comment>()
             .WithOne()
             .HasForeignKey(c => c.ParentId);
 
         builder.Property(c => c.CreateTime)
             .IsRequired();
-        
+
         builder.Property(c => c.Content)
             .IsRequired();
-        
+
         builder.Property(c => c.ModifiedDate);
     }
 }

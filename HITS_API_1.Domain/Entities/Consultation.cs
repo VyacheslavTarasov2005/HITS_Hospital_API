@@ -8,11 +8,11 @@ public class Consultation
     private Guid _specialityId;
 
     public Guid Id => _id;
-    
+
     public DateTime CreateTime => _CreateTime;
-    
+
     public Guid InspectionId => _inspectionId;
-    
+
     public Guid SpecialityId => _specialityId;
 
     public Consultation(Guid inspectionId, Guid specialityId)

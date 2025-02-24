@@ -11,14 +11,14 @@ public class PatientsRepository(ApplicationDbContext dbContext) : IPatientsRepos
     {
         await dbContext.Patients.AddAsync(patient);
         await dbContext.SaveChangesAsync();
-        
+
         return patient.Id;
     }
 
     public async Task<Patient?> GetById(Guid patientId)
     {
         var patient = await dbContext.Patients.FirstOrDefaultAsync(p => p.Id == patientId);
-        
+
         return patient;
     }
 
@@ -27,7 +27,7 @@ public class PatientsRepository(ApplicationDbContext dbContext) : IPatientsRepos
         var patients = await dbContext.Patients
             .AsNoTracking()
             .ToListAsync();
-        
+
         return patients;
     }
 

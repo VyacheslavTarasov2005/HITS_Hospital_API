@@ -27,7 +27,7 @@ public class InspectionsController(IInspectionsService inspectionsService) : Con
         {
             return Unauthorized();
         }
-        
+
         await inspectionsService.UpdateInspection(id, request, Guid.Parse(doctorId));
         return Ok();
     }

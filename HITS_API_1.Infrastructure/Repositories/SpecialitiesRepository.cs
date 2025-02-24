@@ -20,7 +20,7 @@ public class SpecialitiesRepository(ApplicationDbContext dbContext) : ISpecialit
             var specialities = await dbContext.Specialities
                 .AsNoTracking()
                 .ToListAsync();
-        
+
             return specialities;
         }
         else
@@ -29,7 +29,7 @@ public class SpecialitiesRepository(ApplicationDbContext dbContext) : ISpecialit
                 .AsNoTracking()
                 .Where(s => EF.Functions.ILike(s.Name, $"%{name}%"))
                 .ToListAsync();
-        
+
             return specialities;
         }
     }

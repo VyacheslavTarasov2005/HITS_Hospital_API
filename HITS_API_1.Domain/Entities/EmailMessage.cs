@@ -8,11 +8,11 @@ public class EmailMessage
     private String _emailAddress;
 
     public Guid Id => _id;
-    
+
     public Guid InspectionId => _inspectionId;
-    
+
     public String Name => _name;
-    
+
     public String EmailAddress => _emailAddress;
 
     public EmailMessage(Guid inspectionId, String name, String emailAddress)

@@ -18,7 +18,7 @@ public class CommentsRepository(ApplicationDbContext dbContext) : ICommentsRepos
         var comments = await dbContext.Comments
             .Where(c => c.ConsultationId == id)
             .ToListAsync();
-        
+
         return comments;
     }
 
@@ -38,7 +38,7 @@ public class CommentsRepository(ApplicationDbContext dbContext) : ICommentsRepos
             .ExecuteUpdateAsync(s => s
                 .SetProperty(c => c.Content, c => content)
                 .SetProperty(c => c.ModifiedDate, c => DateTime.UtcNow));
-        
+
         await dbContext.SaveChangesAsync();
     }
 }

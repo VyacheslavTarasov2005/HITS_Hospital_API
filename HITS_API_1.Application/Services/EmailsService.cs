@@ -36,7 +36,7 @@ public class EmailsService(
                     if (email == null)
                     {
                         var inspectionAuthor = await doctorsRepository.GetById(inspection.DoctorId);
-                    
+
                         try
                         {
                             await SendEmail(patient.Name, inspection.NextVisitDate.Value, inspectionAuthor.Email);
@@ -45,10 +45,10 @@ public class EmailsService(
                         {
                             continue;
                         }
-                    
-                        EmailMessage emailEntity = new EmailMessage(inspection.Id, patient.Name, 
+
+                        EmailMessage emailEntity = new EmailMessage(inspection.Id, patient.Name,
                             inspectionAuthor.Email);
-                        
+
                         await emailMessagesRepository.Add(emailEntity);
                     }
                 }
@@ -66,9 +66,9 @@ public class EmailsService(
             Subject = "Пропущенный визит",
             Body = $"Пациент {patientName} пропустил осмотр, назначенный на {inspectionDate:dd/MM/yyyy}"
         };
-        
+
         emailMessage.To.Add($"{doctorEmail}");
-        
+
         await smtpClient.SendMailAsync(emailMessage);
-    } 
+    }
 }

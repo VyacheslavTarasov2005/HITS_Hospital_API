@@ -18,13 +18,13 @@ public class ConsultationsService(
         String commentContent)
     {
         Consultation consultation = new Consultation(inspectionId, specialityId);
-        
+
         await consultationsRepository.Create(consultation);
-        
+
         Comment comment = new Comment(null, commentContent, doctorId, null, consultation.Id);
-        
+
         await commentsRepository.Create(comment);
-        
+
         return consultation.Id;
     }
 
@@ -35,9 +35,9 @@ public class ConsultationsService(
         {
             throw new NotFoundObjectException("consultation", "Консультация не найдена");
         }
-        
+
         var speciality = await specialitiesRepository.GetById(consultation.SpecialityId);
-        
+
         var comments = await commentsRepository.GetByConsultationId(consultationId);
 
         return (consultation, comments, speciality);
@@ -46,38 +46,38 @@ public class ConsultationsService(
     public async Task<List<InspectionConsultationModel>> GetAllConsultationsByInspection(Guid inspectionId)
     {
         var consultations = await consultationsRepository.GetAllByInspectionId(inspectionId);
-        
+
         List<InspectionConsultationModel> consultationResponse = new List<InspectionConsultationModel>();
 
         foreach (var consultation in consultations)
         {
             var speciality = await specialitiesRepository.GetById(consultation.SpecialityId);
-                
+
             var comments = await commentsRepository.GetByConsultationId(consultation.Id);
 
             var rootComment = comments.MinBy(c => c.CreateTime);
-        
+
             var rootCommentAuthor = await doctorsService.GetDoctor(rootComment.AuthorId);
-        
+
             int commentsNumber = comments.Count();
-            
+
             GetDoctorResponse rootCommentAuthorResponse = new GetDoctorResponse(rootCommentAuthor.Id,
                 rootCommentAuthor.CreateTime, rootCommentAuthor.Name, rootCommentAuthor.Birthday, rootCommentAuthor.Sex,
                 rootCommentAuthor.Email, rootCommentAuthor.Phone);
-            
+
             InspectionCommentModel commentResponse = new InspectionCommentModel(rootComment.Id, rootComment.CreateTime,
                 rootComment.ParentId, rootComment.Content, rootCommentAuthorResponse,
                 rootComment.ModifiedDate ?? rootComment.CreateTime);
-            
-            InspectionConsultationModel response = new InspectionConsultationModel(consultation.Id, 
+
+            InspectionConsultationModel response = new InspectionConsultationModel(consultation.Id,
                 consultation.CreateTime, inspectionId, speciality, commentResponse, commentsNumber);
-            
+
             consultationResponse.Add(response);
         }
-        
+
         return consultationResponse;
     }
-    
+
     public async Task ValidateConsultations(List<CreateConsultationModel> consultations)
     {
         if (consultations.Count > 0)

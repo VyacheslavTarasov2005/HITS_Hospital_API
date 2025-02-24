@@ -1,7 +1,6 @@
 using FluentValidation;
 using HITS_API_1.Application.DTOs;
 using HITS_API_1.Domain.Entities;
-using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Validators;
 
@@ -9,15 +8,15 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
 {
     private readonly CreateDiagnosisModelValidator _createDiagnosisModelValidator;
     private readonly CreateConsultationModelValidator _createConsultationModelValidator;
-    
+
     public CreateInspectionRequestValidator(
         CreateDiagnosisModelValidator createDiagnosisModelValidator,
         CreateConsultationModelValidator createConsultationModelValidator)
     {
         _createDiagnosisModelValidator = createDiagnosisModelValidator;
         _createConsultationModelValidator = createConsultationModelValidator;
-            
-        
+
+
         RuleFor(r => r.date)
             .NotEmpty()
             .WithMessage("Необходима дата")
@@ -88,7 +87,7 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -98,7 +97,7 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
         {
             return true;
         }
-        
+
         return nextDate >= date;
     }
 
@@ -139,7 +138,7 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
                 {
                     return false;
                 }
-                
+
                 mainDiagnosis = true;
             }
         }
@@ -157,12 +156,12 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
         for (int i = 0; i < consultations.Count; i++)
         {
             var validationResult = await _createConsultationModelValidator.ValidateAsync(consultations[i]);
-            
+
             if (!validationResult.IsValid)
             {
                 return false;
             }
-            
+
             for (int j = 0; j < i; j++)
             {
                 if (consultations[j].specialityId == consultations[i].specialityId)
@@ -171,7 +170,7 @@ public class CreateInspectionRequestValidator : AbstractValidator<CreateInspecti
                 }
             }
         }
-        
+
         return true;
     }
 }

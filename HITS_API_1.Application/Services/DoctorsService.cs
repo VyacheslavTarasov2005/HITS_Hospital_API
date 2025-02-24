@@ -5,7 +5,6 @@ using HITS_API_1.Application.Interfaces;
 using HITS_API_1.Application.Interfaces.Services;
 using HITS_API_1.Application.Validators;
 using HITS_API_1.Domain.Entities;
-using HITS_API_1.Domain.Exceptions;
 using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Services;
@@ -27,13 +26,13 @@ public class DoctorsService(
         {
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
-        
+
         var speciality = await specialitiesRepository.GetById(request.speciality);
         if (speciality == null)
         {
             throw new NotFoundFieldException("speciality", "Специальность не найдена");
         }
-        
+
         var duplicateEmailDoctor = await doctorsRepository.GetByEmail(request.email);
         if (duplicateEmailDoctor != null)
         {
@@ -42,10 +41,10 @@ public class DoctorsService(
 
         Doctor doctor = new Doctor(request.name, request.birthday, request.gender, request.phone, request.email,
             request.password, request.speciality);
-        
+
         doctor.Password = hasher.Hash(doctor.Password);
         var doctorId = await doctorsRepository.Create(doctor);
-        
+
         return await tokensService.CreateToken(doctorId);
     }
 
@@ -56,7 +55,7 @@ public class DoctorsService(
         {
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
-        
+
         var doctor = await doctorsRepository.GetByEmail(request.email);
         if (doctor == null)
         {
@@ -67,7 +66,7 @@ public class DoctorsService(
         {
             return await tokensService.CreateToken(doctor.Id);
         }
-        
+
         throw new InvalidCredentialException();
     }
 
@@ -84,7 +83,7 @@ public class DoctorsService(
         {
             throw new NotFoundObjectException("user", "Пользователь не найден");
         }
-        
+
         return doctor;
     }
 
@@ -95,7 +94,7 @@ public class DoctorsService(
         {
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
-        
+
         var doctor = await doctorsRepository.GetById(id);
         if (doctor == null)
         {
@@ -107,8 +106,8 @@ public class DoctorsService(
         {
             throw new DuplicateFieldException("email", "Email уже используется другим пользоавтелем");
         }
-        
-        await doctorsRepository.Update(id, request.email, request.name, request.birthday, request.gender, 
+
+        await doctorsRepository.Update(id, request.email, request.name, request.birthday, request.gender,
             request.phone);
     }
 }

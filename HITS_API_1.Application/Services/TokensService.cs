@@ -11,9 +11,9 @@ public class TokensService(ITokensRepository tokensRepository, IHasher hasher) :
     {
         String token = Guid.NewGuid().ToString();
         String hashedToken = hasher.Hash(token);
-        
+
         await tokensRepository.Create(hashedToken, doctorId);
-        
+
         return token;
     }
 

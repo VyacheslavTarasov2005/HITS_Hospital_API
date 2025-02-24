@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using HITS_API_1.Application.Interfaces;
 using HITS_API_1.Application.Interfaces.Services;
-using HITS_API_1.Domain;
 using Microsoft.AspNetCore.Authorization;
 namespace HITS_API_1.Middlewares;
 
@@ -21,15 +20,15 @@ public class TokenMiddleware
             await _next(httpContext);
             return;
         }
-        
+
         var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        
+
         if (token == null)
         {
             httpContext.Response.StatusCode = 401;
             return;
         }
-        
+
         var dbToken = await tokensService.GetToken(token);
 
         if (dbToken == null)
@@ -43,7 +42,7 @@ public class TokenMiddleware
             httpContext.Response.StatusCode = 401;
             return;
         }
-        
+
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, dbToken.Doctor.ToString())

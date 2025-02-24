@@ -1,6 +1,5 @@
 using FluentValidation;
 using HITS_API_1.Application.DTOs;
-using HITS_API_1.Domain.Repositories;
 
 namespace HITS_API_1.Application.Validators;
 
@@ -25,7 +24,7 @@ public class CreateConsultationModelValidator : AbstractValidator<CreateConsulta
         {
             return false;
         }
-        
+
         return true;
     }
 }

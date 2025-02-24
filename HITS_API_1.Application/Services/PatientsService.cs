@@ -27,7 +27,7 @@ public class PatientsService(
         {
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
-        
+
         Patient patient = new Patient(request.name, request.birthday, request.gender);
         return await patientsRepository.Create(patient);
     }
@@ -39,7 +39,7 @@ public class PatientsService(
         {
             throw new NotFoundObjectException("patient", "Пациент не найден");
         }
-        
+
         return patient;
     }
 
@@ -50,14 +50,14 @@ public class PatientsService(
         {
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
-        
+
         var patients = await patientsRepository.GetAllByNamePart(request.name ?? "");
-        
+
         var inspections = await inspectionsRepository.GetAll();
-        
+
         var scheduledVisits = request.scheduledVisits ?? false;
-        
-        if (request.conclusions != null || scheduledVisits || doctorId != null || 
+
+        if (request.conclusions != null || scheduledVisits || doctorId != null ||
             request.sorting == Sorting.InspectionAsc || request.sorting == Sorting.InspectionDesc)
         {
             patients = patients.Where(p => inspections
@@ -73,25 +73,25 @@ public class PatientsService(
             case Sorting.NameAsc:
                 patients = patients.OrderBy(p => p.Name).ToList();
                 break;
-            
+
             case Sorting.NameDesc:
                 patients = patients.OrderByDescending(p => p.Name).ToList();
                 break;
-            
+
             case Sorting.CreateAsc:
                 patients = patients.OrderBy(p => p.CreateTime).ToList();
                 break;
-            
+
             case Sorting.CreateDesc:
                 patients = patients.OrderByDescending(p => p.CreateTime).ToList();
                 break;
-            
+
             case Sorting.InspectionAsc:
                 patients = patients.OrderBy(p => inspections
                     .Where(i => i.PatientId == p.Id)
                     .Min(i => i.Date)).ToList();
                 break;
-            
+
             case Sorting.InspectionDesc:
                 patients = patients.OrderByDescending(p => inspections
                     .Where(i => i.PatientId == p.Id)
@@ -122,9 +122,9 @@ public class PatientsService(
                 }
             }
         }
-        
+
         var patients = await patientsRepository.GetAll();
-        
+
         Dictionary<String, int> icdCounter = new Dictionary<String, int>();
         List<GetReportRecordResponse> records = new List<GetReportRecordResponse>();
 
@@ -143,7 +143,7 @@ public class PatientsService(
                 {
                     continue;
                 }
-                
+
                 var mainDiagnosisIcdRoot = await icd10Repository.GetRootByChildId(mainDiagnosis.Icd10Id);
 
                 if (request.icdRoots != null && request.icdRoots.Count > 0 &&
@@ -160,7 +160,7 @@ public class PatientsService(
                         {
                             patientIcdCounter[mainDiagnosisIcdRoot.Code]++;
                         }
-                        
+
                         // Обновление общего количества
                         if (!icdCounter.ContainsKey(mainDiagnosisIcdRoot.Code))
                         {
@@ -183,7 +183,7 @@ public class PatientsService(
                     {
                         patientIcdCounter[mainDiagnosisIcdRoot.Code]++;
                     }
-                    
+
                     // Обновление общего количества
                     if (!icdCounter.ContainsKey(mainDiagnosisIcdRoot.Code))
                     {
@@ -203,11 +203,11 @@ public class PatientsService(
                 records.Add(patientRecordResponse);
             }
         }
-        
-        records = records.OrderBy(r=> r.patientName).ToList();
-        
+
+        records = records.OrderBy(r => r.patientName).ToList();
+
         GetReportFilterResponse filter;
-        
+
         if (request.icdRoots == null || request.icdRoots.Count == 0)
         {
             var roots = await icd10Repository.GetRoots();
@@ -219,7 +219,7 @@ public class PatientsService(
                     icdCounter[icd.Code] = 0;
                 }
             }
-            
+
             filter = new GetReportFilterResponse(request.start, request.end, roots
                 .Select(i => i.Code)
                 .Order()
@@ -233,22 +233,22 @@ public class PatientsService(
             {
                 var icd = await icd10Repository.GetById(id);
                 roots.Add(icd.Code);
-                
+
                 if (!icdCounter.ContainsKey(icd.Code))
                 {
                     icdCounter[icd.Code] = 0;
                 }
             }
-            
+
             filter = new GetReportFilterResponse(request.start, request.end, roots.Order().ToList());
         }
-        
+
         icdCounter = icdCounter
             .OrderBy(i => i.Key)
             .ToDictionary(i => i.Key, i => i.Value);
-        
+
         GetReportResponse response = new GetReportResponse(filter, records, icdCounter);
-        
+
         return response;
     }
 }

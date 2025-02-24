@@ -13,15 +13,15 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
         builder.HasMany<Inspection>()
             .WithOne()
             .HasForeignKey(i => i.PatientId);
-        
+
         builder.Property(d => d.CreateTime)
             .IsRequired();
-        
+
         builder.Property(d => d.Name)
             .IsRequired();
-        
+
         builder.Property(d => d.Birthday);
-        
+
         builder.Property(d => d.Sex)
             .IsRequired();
     }

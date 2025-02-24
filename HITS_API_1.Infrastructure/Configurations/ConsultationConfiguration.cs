@@ -13,7 +13,7 @@ public class ConsultationConfiguration : IEntityTypeConfiguration<Consultation>
         builder.HasOne<Inspection>()
             .WithMany()
             .HasForeignKey(c => c.InspectionId);
-        
+
         builder.HasOne<Speciality>()
             .WithMany()
             .HasForeignKey(c => c.SpecialityId);
@@ -21,7 +21,7 @@ public class ConsultationConfiguration : IEntityTypeConfiguration<Consultation>
         builder.HasMany<Comment>()
             .WithOne()
             .HasForeignKey(c => c.ConsultationId);
-        
+
         builder.Property(c => c.CreateTime)
             .IsRequired();
     }

@@ -13,30 +13,30 @@ public class InspectionConfiguration : IEntityTypeConfiguration<Inspection>
         builder.HasMany<Diagnosis>()
             .WithOne()
             .HasForeignKey(d => d.InspectionId);
-        
+
         builder.HasMany<Consultation>()
             .WithOne()
             .HasForeignKey(c => c.InspectionId);
-        
+
         builder.HasOne<Inspection>()
             .WithOne()
             .HasForeignKey<Inspection>(i => i.PreviousInspectionId);
-        
+
         builder.HasOne<Patient>()
             .WithMany()
             .HasForeignKey(i => i.PatientId);
-        
+
         builder.HasOne<Doctor>()
             .WithMany()
             .HasForeignKey(i => i.DoctorId);
-        
+
         builder.HasMany<EmailMessage>()
             .WithOne()
             .HasForeignKey(e => e.InspectionId);
-        
+
         builder.Property(i => i.CreateTime)
             .IsRequired();
-        
+
         builder.Property(i => i.Date)
             .IsRequired();
 
@@ -45,7 +45,7 @@ public class InspectionConfiguration : IEntityTypeConfiguration<Inspection>
 
         builder.Property(i => i.Complaints)
             .IsRequired();
-        
+
         builder.Property(i => i.Treatment)
             .IsRequired();
 

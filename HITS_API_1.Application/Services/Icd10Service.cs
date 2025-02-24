@@ -9,7 +9,7 @@ using HITS_API_1.Domain.Repositories;
 namespace HITS_API_1.Application.Services;
 
 public class Icd10Service(
-    IIcd10Repository icd10Repository, 
+    IIcd10Repository icd10Repository,
     IPaginationService paginationService,
     GetIcd10RequestValidator getIcd10RequestValidator)
     : IIcd10Service
@@ -21,7 +21,7 @@ public class Icd10Service(
         {
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
-        
+
         var icd10Entities = await icd10Repository.GetAllByNamePart(getIcd10Request.request ?? "");
 
         if (icd10Entities.Count == 0)
@@ -36,7 +36,7 @@ public class Icd10Service(
     {
         return await icd10Repository.GetRoots();
     }
-    
+
     public async Task ValidateIcdRoots(List<Guid> icdRoots)
     {
         var roots = await icd10Repository.GetRoots();

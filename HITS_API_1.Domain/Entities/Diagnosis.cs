@@ -10,7 +10,7 @@ public class Diagnosis
     private Guid _icd10Id;
 
     public Guid Id => _id;
-    
+
     public DateTime CreateTime => _createTime;
 
     public String? Description
@@ -29,7 +29,7 @@ public class Diagnosis
     {
         get => _inspectionId;
     }
-    
+
     public Guid Icd10Id => _icd10Id;
 
     public Diagnosis(String? description, DiagnosisType type, Guid inspectionId, Guid icd10Id)

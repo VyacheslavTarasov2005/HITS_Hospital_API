@@ -11,7 +11,7 @@ public class DiagnosesRepository(ApplicationDbContext dbContext) : IDiagnosesRep
     {
         await dbContext.Diagnoses.AddAsync(diagnosis);
         await dbContext.SaveChangesAsync();
-        
+
         return diagnosis.Id;
     }
 
@@ -21,7 +21,7 @@ public class DiagnosesRepository(ApplicationDbContext dbContext) : IDiagnosesRep
             .AsNoTracking()
             .Where(d => d.InspectionId == inspectionId)
             .ToListAsync();
-        
+
         return diagnoses;
     }
 
@@ -30,7 +30,7 @@ public class DiagnosesRepository(ApplicationDbContext dbContext) : IDiagnosesRep
         await dbContext.Diagnoses
             .Where(d => d.InspectionId == inspectionId)
             .ExecuteDeleteAsync();
-        
+
         await dbContext.SaveChangesAsync();
     }
 }

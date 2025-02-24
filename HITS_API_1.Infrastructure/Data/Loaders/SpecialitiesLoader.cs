@@ -13,7 +13,7 @@ public class SpecialitiesLoader(ApplicationDbContext dbContext) : ISpecialitiesL
             new Speciality("Педиатор"),
             new Speciality("Хирург")
         };
-        
+
         await dbContext.Specialities.AddRangeAsync(specialities);
         await dbContext.SaveChangesAsync();
     }

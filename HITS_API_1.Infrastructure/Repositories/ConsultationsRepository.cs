@@ -20,7 +20,7 @@ public class ConsultationsRepository(ApplicationDbContext dbContext) : IConsulta
         var consultation = await dbContext.Consultations
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.Id == id);
-        
+
         return consultation;
     }
 
@@ -30,7 +30,7 @@ public class ConsultationsRepository(ApplicationDbContext dbContext) : IConsulta
             .AsNoTracking()
             .Where(c => c.InspectionId == inspectionId)
             .ToListAsync();
-        
+
         return consultations;
     }
 
@@ -39,7 +39,7 @@ public class ConsultationsRepository(ApplicationDbContext dbContext) : IConsulta
         var consultations = await dbContext.Consultations
             .AsNoTracking()
             .ToListAsync();
-        
+
         return consultations;
     }
 }

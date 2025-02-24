@@ -16,7 +16,7 @@ public class Inspection
     private Guid _doctorId;
 
     public Guid Id => _id;
-    
+
     public DateTime CreateTime => _createTime;
 
     public DateTime Date

@@ -17,7 +17,7 @@ public class DoctorsController(
     public async Task<ActionResult<AuthenticationResponse>> RegisterDoctor([FromBody] RegistrationRequest request)
     {
         String accesToken = await doctorsService.RegisterDoctor(request);
-        
+
         var response = new AuthenticationResponse(accesToken);
         return Ok(response);
     }
@@ -27,7 +27,7 @@ public class DoctorsController(
     public async Task<ActionResult<AuthenticationResponse>> LoginDoctor([FromBody] LoginRequest request)
     {
         var accesToken = await doctorsService.LoginDoctor(request);
-        
+
         var response = new AuthenticationResponse(accesToken);
         return Ok(response);
     }
@@ -38,7 +38,7 @@ public class DoctorsController(
     {
         var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         await doctorsService.LogoutDoctor(token);
-        
+
         return Ok();
     }
 
@@ -51,7 +51,7 @@ public class DoctorsController(
         {
             throw new UnauthorizedAccessException();
         }
-        
+
         var doctor = await doctorsService.GetDoctor(Guid.Parse(doctorId));
 
         var response = new GetDoctorResponse(doctor.Id, doctor.CreateTime, doctor.Name, doctor.Birthday,
@@ -68,7 +68,7 @@ public class DoctorsController(
         {
             throw new UnauthorizedAccessException();
         }
-        
+
         await doctorsService.UpdateDoctor(Guid.Parse(doctorId), request);
         return Ok();
     }

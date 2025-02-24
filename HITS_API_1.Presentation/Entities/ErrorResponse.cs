@@ -19,7 +19,7 @@ public class ErrorResponse
         {
             Errors[name] = new List<String>();
         }
-        
+
         Errors[name].Add(description);
     }
 }

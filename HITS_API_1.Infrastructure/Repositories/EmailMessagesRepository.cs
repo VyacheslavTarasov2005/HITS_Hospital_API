@@ -12,7 +12,7 @@ public class EmailMessagesRepository(ApplicationDbContext dbContext) : IEmailMes
         var email = dbContext.EmailMessages
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.InspectionId == inspectionId);
-        
+
         return email;
     }
 

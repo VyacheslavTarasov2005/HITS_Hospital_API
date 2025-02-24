@@ -10,7 +10,7 @@ public class TokensRepository(ApplicationDbContext dbContext) : ITokensRepositor
     public async Task<String> Create(String token, Guid doctorId)
     {
         var newToken = new Token(token, doctorId);
-        
+
         await dbContext.AddAsync(newToken);
         await dbContext.SaveChangesAsync();
 
@@ -39,7 +39,7 @@ public class TokensRepository(ApplicationDbContext dbContext) : ITokensRepositor
         var tokens = await dbContext.Tokens
             .AsNoTracking()
             .ToListAsync();
-        
+
         foreach (var token in tokens)
         {
             if (BCrypt.Net.BCrypt.EnhancedVerify(accesToken, token.AccesToken))
@@ -47,7 +47,7 @@ public class TokensRepository(ApplicationDbContext dbContext) : ITokensRepositor
                 dbContext.Tokens.Remove(token);
             }
         }
-        
+
         await dbContext.SaveChangesAsync();
     }
 
@@ -57,7 +57,7 @@ public class TokensRepository(ApplicationDbContext dbContext) : ITokensRepositor
             .AsNoTracking()
             .Where(t => t.ExpiryDate < DateTime.UtcNow)
             .ToListAsync();
-        
+
         dbContext.Tokens.RemoveRange(expiredTokens);
         await dbContext.SaveChangesAsync();
     }

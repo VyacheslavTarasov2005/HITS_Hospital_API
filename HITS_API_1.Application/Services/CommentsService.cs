@@ -24,13 +24,13 @@ public class CommentsService(
         {
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
-        
+
         var author = await doctorsRepository.GetById(authorId);
         if (author == null)
         {
             throw new NotFoundObjectException("user", "Пользователь не найден");
         }
-        
+
         var consultation = await consultationsRepository.GetById(consultationId);
         if (consultation == null)
         {
@@ -46,7 +46,7 @@ public class CommentsService(
                     "Пользователь не может добавлять комментарии к этой консультации");
             }
         }
-        
+
         var parentComment = await commentsRepository.GetById(request.parentId);
         if (parentComment == null)
         {
@@ -58,10 +58,10 @@ public class CommentsService(
             throw new IncorrectFieldException("parentId",
                 "ParentID не может ссылаться на консультацию, отличную от консультации комментария");
         }
-        
+
         Comment comment = new Comment(null, request.content, authorId, request.parentId, consultationId);
         await commentsRepository.Create(comment);
-        
+
         return comment.Id;
     }
 
@@ -72,7 +72,7 @@ public class CommentsService(
         {
             throw new FluentValidation.ValidationException(validationResult.Errors);
         }
-        
+
         var comment = await commentsRepository.GetById(commentId);
         if (comment == null)
         {
@@ -83,12 +83,12 @@ public class CommentsService(
         {
             throw new ForbiddenOperationException("Пользователь может изменять только свои комментарии");
         }
-        
+
         if (comment.Content == request.content)
         {
             throw new IncorrectFieldException("content", "Нельзя изменять содержимое комментария на такое же");
         }
-        
+
         await commentsRepository.Update(commentId, request.content);
     }
 }

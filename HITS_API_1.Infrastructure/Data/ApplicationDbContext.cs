@@ -5,8 +5,8 @@ namespace HITS_API_1.Infrastructure.Data;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
-    
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Doctor> Doctors { get; set; }
     public DbSet<Token> Tokens { get; set; }
@@ -17,7 +17,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Consultation> Consultations { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<EmailMessage> EmailMessages { get; set; }
-    
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);

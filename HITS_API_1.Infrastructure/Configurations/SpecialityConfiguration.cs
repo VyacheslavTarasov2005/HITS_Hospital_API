@@ -13,14 +13,14 @@ public class SpecialityConfiguration : IEntityTypeConfiguration<Speciality>
         builder.HasMany<Doctor>()
             .WithOne()
             .HasForeignKey(d => d.Speciality);
-        
+
         builder.HasMany<Consultation>()
             .WithOne()
             .HasForeignKey(c => c.SpecialityId);
-        
+
         builder.Property(s => s.CreateTime)
             .IsRequired();
-        
+
         builder.Property(s => s.Name)
             .IsRequired();
     }

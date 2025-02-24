@@ -11,7 +11,7 @@ public class GetPatientsListRequestValidator : AbstractValidator<GetPatientsList
             .GreaterThan(0)
             .When(r => r.page != null)
             .WithMessage("Номер страницы должен быть больше 0");
-        
+
         RuleFor(r => r.size)
             .GreaterThan(0)
             .When(r => r.size != null)

@@ -10,7 +10,7 @@ public class IcdLoader(ApplicationDbContext dbContext) : IIcdLoader
     public async Task Load()
     {
         string filePath = "C:\\Users\\vt45\\RiderProjects\\HITS_API_1\\HITS_API_1.Infrastructure\\Data\\ICD10\\Icd10_json.json";
-        
+
         var jsonData = await File.ReadAllTextAsync(filePath);
         var icd10Data = JsonSerializer.Deserialize<Icd10ListJsonEntity>(jsonData);
 
@@ -18,13 +18,13 @@ public class IcdLoader(ApplicationDbContext dbContext) : IIcdLoader
         {
             return;
         }
-        
+
         var icd10Dictionary = new Dictionary<String, Icd10Entity>();
-        
+
         foreach (var icd10ListObject in icd10Data.records)
         {
             Icd10Entity icd10Object = new Icd10Entity(icd10ListObject.MKB_CODE, icd10ListObject.MKB_NAME);
-            
+
             icd10Dictionary[icd10ListObject.ID.ToString()] = icd10Object;
         }
 
@@ -36,9 +36,9 @@ public class IcdLoader(ApplicationDbContext dbContext) : IIcdLoader
                 icd10Dictionary[icd10ListObject.ID.ToString()].ParentId = parent.Id;
             }
         }
-        
+
         await dbContext.AddRangeAsync(icd10Dictionary.Values);
-        
+
         await dbContext.SaveChangesAsync();
     }
 }

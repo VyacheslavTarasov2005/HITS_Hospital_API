@@ -11,14 +11,14 @@ public class DoctorsRepository(ApplicationDbContext dbContext) : IDoctorsReposit
     {
         await dbContext.Doctors.AddAsync(doctor);
         await dbContext.SaveChangesAsync();
-        
+
         return doctor.Id;
     }
 
     public async Task<Doctor?> GetById(Guid id)
     {
         var doctor = await dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == id);
-        
+
         return doctor;
     }
 
@@ -27,7 +27,7 @@ public class DoctorsRepository(ApplicationDbContext dbContext) : IDoctorsReposit
         var doctor = await dbContext.Doctors
             .AsNoTracking()
             .FirstOrDefaultAsync(d => d.Email == email);
-        
+
         return doctor;
     }
 
@@ -37,7 +37,7 @@ public class DoctorsRepository(ApplicationDbContext dbContext) : IDoctorsReposit
             .AsNoTracking()
             .Where(d => d.Email == email)
             .ToListAsync();
-        
+
         return doctors;
     }
 
@@ -51,9 +51,9 @@ public class DoctorsRepository(ApplicationDbContext dbContext) : IDoctorsReposit
                 .SetProperty(d => d.Birthday, d => birthday ?? d.Birthday)
                 .SetProperty(d => d.Sex, d => gender)
                 .SetProperty(d => d.Phone, d => phoneNumber ?? d.Phone));
-        
+
         await dbContext.SaveChangesAsync();
-        
+
         return id;
     }
 }

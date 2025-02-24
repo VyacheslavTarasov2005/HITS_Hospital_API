@@ -10,12 +10,12 @@ public interface IInspectionsService
     Task<GetInspectionResponse> GetInspectionById(Guid inspectionId);
     Task UpdateInspection(Guid inspectionId, RedactInspectionRequest request, Guid doctorId);
     Task<List<GetInspectionByRootResponse>> GetInspectionsByRoot(Guid rootId);
-    Task<List<GetPatientInspectionsNoChildrenResponse>?> GetPatientInspectionsNoChildren(Guid patientId, 
+    Task<List<GetPatientInspectionsNoChildrenResponse>?> GetPatientInspectionsNoChildren(Guid patientId,
         String? filter);
 
     Task<(List<GetInspectionByRootResponse>, Pagination)> GetInspectionsForConsultation(Guid doctorId,
         GetFilteredInspectionsRequest request);
 
-    Task<(List<GetInspectionByRootResponse>, Pagination)> GetPatientInspections(Guid patientId, 
+    Task<(List<GetInspectionByRootResponse>, Pagination)> GetPatientInspections(Guid patientId,
         GetFilteredInspectionsRequest request);
 }

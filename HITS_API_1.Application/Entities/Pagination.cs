@@ -18,7 +18,7 @@ public class Pagination
         {
             _size = size.Value;
         }
-        
+
         _count = Convert.ToInt64(Math.Ceiling(objectsQuantity / (double)_size));
 
         if (current != null)

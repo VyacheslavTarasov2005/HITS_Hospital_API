@@ -32,20 +32,20 @@ public class PatientsController(
         }
 
         bool onlyMine = request.onlyMine ?? false;
-        
+
         var (patients, pagination) = await patientsService.GetPatients(request,
             onlyMine ? Guid.Parse(doctorId) : null);
-        
+
         List<GetPatientByIdResponse> patientsResponse = new List<GetPatientByIdResponse>();
 
         foreach (var patient in patients)
         {
             GetPatientByIdResponse patientResponse = new GetPatientByIdResponse(patient.Id, patient.CreateTime,
                 patient.Name, patient.Birthday, patient.Sex);
-        
+
             patientsResponse.Add(patientResponse);
         }
-    
+
         GetPatientsListResponse response = new GetPatientsListResponse(patientsResponse, pagination);
         return Ok(response);
     }
@@ -55,7 +55,7 @@ public class PatientsController(
     public async Task<ActionResult> GetPatientById([FromRoute] Guid id)
     {
         var patient = await patientsService.GetPatientById(id);
-        
+
         GetPatientByIdResponse response = new GetPatientByIdResponse(patient.Id, patient.CreateTime,
             patient.Name, patient.Birthday, patient.Sex);
         return Ok(response);
@@ -71,7 +71,7 @@ public class PatientsController(
         {
             return Unauthorized();
         }
-        
+
         var inspectionId = await inspectionsService.CreateInspection(request, id, Guid.Parse(doctorId));
         return Ok(inspectionId.ToString());
     }
@@ -81,9 +81,9 @@ public class PatientsController(
     public async Task<ActionResult<List<GetPatientInspectionsNoChildrenResponse>>> GetInspectionsNoChildren(
         [FromRoute] Guid id, [FromQuery] String? request)
     {
-        var inspections = await 
+        var inspections = await
             inspectionsService.GetPatientInspectionsNoChildren(id, request);
-        
+
         return Ok(inspections);
     }
 
@@ -92,9 +92,9 @@ public class PatientsController(
     public async Task<ActionResult<InspectionPagedListResponse>> GetInspections([FromRoute] Guid id,
         [FromQuery] GetFilteredInspectionsRequest request)
     {
-        var (inspections, pagination) = await 
+        var (inspections, pagination) = await
             inspectionsService.GetPatientInspections(id, request);
-    
+
         InspectionPagedListResponse response = new InspectionPagedListResponse(inspections, pagination);
         return Ok(response);
     }

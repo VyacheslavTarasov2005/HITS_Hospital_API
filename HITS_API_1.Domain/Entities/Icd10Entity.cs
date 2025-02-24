@@ -15,7 +15,7 @@ public class Icd10Entity
         get => _parentId;
         set => _parentId ??= value;
     }
-    
+
     public DateTime CreateTime => _createTime;
 
     public String Code => _code;

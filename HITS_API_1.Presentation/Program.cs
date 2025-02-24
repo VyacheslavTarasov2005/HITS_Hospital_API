@@ -67,10 +67,10 @@ builder.Services.AddValidatorsFromAssemblyContaining<RegistrationRequestValidato
 builder.Services.AddQuartz(q =>
 {
     q.UseMicrosoftDependencyInjectionJobFactory();
-    
+
     // Рассылка email
     var emailsJobKey = new JobKey("SendEmailJob");
-    
+
     q.AddJob<SendEmailJob>(opts => opts.WithIdentity(emailsJobKey));
 
     q.AddTrigger(opts => opts
@@ -78,10 +78,10 @@ builder.Services.AddQuartz(q =>
         .WithIdentity("SendEmailJob-trigger")
         .WithCronSchedule("0 * * ? * *")
     );
-    
+
     // Удаление истекших токенов
     var tokensJobKey = new JobKey("DeleteExpiredTokensJob");
-    
+
     q.AddJob<DeleteExpiredTokensJob>(opts => opts.WithIdentity(tokensJobKey));
 
     q.AddTrigger(opts => opts
@@ -104,10 +104,10 @@ builder.Services.AddSwaggerGen(options =>
         In = ParameterLocation.Header,
         Scheme = "Baerer"
     });
-    
+
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
-        { 
+        {
             new OpenApiSecurityScheme
             {
                 Reference = new OpenApiReference
@@ -116,7 +116,7 @@ builder.Services.AddSwaggerGen(options =>
                     Id = "Bearer"
                 }
             },
-            new List<string> {} 
+            new List<string> {}
         }
     });
 });

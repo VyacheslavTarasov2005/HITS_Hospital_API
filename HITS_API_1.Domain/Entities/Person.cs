@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace HITS_API_1.Domain.Entities;
 
 public abstract class Person
@@ -10,23 +7,23 @@ public abstract class Person
     private string _name;
     private DateTime? _birthday;
     private Gender _gender;
-    
+
     public Guid Id => _id;
 
     public DateTime CreateTime => _createTime;
-    
+
     public string Name
     {
         get => _name;
         set => _name = value;
     }
-    
+
     public DateTime? Birthday
     {
         get => _birthday;
         set => _birthday = value;
     }
-    
+
     public Gender Sex
     {
         get => _gender;

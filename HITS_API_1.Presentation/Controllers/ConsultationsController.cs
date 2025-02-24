@@ -26,10 +26,10 @@ public class ConsultationsController(
         {
             throw new UnauthorizedAccessException();
         }
-        
-        var (inspections, pagination) = 
+
+        var (inspections, pagination) =
             await inspectionsService.GetInspectionsForConsultation(Guid.Parse(doctorId), request);
-    
+
         InspectionPagedListResponse response = new InspectionPagedListResponse(inspections, pagination);
         return Ok(response);
     }
@@ -39,28 +39,28 @@ public class ConsultationsController(
     public async Task<ActionResult<GetConsultationByIdResponse>> GetConsultationById([FromRoute] Guid id)
     {
         var (consultation, comments, speciality) = await consultationsService.GetConsultationById(id);
-        
+
         if (comments.Count == 0)
         {
-            GetConsultationByIdResponse response = new GetConsultationByIdResponse(consultation.Id, 
+            GetConsultationByIdResponse response = new GetConsultationByIdResponse(consultation.Id,
                 consultation.CreateTime, consultation.InspectionId, speciality, null);
-            
+
             return Ok(response);
         }
-        
+
         List<GetCommentModel> commentsResponse = new List<GetCommentModel>();
 
         foreach (var comment in comments)
         {
             var author = await doctorsRepository.GetById(comment.AuthorId);
-            
+
             GetCommentModel commentResponse = new GetCommentModel(comment.Id, comment.CreateTime, comment.ModifiedDate,
                 comment.Content, comment.AuthorId, author == null ? "Deleted" : author.Name, comment.ParentId);
-            
+
             commentsResponse.Add(commentResponse);
         }
-        
-        GetConsultationByIdResponse responseFull = new GetConsultationByIdResponse(consultation.Id, 
+
+        GetConsultationByIdResponse responseFull = new GetConsultationByIdResponse(consultation.Id,
             consultation.CreateTime, consultation.InspectionId, speciality, commentsResponse);
         return Ok(responseFull);
     }
@@ -74,7 +74,7 @@ public class ConsultationsController(
         {
             return Unauthorized();
         }
-        
+
         var commentId = await commentsService.CreateComment(id, request, Guid.Parse(doctorId));
         return Ok(commentId.ToString());
     }
@@ -88,7 +88,7 @@ public class ConsultationsController(
         {
             return Unauthorized();
         }
-        
+
         await commentsService.RedactComment(id, request, Guid.Parse(doctorId));
         return Ok();
     }

@@ -9,7 +9,7 @@ public class TokenConfiguration : IEntityTypeConfiguration<Token>
     public void Configure(EntityTypeBuilder<Token> builder)
     {
         builder.HasKey(t => t.AccesToken);
-        
+
         builder.Property(t => t.ExpiryDate)
             .IsRequired();
 

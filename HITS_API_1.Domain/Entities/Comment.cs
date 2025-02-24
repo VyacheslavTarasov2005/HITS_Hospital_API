@@ -24,11 +24,11 @@ public class Comment
         get => _content;
         set => _content = value;
     }
-    
+
     public Guid AuthorId => _authorId;
-    
+
     public Guid? ParentId => _parentId;
-    
+
     public Guid ConsultationId => _consultationId;
 
     public Comment(DateTime? modifiedDate, String content, Guid authorId, Guid? parentId, Guid consultationId)

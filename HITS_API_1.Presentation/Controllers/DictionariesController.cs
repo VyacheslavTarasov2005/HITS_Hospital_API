@@ -17,7 +17,7 @@ public class DictionariesController(
     public async Task<ActionResult<GetSpecialitiesResponse>> GetSpecialities([FromQuery] GetSpecialitiesRequest request)
     {
         var (specialities, pagination) = await specialitiesService.GetSpecialities(request);
-        
+
         var response = new GetSpecialitiesResponse(specialities, pagination);
         return Ok(response);
     }
@@ -27,32 +27,32 @@ public class DictionariesController(
     public async Task<ActionResult<GetIcd10Response>> GetIcd10([FromQuery] GetIcd10Request queryRequest)
     {
         var (icd10Entities, pagination) = await icd10Service.GetIcd10(queryRequest);
-        
+
         var responseList = icd10Entities.Select(root => new Icd10Response(
             root.Code,
             root.Name,
             root.Id,
             root.CreateTime)
         ).ToList();
-        
+
         var response = new GetIcd10Response(responseList, pagination);
         return Ok(response);
     }
-    
+
 
     [HttpGet("icd10/roots")]
     [AllowAnonymous]
     public async Task<ActionResult<Icd10Response>> GetIcd10Roots()
     {
         var icd10RootsList = await icd10Service.GetRootsIcd10();
-        
+
         var response = icd10RootsList.Select(root => new Icd10Response(
             root.Code,
             root.Name,
             root.Id,
             root.CreateTime)
         ).ToList();
-        
+
         return Ok(response);
     }
 }

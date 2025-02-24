@@ -13,11 +13,11 @@ public class DiagnosisConfiguration : IEntityTypeConfiguration<Diagnosis>
         builder.HasOne<Inspection>()
             .WithMany()
             .HasForeignKey(d => d.InspectionId);
-        
+
         builder.HasOne<Icd10Entity>()
             .WithMany()
             .HasForeignKey(d => d.Icd10Id);
-        
+
         builder.Property(d => d.CreateTime)
             .IsRequired();
 
